@@ -1,0 +1,27 @@
+precio;zona;habitaciones;banos;m2;detalle;tipo_alquiler
+1150;Norte;3;2;80;Aire acondicionado;
+980;Centro;4;2;90;Ascensor;
+850;Norte;3;1;80;3a Planta;temporal
+770;Norte;4;2;99;Bajos;temporal
+900;Centro;3;1;85;Ascensor;temporal
+900;Centro;3;1;85;Balcon;temporal
+1400;Centro;5;2;120;2a Planta;
+1100;Centro;4;1;100;1a Planta;
+1750;Norte;5;2;120;3a Planta;
+1100;Centro;4;2;112;3a Planta;temporal
+1200;Centro;3;2;90;2a Planta;
+950;Centro;3;1;90;Ascensor;temporal
+900;Centro;3;1;100;1a Planta;temporal
+1150;Centro;3;2;100;2a Planta;
+975;Centro;3;2;90;Ascensor;
+1200;Centro;4;2;115;Ascensor;
+990;Centro;3;1;90;2a Planta;
+1450;Centro;5;2;90;2a Planta;
+1000;Norte;4;2;90;2a Planta;
+1200;Centro;4;2;126;3a Planta;
+350;Centro;4;2;142;Balcon (chalet);temporal
+1400;Centro;4;2;100;adosada;
+900;Centro;4;2;95;1a Planta;temporal
+400;Villamontes-Boqueres;4;2;14;Terraza;
+1150;Centro;3;2;100;Ascensor;
+1050;Centro;3;1;92;Balcon;

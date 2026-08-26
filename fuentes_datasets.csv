@@ -1,0 +1,6 @@
+0,1,2,3,4
+alquiler_mercado_mensual.csv,Idealista/Fotocasa,Precio de oferta mensual €/m²,2025-08 a 2026-08,Datos publicados en sus índices; no son contratos cerrados
+serpavi_san_vicente.csv,Ministerio de Vivienda - SERPAVI 2026,Alquiler residencial basado en fuentes tributarias,2024,Dato oficial; distinto de precio de oferta actual
+muestra_alquiler_estudiantes.csv,Idealista,Muestra de anuncios actuales,2026-08-24,Muestra manual; ampliar para inferencia estadística
+viviendas_turisticas_san_vicente.csv,Generalitat Valenciana,Registro de VUT,Actualización publicada 2026,Filtrado del CSV oficial de la Generalitat
+demanda_universitaria.csv,Universidad de Alicante,Demanda universitaria,2024-25/2025,"Indicadores de demanda potencial, no de demanda de alojamiento"
