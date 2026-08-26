@@ -1,0 +1,7 @@
+estrategia_a,estrategia_b,hay_cruce,mes_cruce,anio_cruce,ganador
+1. Residencial anual,2. Estudiantil x habitacion,False,,,1. Residencial anual
+1. Residencial anual,3. Turistico (Airbnb/Booking),False,,,3. Turistico (Airbnb/Booking)
+1. Residencial anual,4. Mixto (curso+verano),True,11.0,0.9,4. Mixto (curso+verano)
+2. Estudiantil x habitacion,3. Turistico (Airbnb/Booking),False,,,3. Turistico (Airbnb/Booking)
+2. Estudiantil x habitacion,4. Mixto (curso+verano),False,,,4. Mixto (curso+verano)
+3. Turistico (Airbnb/Booking),4. Mixto (curso+verano),False,,,3. Turistico (Airbnb/Booking)
