@@ -94,6 +94,26 @@ def gastos_fijos_anuales(precio_compra):
     return ibi, comunidad
 
 
+def neto_turistico(datos, gastos_fijos, ocupacion):
+    """Ingreso neto anual de la estrategia turistica pura, para una ocupacion dada."""
+    bruto = datos["precio_noche_turistico"] * 30.4 * ocupacion * 12
+    comision = bruto * COMISION_TURISTICO_PCT
+    neto = bruto - gastos_fijos - comision
+    return bruto, comision, neto
+
+
+def neto_mixto(datos, gastos_fijos, ocupacion):
+    """Ingreso neto anual del modelo mixto (9m estudiantil + 3m turistico),
+    para una ocupacion turistica de verano dada."""
+    bruto_curso = datos["precio_habitacion_mes"] * 3 * MESES_CURSO
+    bruto_verano = datos["precio_noche_turistico"] * 30.4 * ocupacion * MESES_VERANO
+    bruto = bruto_curso + bruto_verano
+    seguro_impago_curso = bruto_curso * SEGURO_IMPAGO_PCT
+    comision_verano = bruto_verano * COMISION_TURISTICO_PCT
+    neto = bruto - gastos_fijos - seguro_impago_curso - comision_verano
+    return bruto, bruto_curso, bruto_verano, seguro_impago_curso, comision_verano, neto
+
+
 def calcular_estrategias(datos):
     precio_compra = datos["precio_compra"]
     ibi, comunidad = gastos_fijos_anuales(precio_compra)
@@ -119,22 +139,16 @@ def calcular_estrategias(datos):
                        gastos=gastos_fijos + seguro_impago, ingreso_neto=neto,
                        base_imponible_irpf=base_irpf, roi_neto=neto / precio_compra))
 
-    # 3. Turistico (todo el año, Airbnb/Booking)
-    bruto = datos["precio_noche_turistico"] * 30.4 * OCUPACION_TURISTICA * 12
-    comision = bruto * COMISION_TURISTICO_PCT
-    neto = bruto - gastos_fijos - comision
+    # 3. Turistico (todo el año, Airbnb/Booking) -- ocupacion asumida, ver sensibilidad mas abajo
+    bruto, comision, neto = neto_turistico(datos, gastos_fijos, OCUPACION_TURISTICA)
     base_irpf = neto * (1 - REDUCCION_IRPF_TURISTICO)
     filas.append(dict(estrategia="3. Turistico (Airbnb/Booking)", ingreso_bruto=bruto,
                        gastos=gastos_fijos + comision, ingreso_neto=neto,
                        base_imponible_irpf=base_irpf, roi_neto=neto / precio_compra))
 
     # 4. Mixto: 9 meses estudiantil x hab. + 3 meses turistico (verano)
-    bruto_curso = datos["precio_habitacion_mes"] * 3 * MESES_CURSO
-    bruto_verano = datos["precio_noche_turistico"] * 30.4 * OCUPACION_TURISTICA * MESES_VERANO
-    bruto = bruto_curso + bruto_verano
-    seguro_impago_curso = bruto_curso * SEGURO_IMPAGO_PCT
-    comision_verano = bruto_verano * COMISION_TURISTICO_PCT
-    neto = bruto - gastos_fijos - seguro_impago_curso - comision_verano
+    bruto, bruto_curso, bruto_verano, seguro_impago_curso, comision_verano, neto = \
+        neto_mixto(datos, gastos_fijos, OCUPACION_TURISTICA)
     # aproximacion: se prorratea la reduccion IRPF solo sobre la parte residencial
     base_irpf = (neto * (bruto_curso / bruto)) * (1 - REDUCCION_IRPF_RESIDENCIAL) + \
                 (neto * (bruto_verano / bruto)) * (1 - REDUCCION_IRPF_TURISTICO)
@@ -190,6 +204,81 @@ def main():
     print(f"\nTabla completa guardada en: {out_path}")
 
     graficar_comparativa(df)
+
+    roi_residencial = df.loc[df["estrategia"] == "1. Residencial anual", "roi_neto"].iloc[0]
+    roi_estudiantil = df.loc[df["estrategia"] == "2. Estudiantil x habitacion", "roi_neto"].iloc[0]
+    analisis_sensibilidad_ocupacion(datos, gastos_fijos, precio_compra, roi_residencial, roi_estudiantil)
+
+
+def analisis_sensibilidad_ocupacion(datos, gastos_fijos, precio_compra, roi_residencial, roi_estudiantil):
+    """
+    El 77% de ocupacion turistica (OCUPACION_TURISTICA) es un proxy de Alicante
+    ciudad -- no hay dato real de San Vicente del Raspeig (el INE no cubre el
+    municipio, ver resumen_recopilacion_datos.md seccion 1). Es el supuesto que
+    mas pesa en el resultado, asi que en vez de dar un unico numero se calcula
+    el ROI del turistico y del mixto para un rango de ocupaciones (10%-90%) y
+    se busca el punto de equilibrio ("break-even") en el que igualan al
+    residencial -- para saber cuanto puede caer la ocupacion antes de que deje
+    de ser la mejor opcion.
+    """
+    ocupaciones = [i / 100 for i in range(10, 91, 5)]
+    filas = []
+    for oc in ocupaciones:
+        _, _, neto_tur = neto_turistico(datos, gastos_fijos, oc)
+        _, _, _, _, _, neto_mix = neto_mixto(datos, gastos_fijos, oc)
+        filas.append(dict(ocupacion=oc, roi_turistico=neto_tur / precio_compra,
+                           roi_mixto=neto_mix / precio_compra))
+    sens = pd.DataFrame(filas)
+
+    def break_even(col, objetivo):
+        """Interpolacion lineal entre los dos puntos que rodean el cruce (las
+        funciones de ROI vs ocupacion son lineales, asi que la interpolacion
+        es exacta, no una aproximacion)."""
+        cruces = sens[(sens[col] - objetivo) * (sens[col].shift(1) - objetivo) < 0]
+        if cruces.empty:
+            return None
+        idx = cruces.index[0]
+        x0, x1 = sens.loc[idx - 1, "ocupacion"], sens.loc[idx, "ocupacion"]
+        y0, y1 = sens.loc[idx - 1, col], sens.loc[idx, col]
+        return x0 + (objetivo - y0) * (x1 - x0) / (y1 - y0)
+
+    be_tur_vs_resid = break_even("roi_turistico", roi_residencial)
+    be_tur_vs_cero = break_even("roi_turistico", 0.0)
+    be_mix_vs_resid = break_even("roi_mixto", roi_residencial)
+
+    print("\n--- Analisis de sensibilidad: ocupacion turistica (supuesto mas incierto) ---")
+    print(f"Ocupacion asumida en el modelo base: {OCUPACION_TURISTICA:.0%} (proxy Alicante ciudad, no dato real de San Vicente)")
+    if be_tur_vs_resid:
+        print(f"El turistico deja de ganar al residencial ({roi_residencial*100:.2f}% ROI) por debajo de {be_tur_vs_resid:.1%} de ocupacion")
+    if be_tur_vs_cero:
+        print(f"El turistico deja de ser rentable (ROI < 0) por debajo de {be_tur_vs_cero:.1%} de ocupacion")
+    if be_mix_vs_resid:
+        print(f"El mixto deja de ganar al residencial por debajo de {be_mix_vs_resid:.1%} de ocupacion (en la parte turistica de verano)")
+    print("-> Incluso con una ocupacion bastante mas baja que el proxy de Alicante, el turistico y el mixto")
+    print("   siguen por delante del alquiler tradicional en este arquetipo -- pero si en la practica la")
+    print("   ocupacion real cae por debajo de esos umbrales, el ranking cambia.")
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    ax.plot(sens["ocupacion"] * 100, sens["roi_turistico"] * 100, marker="o", color="#3ba55d", label="Turistico")
+    ax.plot(sens["ocupacion"] * 100, sens["roi_mixto"] * 100, marker="o", color="#8a4fb5", label="Mixto")
+    ax.axhline(roi_residencial * 100, color="#3b6ea5", linestyle="--", label="Residencial anual (ref.)")
+    ax.axhline(roi_estudiantil * 100, color="#e0a020", linestyle="--", label="Estudiantil x hab. (ref.)")
+    ax.axvline(OCUPACION_TURISTICA * 100, color="gray", linestyle=":", alpha=0.7)
+    ax.text(OCUPACION_TURISTICA * 100 + 1, ax.get_ylim()[1] * 0.95, "supuesto\ndel modelo\nbase (77%)",
+            fontsize=8, va="top", color="gray")
+    ax.set_xlabel("Ocupacion turistica asumida (%)")
+    ax.set_ylabel("ROI neto anual (%)")
+    ax.set_title("Sensibilidad del ROI a la ocupacion turistica\n(arquetipo 3 hab. / ~90-100 m2)")
+    ax.legend()
+    fig.tight_layout()
+    out_path = GRAF_DIR / "07_sensibilidad_ocupacion.png"
+    fig.savefig(out_path)
+    plt.close(fig)
+    print(f"Grafico de sensibilidad guardado en: {out_path}")
+
+    sens_out = EDA_DIR / "sensibilidad_ocupacion.csv"
+    sens.to_csv(sens_out, sep=";", index=False)
+    print(f"Tabla de sensibilidad guardada en: {sens_out}")
 
 
 def graficar_comparativa(df):

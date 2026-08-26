@@ -53,10 +53,24 @@ Aun así, con un ROI neto pre-impuestos casi 3-4× superior, el turístico proba
 ## Limitaciones a mencionar en la memoria
 
 - La deduplicación cruzada Idealista↔Fotocasa/sesiones es heurística (precio+habitaciones+m², sin dirección exacta) — puede haber falsos positivos/negativos.
-- La ocupación turística (77%) es un proxy de Alicante ciudad, no un dato específico de San Vicente (el INE no cubre el municipio) — es el supuesto que más impacta el resultado de las estrategias 3 y 4; conviene una nota de sensibilidad (¿qué pasa con 60% u 85% de ocupación?) si quieres reforzar la robustez del análisis.
+- La ocupación turística (77%) es un proxy de Alicante ciudad, no un dato específico de San Vicente (el INE no cubre el municipio). Es el supuesto que más impacta el resultado de las estrategias 3 y 4 — por eso se añadió un análisis de sensibilidad (ver sección siguiente).
 - IBI, seguro de hogar, mantenimiento y gestión turística no tienen cifra oficial única — se usaron puntos medios de rangos documentados, marcados como `_ASUNCION` en el script.
 - El arquetipo de "estudiantil x habitación" asume ocupación completa de las 3 habitaciones los 12 meses; en la práctica el curso universitario no cubre el verano, que es justo el hueco que cubre la estrategia 4 (mixta).
 - Muestra turística pequeña (n=22 en San Vicente) frente a las ~250 de alquiler/venta — los precios turísticos tienen más margen de error.
+
+## Análisis de sensibilidad: ¿y si Airbnb no está siempre alquilado?
+
+El modelo base asume el turístico ocupado el 77% del año (~281 noches), pero esa cifra es un **proxy de Alicante ciudad**, no un dato real de San Vicente del Raspeig (el INE no publica ocupación para el municipio — ver limitaciones). Es el supuesto que más pesa en el resultado, así que en vez de quedarnos con un único número se calculó el ROI del turístico y del mixto para ocupaciones entre el 10% y el 90%, y se buscó el punto de equilibrio frente al residencial.
+
+Como el precio de compra, la comisión de plataforma y los gastos fijos son constantes, el ROI de ambas estrategias es una función **lineal** de la ocupación — el punto de equilibrio se puede calcular de forma exacta, no es una aproximación visual.
+
+**Resultado (gráfico `graficos/07_sensibilidad_ocupacion.png`, tabla `eda/sensibilidad_ocupacion.csv`):**
+
+- El turístico deja de ganar al residencial (3,79% ROI) solo si la ocupación real cae **por debajo del 27%** (~99 noches/año, menos de 1 de cada 3 días con la vivienda alquilada).
+- El mixto deja de ganar al residencial solo si la ocupación de la parte de verano cae **por debajo del 34,6%**.
+- Con el supuesto base (77%), hay bastante margen de seguridad: la ocupación tendría que desplomarse a menos de un tercio de lo asumido para que el alquiler tradicional fuera mejor opción.
+
+Dicho de otra forma: el resultado del turístico como estrategia ganadora **no depende de forma frágil** del 77% asumido — se sostiene incluso con una ocupación bastante más pesimista y realista para un municipio sin playa como San Vicente. Aun así, conviene declarar este supuesto explícitamente en la memoria del proyecto y, si en algún momento consigues una cifra de ocupación real (por ejemplo pidiendo datos a AirDNA o similar, o mirando reseñas/disponibilidad de anuncios concretos en Airbnb/Booking), sustituirla en `OCUPACION_TURISTICA` dentro de `modelo_financiero.py`.
 
 ## Cómo reproducir / ajustar
 
