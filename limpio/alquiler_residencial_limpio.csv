@@ -1,98 +1,145 @@
-fuente;precio_mes;habitaciones;m2;zona;planta;ascensor;garaje;tipo_alquiler;texto_original
-idealista;925.0;3;91.0;;1ª planta;True;True;anual/no_especificado;925€/mes | Garaje incluido|3 hab.|91 m²|1ª planta exterior con ascensor
-idealista;1230.0;3;120.0;;1ª planta;True;False;temporada;1.230€/mes | 3 hab.|120 m²|1ª planta exterior con ascensor
-idealista;1100.0;3;90.0;;3ª planta;True;False;temporada;1.100€/mes | 3 hab.|90 m²|3ª planta exterior con ascensor
-idealista;1150.0;3;80.0;;;False;False;temporada;1.150€/mes | 3 hab.|80 m²|Bajo exterior sin ascensor
-idealista;1550.0;3;90.0;;3ª planta;True;True;anual/no_especificado;1.550€/mes | Garaje opc. 40 €/mes|3 hab.|90 m²|3ª planta exterior con ascensor
-idealista;1200.0;6;200.0;;;;True;temporada;1.200€/mes | Garaje incluido|6 hab.|200 m²
-idealista;1100.0;4;117.0;;1ª planta;False;False;temporada;1.100€/mes | 4 hab.|117 m²|1ª planta exterior sin ascensor
-idealista;860.0;4;137.0;;1ª planta;True;False;temporada;860€/mes | 4 hab.|137 m²|1ª planta interior con ascensor
-idealista;1000.0;4;95.0;;1ª planta;False;False;temporada;1.000€/mes | 4 hab.|95 m²|1ª planta exterior sin ascensor
-idealista;1200.0;4;110.0;;1ª planta;False;False;temporada;1.200€/mes | 4 hab.|110 m²|1ª planta exterior sin ascensor
-idealista;1100.0;4;100.0;;2ª planta;False;False;temporada;1.100€/mes | 4 hab.|100 m²|2ª planta exterior sin ascensor
-idealista;1000.0;3;75.0;;1ª planta;False;False;anual/no_especificado;1.000€/mes | 3 hab.|75 m²|1ª planta exterior sin ascensor
-idealista;770.0;4;99.0;;;False;False;temporada;770€/mes | 4 hab.|99 m²|Bajo exterior sin ascensor
-idealista;1100.0;4;112.0;;3ª planta;False;False;temporada;1.100€/mes | 4 hab.|112 m²|3ª planta exterior sin ascensor
-idealista;1200.0;3;90.0;;2ª planta;True;False;anual/no_especificado;1.200€/mes | 3 hab.|90 m²|2ª planta exterior con ascensor
-idealista;1260.0;4;125.0;;4ª planta;True;False;anual/no_especificado;1.260€/mes | 4 hab.|125 m²|4ª planta exterior con ascensor
-idealista;1200.0;4;85.0;;1ª planta;False;False;temporada;1.200€/mes | 4 hab.|85 m²|1ª planta exterior sin ascensor
-idealista;960.0;3;117.0;;3ª planta;False;False;temporada;960€/mes | 3 hab.|117 m²|3ª planta exterior sin ascensor
-idealista;900.0;4;100.0;;3ª planta;True;False;temporada;900€/mes | 4 hab.|100 m²|3ª planta interior con ascensor
-idealista;1100.0;4;110.0;;3ª planta;False;False;temporada;1.100€/mes | 4 hab.|110 m²|3ª planta exterior sin ascensor
-idealista;1750.0;5;100.0;;3ª planta;True;False;temporada;1.750€/mes | 5 hab.|100 m²|3ª planta exterior con ascensor
-idealista;850.0;3;82.0;;3ª planta;False;False;temporada;850€/mes | 3 hab.|82 m²|3ª planta exterior sin ascensor
-idealista;1000.0;4;95.0;;4ª planta;False;False;temporada;1.000€/mes | 4 hab.|95 m²|4ª planta exterior sin ascensor
-idealista;1100.0;4;120.0;;2ª planta;True;False;temporada;1.100€/mes | 4 hab.|120 m²|2ª planta exterior con ascensor
-idealista;1100.0;3;90.0;;1ª planta;True;True;temporada;1.100€/mes | Garaje opc. 60 €/mes|3 hab.|90 m²|1ª planta exterior con ascensor
-idealista;1100.0;4;110.0;;2ª planta;False;False;temporada;1.100€/mes | 4 hab.|110 m²|2ª planta exterior sin ascensor
-idealista;900.0;3;90.0;;3ª planta;False;False;temporada;900€/mes | 3 hab.|90 m²|3ª planta exterior sin ascensor
-idealista;1300.0;4;124.0;;1ª planta;True;True;anual/no_especificado;1.300€/mes | Garaje incluido|4 hab.|124 m²|1ª planta exterior con ascensor
-idealista;950.0;3;115.0;;4ª planta;True;False;anual/no_especificado;950€/mes | 3 hab.|115 m²|4ª planta exterior con ascensor
-idealista;1100.0;4;110.0;;6ª planta;True;False;temporada;1.100€/mes | 4 hab.|110 m²|6ª planta exterior con ascensor
-idealista;950.0;3;90.0;;2ª planta;False;False;temporada;950€/mes | 3 hab.|90 m²|2ª planta exterior sin ascensor
-idealista;1050.0;3;92.0;;3ª planta;False;False;temporada;1.050€/mes | 3 hab.|92 m²|3ª planta exterior sin ascensor
-idealista;900.0;3;130.0;;1ª planta;False;False;temporada;900€/mes | 3 hab.|130 m²|1ª planta exterior sin ascensor
-idealista;800.0;3;90.0;;;False;False;temporada;800€/mes | 3 hab.|90 m²|Bajo interior sin ascensor
-idealista;795.0;2;68.0;;1ª planta;False;False;temporada;795€/mes | 2 hab.|68 m²|1ª planta exterior sin ascensor
-idealista;1750.0;5;100.0;;2ª planta;True;False;temporada;1.750€/mes | 5 hab.|100 m²|2ª planta exterior con ascensor
-idealista;1000.0;3;95.0;;1ª planta;True;False;temporada;1.000€/mes | 3 hab.|95 m²|1ª planta exterior con ascensor
-idealista;1500.0;5;100.0;;3ª planta;False;False;temporada;1.500€/mes | 5 hab.|100 m²|3ª planta exterior sin ascensor
-idealista;990.0;3;90.0;;2ª planta;False;False;temporada;990€/mes | 3 hab.|90 m²|2ª planta exterior sin ascensor
-idealista;1000.0;4;100.0;;2ª planta;False;False;temporada;1.000€/mes | 4 hab.|100 m²|2ª planta exterior sin ascensor
-idealista;1500.0;4;135.0;;4ª planta;True;False;temporada;1.500€/mes | 4 hab.|135 m²|4ª planta exterior con ascensor
-idealista;1150.0;4;100.0;;6ª planta;True;False;temporada;1.150€/mes | 4 hab.|100 m²|6ª planta exterior con ascensor
-idealista;920.0;3;100.0;;1ª planta;True;False;temporada;920€/mes | 3 hab.|100 m²|1ª planta exterior con ascensor
-idealista;920.0;3;100.0;;4ª planta;False;False;temporada;920€/mes | 3 hab.|100 m²|4ª planta exterior sin ascensor
-idealista;1250.0;4;120.0;;;True;False;anual/no_especificado;1.250€/mes | 4 hab.|120 m²|exterior con ascensor
-idealista;1200.0;3;100.0;;2ª planta;True;False;anual/no_especificado;1.200€/mes | 3 hab.|100 m²|2ª planta exterior con ascensor
-idealista;900.0;3;90.0;;;False;False;anual/no_especificado;900€/mes | 3 hab.|90 m²|exterior sin ascensor
-idealista;1300.0;4;134.0;;4ª planta;True;False;temporada;1.300€/mes | 4 hab.|134 m²|4ª planta exterior con ascensor
-idealista;850.0;3;90.0;;;True;False;anual/no_especificado;850€/mes | 3 hab.|90 m²|exterior con ascensor
-idealista;1400.0;5;160.0;;1ª planta;False;False;temporada;1.400€/mes | 5 hab.|160 m²|1ª planta exterior sin ascensor
-idealista;880.0;3;100.0;;1ª planta;True;False;temporada;880€/mes | 3 hab.|100 m²|1ª planta exterior con ascensor
-idealista;950.0;2;80.0;;3ª planta;True;True;anual/no_especificado;950€/mes | Garaje incluido|2 hab.|80 m²|3ª planta exterior con ascensor
-idealista;1300.0;4;113.0;;;True;False;temporada;1.300€/mes | 4 hab.|113 m²|Bajo exterior con ascensor
-idealista;1200.0;2;80.0;;5ª planta;True;False;anual/no_especificado;1.200€/mes | 2 hab.|80 m²|5ª planta exterior con ascensor
-idealista;1300.0;4;124.0;;2ª planta;True;False;anual/no_especificado;1.300€/mes | 4 hab.|124 m²|2ª planta exterior con ascensor
-idealista;1200.0;4;111.0;;3ª planta;True;False;anual/no_especificado;1.200€/mes | 4 hab.|111 m²|3ª planta exterior con ascensor
-idealista;1080.0;3;86.0;;4ª planta;True;True;anual/no_especificado;1.080€/mes | Garaje incluido|3 hab.|86 m²|4ª planta exterior con ascensor
-idealista;900.0;3;83.0;;3ª planta;False;False;anual/no_especificado;900€/mes | 3 hab.|83 m²|3ª planta exterior sin ascensor
-idealista;800.0;3;115.0;;1ª planta;True;False;temporada;800€/mes | 3 hab.|115 m²|1ª planta exterior con ascensor
-idealista;1100.0;4;152.0;;1ª planta;True;True;temporada;1.100€/mes | Garaje incluido|4 hab.|152 m²|1ª planta exterior con ascensor
-idealista;1200.0;4;140.0;;4ª planta;False;False;anual/no_especificado;1.200€/mes | 4 hab.|140 m²|4ª planta exterior sin ascensor
-idealista;1400.0;5;140.0;;2ª planta;False;False;temporada;1.400€/mes | 5 hab.|140 m²|2ª planta exterior sin ascensor
-idealista;900.0;3;90.0;;1ª planta;False;False;temporada;900€/mes | 3 hab.|90 m²|1ª planta exterior sin ascensor
-idealista;1000.0;4;120.0;;3ª planta;True;False;temporada;1.000€/mes | 4 hab.|120 m²|3ª planta exterior con ascensor
-idealista;900.0;3;100.0;;3ª planta;False;False;anual/no_especificado;900€/mes | 3 hab.|100 m²|3ª planta exterior sin ascensor
-idealista;1100.0;4;110.0;;2ª planta;False;False;temporada;1.100€/mes | 4 hab.|110 m²|2ª planta exterior sin ascensor
-idealista;1080.0;3;95.0;;4ª planta;True;False;temporada;1.080€/mes | 3 hab.|95 m²|4ª planta exterior con ascensor
-idealista;980.0;4;90.0;;1ª planta;True;False;temporada;980€/mes | 4 hab.|90 m²|1ª planta exterior con ascensor
-idealista;1400.0;5;120.0;;2ª planta;False;False;temporada;1.400€/mes | 5 hab.|120 m²|2ª planta exterior sin ascensor
-idealista;1200.0;4;100.0;;3ª planta;True;False;temporada;1.200€/mes | 4 hab.|100 m²|3ª planta exterior con ascensor
-idealista;1050.0;3;95.0;;4ª planta;True;False;anual/no_especificado;1.050€/mes | 3 hab.|95 m²|4ª planta exterior con ascensor
-idealista;840.0;3;95.0;;3ª planta;True;False;temporada;840€/mes | 3 hab.|95 m²|3ª planta exterior con ascensor
-idealista;1200.0;4;126.0;;3ª planta;True;False;anual/no_especificado;1.200€/mes | 4 hab.|126 m²|3ª planta exterior con ascensor
-idealista;1200.0;4;130.0;;1ª planta;False;False;temporada;1.200€/mes | 4 hab.|130 m²|1ª planta exterior sin ascensor
-idealista;1200.0;4;110.0;;2ª planta;True;False;temporada;1.200€/mes | 4 hab.|110 m²|2ª planta exterior con ascensor
-idealista;800.0;2;75.0;;1ª planta;True;False;temporada;800€/mes | 2 hab.|75 m²|1ª planta exterior con ascensor
-idealista;1350.0;3;160.0;;;;True;anual/no_especificado;1.350€/mes | Garaje incluido|3 hab.|160 m²
-idealista;1500.0;4;110.0;;;True;False;temporada;1.500€/mes | 4 hab.|110 m²|Entreplanta exterior con ascensor
-idealista;1050.0;3;112.0;;;;True;anual/no_especificado;1.050€/mes | Garaje incluido|3 hab.|112 m²
-idealista;1200.0;4;121.0;;2ª planta;True;False;temporada;1.200€/mes | 4 hab.|121 m²|2ª planta exterior con ascensor
-idealista;1200.0;4;115.0;;2ª planta;True;False;temporada;1.200€/mes | 4 hab.|115 m²|2ª planta exterior con ascensor
-idealista;990.0;3;110.0;;5ª planta;True;False;temporada;990€/mes | 3 hab.|110 m²|5ª planta exterior con ascensor
-idealista;1300.0;4;90.0;;4ª planta;True;False;anual/no_especificado;1.300€/mes | 4 hab.|90 m²|4ª planta exterior con ascensor
-idealista;1300.0;3;100.0;;;;False;anual/no_especificado;1.300€/mes | 3 hab.|100 m²
-idealista;1200.0;4;90.0;;3ª planta;True;False;anual/no_especificado;1.200€/mes | 4 hab.|90 m²|3ª planta exterior con ascensor
-idealista;900.0;3;95.0;;4ª planta;True;False;temporada;900€/mes | 3 hab.|95 m²|4ª planta exterior con ascensor
-fotocasa;850.0;3;80.0;Norte;;;False;temporada;850 | Norte | 3a Planta
-fotocasa;1750.0;5;120.0;Norte;;;False;anual/no_especificado;1750 | Norte | 3a Planta
-fotocasa;1150.0;3;100.0;Centro;;;False;anual/no_especificado;1150 | Centro | 2a Planta
-fotocasa;975.0;3;90.0;Centro;;True;False;anual/no_especificado;975 | Centro | Ascensor
-fotocasa;1450.0;5;90.0;Centro;;;False;anual/no_especificado;1450 | Centro | 2a Planta
-fotocasa;1000.0;4;90.0;Norte;;;False;anual/no_especificado;1000 | Norte | 2a Planta
-fotocasa;350.0;4;142.0;Centro;;;False;temporada;350 | Centro | Balcon (chalet)
-fotocasa;1400.0;4;100.0;Centro;;;False;anual/no_especificado;1400 | Centro | adosada
-fotocasa;900.0;4;95.0;Centro;;;False;temporada;900 | Centro | 1a Planta
-fotocasa;400.0;4;14.0;Villamontes-Boqueres;;;False;anual/no_especificado;400 | Villamontes-Boqueres | Terraza
-fotocasa;1150.0;3;100.0;Centro;;True;False;anual/no_especificado;1150 | Centro | Ascensor
+fuente;fecha_captura;precio_mes;habitaciones;m2;zona;planta;ascensor;banos;garaje;tipo_alquiler;texto_original
+idealista;2026-08-26;925.0;3;91.0;;1ª planta;True;;True;anual/no_especificado;925€/mes | Garaje incluido|3 hab.|91 m²|1ª planta exterior con ascensor
+idealista;2026-08-26;1230.0;3;120.0;;1ª planta;True;;False;temporada;1.230€/mes | 3 hab.|120 m²|1ª planta exterior con ascensor
+idealista;2026-08-26;1100.0;3;90.0;;3ª planta;True;;False;temporada;1.100€/mes | 3 hab.|90 m²|3ª planta exterior con ascensor
+idealista;2026-08-26;1150.0;3;80.0;;;False;;False;temporada;1.150€/mes | 3 hab.|80 m²|Bajo exterior sin ascensor
+idealista;2026-08-26;1550.0;3;90.0;;3ª planta;True;;True;anual/no_especificado;1.550€/mes | Garaje opc. 40 €/mes|3 hab.|90 m²|3ª planta exterior con ascensor
+idealista;2026-08-26;1200.0;6;200.0;;;;;True;temporada;1.200€/mes | Garaje incluido|6 hab.|200 m²
+idealista;2026-08-26;1100.0;4;117.0;;1ª planta;False;;False;temporada;1.100€/mes | 4 hab.|117 m²|1ª planta exterior sin ascensor
+idealista;2026-08-26;860.0;4;137.0;;1ª planta;True;;False;temporada;860€/mes | 4 hab.|137 m²|1ª planta interior con ascensor
+idealista;2026-08-26;1000.0;4;95.0;;1ª planta;False;;False;temporada;1.000€/mes | 4 hab.|95 m²|1ª planta exterior sin ascensor
+idealista;2026-08-26;1200.0;4;110.0;;1ª planta;False;;False;temporada;1.200€/mes | 4 hab.|110 m²|1ª planta exterior sin ascensor
+idealista;2026-08-26;1100.0;4;100.0;;2ª planta;False;;False;temporada;1.100€/mes | 4 hab.|100 m²|2ª planta exterior sin ascensor
+idealista;2026-08-26;1000.0;3;75.0;;1ª planta;False;;False;anual/no_especificado;1.000€/mes | 3 hab.|75 m²|1ª planta exterior sin ascensor
+idealista;2026-08-26;770.0;4;99.0;;;False;;False;temporada;770€/mes | 4 hab.|99 m²|Bajo exterior sin ascensor
+idealista;2026-08-26;1100.0;4;112.0;;3ª planta;False;;False;temporada;1.100€/mes | 4 hab.|112 m²|3ª planta exterior sin ascensor
+idealista;2026-08-26;1200.0;3;90.0;;2ª planta;True;;False;anual/no_especificado;1.200€/mes | 3 hab.|90 m²|2ª planta exterior con ascensor
+idealista;2026-08-26;1260.0;4;125.0;;4ª planta;True;;False;anual/no_especificado;1.260€/mes | 4 hab.|125 m²|4ª planta exterior con ascensor
+idealista;2026-08-26;1200.0;4;85.0;;1ª planta;False;;False;temporada;1.200€/mes | 4 hab.|85 m²|1ª planta exterior sin ascensor
+idealista;2026-08-26;960.0;3;117.0;;3ª planta;False;;False;temporada;960€/mes | 3 hab.|117 m²|3ª planta exterior sin ascensor
+idealista;2026-08-26;900.0;4;100.0;;3ª planta;True;;False;temporada;900€/mes | 4 hab.|100 m²|3ª planta interior con ascensor
+idealista;2026-08-26;1100.0;4;110.0;;3ª planta;False;;False;temporada;1.100€/mes | 4 hab.|110 m²|3ª planta exterior sin ascensor
+idealista;2026-08-26;1750.0;5;100.0;;3ª planta;True;;False;temporada;1.750€/mes | 5 hab.|100 m²|3ª planta exterior con ascensor
+idealista;2026-08-26;850.0;3;82.0;;3ª planta;False;;False;temporada;850€/mes | 3 hab.|82 m²|3ª planta exterior sin ascensor
+idealista;2026-08-26;1100.0;4;120.0;;2ª planta;True;;False;temporada;1.100€/mes | 4 hab.|120 m²|2ª planta exterior con ascensor
+idealista;2026-08-26;900.0;3;90.0;;3ª planta;False;;False;temporada;900€/mes | 3 hab.|90 m²|3ª planta exterior sin ascensor
+idealista;2026-08-26;1300.0;4;124.0;;1ª planta;True;;True;anual/no_especificado;1.300€/mes | Garaje incluido|4 hab.|124 m²|1ª planta exterior con ascensor
+idealista;2026-08-26;950.0;3;115.0;;4ª planta;True;;False;anual/no_especificado;950€/mes | 3 hab.|115 m²|4ª planta exterior con ascensor
+idealista;2026-08-26;950.0;3;90.0;;2ª planta;False;;False;temporada;950€/mes | 3 hab.|90 m²|2ª planta exterior sin ascensor
+idealista;2026-08-26;1050.0;3;92.0;;3ª planta;False;;False;temporada;1.050€/mes | 3 hab.|92 m²|3ª planta exterior sin ascensor
+idealista;2026-08-26;900.0;3;130.0;;1ª planta;False;;False;temporada;900€/mes | 3 hab.|130 m²|1ª planta exterior sin ascensor
+idealista;2026-08-26;800.0;3;90.0;;;False;;False;temporada;800€/mes | 3 hab.|90 m²|Bajo interior sin ascensor
+idealista;2026-08-26;795.0;2;68.0;;1ª planta;False;;False;temporada;795€/mes | 2 hab.|68 m²|1ª planta exterior sin ascensor
+idealista;2026-08-26;1000.0;3;95.0;;1ª planta;True;;False;temporada;1.000€/mes | 3 hab.|95 m²|1ª planta exterior con ascensor
+idealista;2026-08-26;1500.0;5;100.0;;3ª planta;False;;False;temporada;1.500€/mes | 5 hab.|100 m²|3ª planta exterior sin ascensor
+idealista;2026-08-26;990.0;3;90.0;;2ª planta;False;;False;temporada;990€/mes | 3 hab.|90 m²|2ª planta exterior sin ascensor
+idealista;2026-08-26;1000.0;4;100.0;;2ª planta;False;;False;temporada;1.000€/mes | 4 hab.|100 m²|2ª planta exterior sin ascensor
+idealista;2026-08-26;1500.0;4;135.0;;4ª planta;True;;False;temporada;1.500€/mes | 4 hab.|135 m²|4ª planta exterior con ascensor
+idealista;2026-08-26;1150.0;4;100.0;;6ª planta;True;;False;temporada;1.150€/mes | 4 hab.|100 m²|6ª planta exterior con ascensor
+idealista;2026-08-26;920.0;3;100.0;;1ª planta;True;;False;temporada;920€/mes | 3 hab.|100 m²|1ª planta exterior con ascensor
+idealista;2026-08-26;1250.0;4;120.0;;;True;;False;anual/no_especificado;1.250€/mes | 4 hab.|120 m²|exterior con ascensor
+idealista;2026-08-26;1200.0;3;100.0;;2ª planta;True;;False;anual/no_especificado;1.200€/mes | 3 hab.|100 m²|2ª planta exterior con ascensor
+idealista;2026-08-26;1300.0;4;134.0;;4ª planta;True;;False;temporada;1.300€/mes | 4 hab.|134 m²|4ª planta exterior con ascensor
+idealista;2026-08-26;850.0;3;90.0;;;True;;False;anual/no_especificado;850€/mes | 3 hab.|90 m²|exterior con ascensor
+idealista;2026-08-26;1400.0;5;160.0;;1ª planta;False;;False;temporada;1.400€/mes | 5 hab.|160 m²|1ª planta exterior sin ascensor
+idealista;2026-08-26;880.0;3;100.0;;1ª planta;True;;False;temporada;880€/mes | 3 hab.|100 m²|1ª planta exterior con ascensor
+idealista;2026-08-26;950.0;2;80.0;;3ª planta;True;;True;anual/no_especificado;950€/mes | Garaje incluido|2 hab.|80 m²|3ª planta exterior con ascensor
+idealista;2026-08-26;1300.0;4;113.0;;;True;;False;temporada;1.300€/mes | 4 hab.|113 m²|Bajo exterior con ascensor
+idealista;2026-08-26;1200.0;2;80.0;;5ª planta;True;;False;anual/no_especificado;1.200€/mes | 2 hab.|80 m²|5ª planta exterior con ascensor
+idealista;2026-08-26;1200.0;4;111.0;;3ª planta;True;;False;anual/no_especificado;1.200€/mes | 4 hab.|111 m²|3ª planta exterior con ascensor
+idealista;2026-08-26;1080.0;3;86.0;;4ª planta;True;;True;anual/no_especificado;1.080€/mes | Garaje incluido|3 hab.|86 m²|4ª planta exterior con ascensor
+idealista;2026-08-26;900.0;3;83.0;;3ª planta;False;;False;anual/no_especificado;900€/mes | 3 hab.|83 m²|3ª planta exterior sin ascensor
+idealista;2026-08-26;800.0;3;115.0;;1ª planta;True;;False;temporada;800€/mes | 3 hab.|115 m²|1ª planta exterior con ascensor
+idealista;2026-08-26;1100.0;4;152.0;;1ª planta;True;;True;temporada;1.100€/mes | Garaje incluido|4 hab.|152 m²|1ª planta exterior con ascensor
+idealista;2026-08-26;1200.0;4;140.0;;4ª planta;False;;False;anual/no_especificado;1.200€/mes | 4 hab.|140 m²|4ª planta exterior sin ascensor
+idealista;2026-08-26;1400.0;5;140.0;;2ª planta;False;;False;temporada;1.400€/mes | 5 hab.|140 m²|2ª planta exterior sin ascensor
+idealista;2026-08-26;1000.0;4;120.0;;3ª planta;True;;False;temporada;1.000€/mes | 4 hab.|120 m²|3ª planta exterior con ascensor
+idealista;2026-08-26;900.0;3;100.0;;3ª planta;False;;False;anual/no_especificado;900€/mes | 3 hab.|100 m²|3ª planta exterior sin ascensor
+idealista;2026-08-26;1080.0;3;95.0;;4ª planta;True;;False;temporada;1.080€/mes | 3 hab.|95 m²|4ª planta exterior con ascensor
+idealista;2026-08-26;980.0;4;90.0;;1ª planta;True;;False;temporada;980€/mes | 4 hab.|90 m²|1ª planta exterior con ascensor
+idealista;2026-08-26;1400.0;5;120.0;;2ª planta;False;;False;temporada;1.400€/mes | 5 hab.|120 m²|2ª planta exterior sin ascensor
+idealista;2026-08-26;1200.0;4;100.0;;3ª planta;True;;False;temporada;1.200€/mes | 4 hab.|100 m²|3ª planta exterior con ascensor
+idealista;2026-08-26;1050.0;3;95.0;;4ª planta;True;;False;anual/no_especificado;1.050€/mes | 3 hab.|95 m²|4ª planta exterior con ascensor
+idealista;2026-08-26;840.0;3;95.0;;3ª planta;True;;False;temporada;840€/mes | 3 hab.|95 m²|3ª planta exterior con ascensor
+idealista;2026-08-26;1200.0;4;126.0;;3ª planta;True;;False;anual/no_especificado;1.200€/mes | 4 hab.|126 m²|3ª planta exterior con ascensor
+idealista;2026-08-26;1200.0;4;130.0;;1ª planta;False;;False;temporada;1.200€/mes | 4 hab.|130 m²|1ª planta exterior sin ascensor
+idealista;2026-08-26;800.0;2;75.0;;1ª planta;True;;False;temporada;800€/mes | 2 hab.|75 m²|1ª planta exterior con ascensor
+idealista;2026-08-26;1350.0;3;160.0;;;;;True;anual/no_especificado;1.350€/mes | Garaje incluido|3 hab.|160 m²
+idealista;2026-08-26;1500.0;4;110.0;;;True;;False;temporada;1.500€/mes | 4 hab.|110 m²|Entreplanta exterior con ascensor
+idealista;2026-08-26;1050.0;3;112.0;;;;;True;anual/no_especificado;1.050€/mes | Garaje incluido|3 hab.|112 m²
+idealista;2026-08-26;1200.0;4;121.0;;2ª planta;True;;False;temporada;1.200€/mes | 4 hab.|121 m²|2ª planta exterior con ascensor
+idealista;2026-08-26;1200.0;4;115.0;;2ª planta;True;;False;temporada;1.200€/mes | 4 hab.|115 m²|2ª planta exterior con ascensor
+idealista;2026-08-26;990.0;3;110.0;;5ª planta;True;;False;temporada;990€/mes | 3 hab.|110 m²|5ª planta exterior con ascensor
+idealista;2026-08-26;1300.0;4;90.0;;4ª planta;True;;False;anual/no_especificado;1.300€/mes | 4 hab.|90 m²|4ª planta exterior con ascensor
+idealista;2026-08-26;1300.0;3;100.0;;;;;False;anual/no_especificado;1.300€/mes | 3 hab.|100 m²
+idealista;2026-08-26;1200.0;4;90.0;;3ª planta;True;;False;anual/no_especificado;1.200€/mes | 4 hab.|90 m²|3ª planta exterior con ascensor
+idealista;2026-08-26;900.0;3;95.0;;4ª planta;True;;False;temporada;900€/mes | 3 hab.|95 m²|4ª planta exterior con ascensor
+idealista;2026-08-24;2100.0;6;200.0;Centro;;False;;True;anual/no_especificado;"Casa independiente Calle Major | 2100 | Septiembre-junio; solo estudiantes; garaje"
+idealista;2026-08-24;930.0;4;382.0;Centro;1ª;False;;False;temporada;"Piso en Bailen | 930 | Temporada estudiantes; 5 min UA; 250 €/habitación"
+idealista;2026-08-24;1475.0;5;132.0;Centro;1ª;False;;False;anual/no_especificado;"Piso en Centro | 1475 | Estudiantes; cinco habitaciones"
+idealista;2026-08-24;850.0;3;89.0;Alcalde Felipe Mallol;3ª;True;;False;anual/no_especificado;"Piso en Alcalde Felipe Mallol | 850 | Estudiantes; zona Canastell"
+idealista;2026-08-24;800.0;2;65.0;Los Girasoles;;False;;True;anual/no_especificado;"Casa independiente Ronda del Mahones, 14 | 800 | Curso 26/27; estudiantes; suministros incluidos; garaje"
+idealista;2026-08-24;900.0;3;102.0;Centro;2ª;False;;False;anual/no_especificado;"Piso Calle Pintor Murillo, 9 | 900 | Curso escolar; preferentemente estudiantes"
+idealista;2026-08-24;850.0;1;50.0;Sol y Luz;;False;;False;anual/no_especificado;"Casa de campo Camino de la Sendera | 850 | Finca rústica; larga descripción rural"
+idealista;2026-08-24;750.0;1;30.0;Villamontes-Boqueres;;False;;False;temporada;"Casa independiente Partida Boqueres | 750 | Temporada; jardín 90 m²"
+idealista;2026-08-24;1300.0;4;110.0;Centro;3ª;True;;False;temporada;"Dúplex Calle Aeroplano, 2 | 1300 | A pie de campus; 4 chicas universitarias; temporada"
+idealista;2026-08-24;900.0;0;45.0;Centro;1ª;True;;False;anual/no_especificado;"Estudio Centro | 900 | Estudio 40-45 m²; céntrico"
+idealista;2026-08-24;1000.0;3;80.0;Centro;1ª;False;;False;anual/no_especificado;"Piso Calle Salamanca, 10 | 1000 | Larga estancia; solvencia requerida"
+idealista;2026-08-24;850.0;3;100.0;Haygon - Universidad;Bajo;False;;False;anual/no_especificado;Piso Calle Colonia Santa Isabel, 2 | 850 | Características no detalladas en resultado
+idealista;2026-08-24;825.0;2;80.0;Centro;3ª;True;;False;anual/no_especificado;"Piso Pi y Margall, 71 | 825 | Amueblado; 10 min UA; TRAM/Cercanías"
+idealista;2026-08-24;1050.0;3;100.0;Centro;1ª;True;;True;anual/no_especificado;"Piso Calle Ciudad Jardín, 4 | 1050 | Estudiantes; 5 min UA; garaje opcional"
+idealista;2026-08-24;899.0;3;100.0;Centro;3ª;True;;False;temporada;"Piso Calle Castellet, 6 | 899 | Estudiantes; a pasos de UA; temporada"
+idealista;2026-08-24;840.0;3;90.0;Centro;1ª;False;;False;temporada;"Piso Núñez de Balboa, 2 | 840 | Solo estudiantes; temporada"
+idealista;2026-08-24;750.0;1;40.0;Alcalde Felipe Mallol;2ª;True;;False;anual/no_especificado;"Piso Alcalde Felipe Mallol | 750 | Larga estancia; estudio; 2 balcones"
+idealista;2026-08-24;850.0;3;105.0;Centro;2ª;False;;False;anual/no_especificado;"Piso Calle Velázquez, 32 | 850 | Larga estancia; amueblado; cerca TRAM y universidad"
+idealista;2026-08-24;1520.0;1;98.0;Centro;Bajo;False;;False;anual/no_especificado;"Piso Manuel Domínguez Margarit, 14-16 | 1520 | Solo estudiantes; 4 habitaciones a 395 € cada una"
+idealista;2026-08-24;2400.0;4;500.0;Villamontes-Boqueres;;False;;True;anual/no_especificado;"Chalet Calle Gorrión, 9 | 2400 | Garaje; vivienda grande; afueras"
+idealista;2026-08-24;1450.0;5;120.0;Centro;2ª;False;;False;temporada;"Piso Calle Montoyos | 1450 | 5 dormitorios; 15 min UA; temporada"
+idealista;2026-08-24;1900.0;5;100.0;Centro;2ª;True;;False;anual/no_especificado;"Piso Avenida de la Llibertat, 13 | 1900 | Reformado; estudiantes; junto UA"
+idealista;2026-08-24;630.0;0;42.0;Centro;1ª;True;;False;temporada;"Estudio Calle Pizarro | 630 | 200 m UA; estudiantes; temporada"
+idealista;2026-08-24;850.0;3;95.0;Centro;1ª;False;;False;anual/no_especificado;"Piso Gral Ibáñez | 850 | Curso estudiantes; amueblado"
+idealista;2026-08-24;1250.0;3;120.0;Centro;4ª;True;;False;anual/no_especificado;"Piso Ciudad Jardín | 1250 | Estudiantes UA; moderno; 98 m² útiles"
+idealista;2026-08-24;930.0;3;100.0;Centro;6ª;True;;False;anual/no_especificado;"Piso Calle Alicante, 66 | 930 | Escasos metros campus; preferiblemente estudiantes"
+idealista;2026-08-24;1400.0;3;100.0;Centro;2ª;True;;False;anual/no_especificado;"Piso Calle Portugal | 1400 | Exclusivo estudiantes; <5 min UA"
+idealista;2026-08-24;1000.0;3;90.0;Centro;;False;;False;anual/no_especificado;"Piso Centro | 1000 | Estudiantes; Lo Torrent; suministros"
+idealista;2026-08-24;770.0;1;80.0;Alcalde Felipe Mallol;Bajo;True;;True;anual/no_especificado;"Piso Alcalde Felipe Mallol | 770 | Garaje incluido; disponible septiembre 2026"
+idealista;2026-08-24;960.0;3;77.0;Centro;1ª;True;;False;anual/no_especificado;"Piso Centro | 960 | Estudiantes; amueblado; cerca UA"
+idealista;2026-08-24;1250.0;5;200.0;Alcalde Felipe Mallol;;False;;False;anual/no_especificado;"Piso Alcalde Felipe Mallol | 1250 | Estudiantes; 18 min andando UA"
+idealista;2026-08-24;1250.0;2;75.0;Los Girasoles;;False;;False;anual/no_especificado;"Casa Camino de la Providencia | 1250 | Chalet independiente; sin amueblar"
+idealista;2026-08-24;1300.0;4;100.0;Centro;;False;;False;anual/no_especificado;"Piso Centro | 1300 | Estudiantes; alquiler 11 meses"
+idealista;2026-08-24;1100.0;3;164.0;Centro;;False;;False;temporada;"Casa Calle Capitán Torregrosa, 8 | 1100 | Vivienda entera para 3 estudiantes; temporada/larga"
+idealista;2026-08-24;900.0;3;106.0;Centro;4ª;True;;False;anual/no_especificado;"Piso Castellet, 6 | 900 | Solo estudiantes UA; 10 meses"
+idealista;2026-08-24;1600.0;3;100.0;Villamontes-Boqueres;;False;;False;temporada;"Casa Calle del Gantxo, 3 | 1600 | Piscina privada; 2 baños + aseo; temporada"
+idealista;2026-08-24;810.0;3;90.0;Centro;2ª;False;;False;anual/no_especificado;"Piso Torre Quevedo | 810 | Solo estudiantes; anuncio antiguo 2024-25"
+idealista;2026-08-24;880.0;4;90.0;Centro;1ª;False;;False;anual/no_especificado;"Piso Calle Elche | 880 | Estudiantes; baño y aseo"
+idealista;2026-08-24;1350.0;3;170.0;Centro;Bajo;True;;False;anual/no_especificado;"Dúplex Calle Aeroplano, 5 | 1350 | Estudiantes; Villa Universitaria; piscina"
+idealista;2026-08-24;1050.0;3;117.0;Centro;3ª;True;;False;anual/no_especificado;"Piso Calle Hernán Cortés, 3 | 1050 | Estudiantes; 2 baños"
+idealista;2026-08-24;960.0;3;95.0;Centro;3ª;False;;False;anual/no_especificado;"Piso Calle San Isidro, 10 | 960 | Estudiantes; completo o por habitaciones"
+idealista;2026-08-24;975.0;3;90.0;Centro;3ª;True;;False;anual/no_especificado;"Piso Centro | 975 | Estudiantes; Plaza Santa Faz"
+fotocasa;2026-08-26;850.0;3;80.0;Norte;;;;False;temporada;850 | Norte | 3a Planta
+fotocasa;2026-08-26;1750.0;5;120.0;Norte;;;;False;anual/no_especificado;1750 | Norte | 3a Planta
+fotocasa;2026-08-26;1150.0;3;100.0;Centro;;;;False;anual/no_especificado;1150 | Centro | 2a Planta
+fotocasa;2026-08-26;1450.0;5;90.0;Centro;;;;False;anual/no_especificado;1450 | Centro | 2a Planta
+fotocasa;2026-08-26;1000.0;4;90.0;Norte;;;;False;anual/no_especificado;1000 | Norte | 2a Planta
+fotocasa;2026-08-26;350.0;4;142.0;Centro;;;;False;temporada;350 | Centro | Balcon (chalet)
+fotocasa;2026-08-26;1400.0;4;100.0;Centro;;;;False;anual/no_especificado;1400 | Centro | adosada
+fotocasa;2026-08-26;900.0;4;95.0;Centro;;;;False;temporada;900 | Centro | 1a Planta
+fotocasa;2026-08-26;400.0;4;14.0;Villamontes-Boqueres;;;;False;anual/no_especificado;400 | Villamontes-Boqueres | Terraza
+fotocasa;2026-08-24;250.0;4;90.0;Centro;1.0;False;2.0;False;anual/no_especificado;190466156 | 250 | Habitaciones solo estudiantes
+fotocasa;2026-08-24;900.0;3;900.0;Centro;;False;2.0;False;anual/no_especificado;"190009165 | 900 | Solo estudiantes; junto Universidad"
+fotocasa;2026-08-24;1200.0;4;127.0;Centro;;True;2.0;False;temporada;"190321959 | 1200 | Solo estudiantes UA; 10 min UA"
+fotocasa;2026-08-24;800.0;4;109.0;Norte;3.0;False;2.0;False;temporada;"190442423 | 800 | Solo estudiantes; reformado"
+fotocasa;2026-08-24;900.0;2;80.0;Norte;;False;1.0;False;temporada;190135008 | 900 | Reformado y amueblado
+fotocasa;2026-08-24;950.0;2;56.0;Centro;;False;1.0;False;anual/no_especificado;"190359871 | 950 | Amueblado; terraza"
+fotocasa;2026-08-24;340.0;4;110.0;Centro;5.0;True;2.0;False;anual/no_especificado;"190131831 | 340 | Solo estudiantes; 20 min UA; internet"
+fotocasa;2026-08-24;810.0;3;120.0;Centro;1.0;False;2.0;False;anual/no_especificado;190426057 | 810 | Se alquilan habitaciones a 270 €/mes
+fotocasa;2026-08-24;1200.0;3;220.0;Centro;;True;2.0;True;anual/no_especificado;"190501594 | 1200 | Ático; 220 m²; piscina; garaje"
+fotocasa;2026-08-24;825.0;3;110.0;Centro;0.0;False;1.0;False;temporada;190?HUERTA | 825 | Solo estudiantes 2026/27
+fotocasa;2026-08-24;1150.0;2;75.0;Parque Lo Torrent;;True;2.0;True;anual/no_especificado;"190?RIUALGAR | 1150 | Piscina; garaje; terraza; amueblado"
+fotocasa;2026-08-24;900.0;3;75.0;Norte;0.0;False;1.0;False;temporada;"190?PINTORSOROLLA | 900 | Exclusivamente estudiantes 2026/27; WiFi incluido"
+fotocasa;2026-08-24;1275.0;1;;Centro;;True;1.0;False;temporada;190?ESTUDIO1 | 1275 | Estudios para estudiantes/personal UA
+fotocasa;2026-08-24;1050.0;3;;Centro;;False;;False;temporada;"190?GENERALIBANEZ2 | 1050 | Solo estudiantes; reformado"
+fotocasa;2026-08-24;1050.0;3;;Centro;;False;;False;temporada;"190?PARTICULARES | 1050 | Solo estudiantes; recién reformado"
+fotocasa;2026-08-24;1275.0;1;;Centro;;True;;False;temporada;"190?ESTUDIO2 | 1275 | Estudio completo; equipamiento premium"
+fotocasa;2026-08-24;950.0;3;100.0;Norte;2.0;False;1.0;False;anual/no_especificado;"Norte | 950 | Vivienda completa; sin indicación de estudiantes"
+fotocasa;2026-08-24;1100.0;3;100.0;Parque Lo Torrent;3.0;True;2.0;False;anual/no_especificado;"Parque Lo Torrent | 1100 | Vivienda completa; sin indicación de estudiantes"
