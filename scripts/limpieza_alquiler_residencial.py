@@ -1,7 +1,7 @@
 """
 Limpieza conjunta de TODO el alquiler residencial: Idealista + Fotocasa,
-combinando las dos sesiones de extraccion que hay (24 y 26 de agosto de 2026),
-San Vicente del Raspeig.
+combinando TODAS las sesiones de extraccion que haya en la carpeta del
+proyecto (no solo dos fechas fijas) -- San Vicente del Raspeig.
 
 Por que se limpian juntos:
 Es el mismo mercado (alquiler de vivienda completa) y es habitual que la misma
@@ -10,28 +10,44 @@ se repita en fechas distintas -> hay que detectar y quitar esos duplicados
 antes de usar los datos, si no, esa vivienda pesaria varias veces en las
 medias/comparativas.
 
-Fuentes que se combinan (4 en total):
-  - idealista_san_vicente_raw.csv                  (26/08/2026)
-  - idealista_san_vicente_raw_2026-08-24.csv        (24/08/2026)
-  - fotocasa_san_vicente_raw.csv                    (26/08/2026)
-  - fotocasa_san_vicente_raw_2026-08-24.csv         (24/08/2026)
+Descubrimiento automatico de fuentes (para que no haya que tocar este script
+cada vez que se hace una nueva extraccion, p.ej. la quincenal programada):
+  - Idealista: cualquier fichero que empiece por "idealista_san_vicente_raw"
+    (idealista_san_vicente_raw.csv, idealista_san_vicente_raw_2026-08-24.csv,
+    idealista_san_vicente_raw_2026-09-07.csv, ...).
+  - Fotocasa: igual con "fotocasa_san_vicente_raw", EXCEPTO
+    fotocasa_san_vicente_raw_con_grupo.csv (es la misma muestra que la version
+    2026-08-24 con 2 columnas calculadas de mas -> se excluye para no duplicar).
 
-(fotocasa_san_vicente_raw_con_grupo.csv NO se incluye aparte: es la misma
-muestra que fotocasa_san_vicente_raw_2026-08-24.csv con dos columnas
-calculadas de mas -> incluirla tambien duplicaria esas 47 filas.
-muestra_alquiler_estudiantes.csv tampoco se incluye: es un resumen manual de
-10 anuncios sin campos suficientes para cruzarlos de forma fiable con el resto;
-se puede revisar aparte si hace falta.)
+Cada fichero puede venir en uno de dos esquemas (se detecta automaticamente
+por las columnas de la cabecera, no por el nombre):
+  - "original": precio;detalles;tag  (idealista)  /  precio;zona;habitaciones;
+    banos;m2;detalle;tipo_alquiler  (fotocasa) -- sin columna fecha_captura,
+    se usa la fecha del nombre del fichero si la tiene, si no 2026-08-26.
+  - "fechado": fecha_captura,fuente,pagina,titulo,precio_mes_eur,habitaciones,
+    superficie_m2,zona,planta,ascensor,descripcion_resumida,url_fuente
+    (idealista) / fecha_captura,fuente,titulo_o_referencia,zona,
+    precio_publicado_eur_mes,habitaciones,superficie_m2,planta,banos,
+    tipo_alquiler,descripcion_resumida,ascensor (fotocasa) -- este es el
+    formato que debe usar cualquier extraccion nueva (incluida la tarea
+    programada quincenal), con el nombre idealista_san_vicente_raw_AAAA-MM-DD.csv
+    / fotocasa_san_vicente_raw_AAAA-MM-DD.csv.
+
+muestra_alquiler_estudiantes.csv NO se incluye: es un resumen manual de 10
+anuncios sin campos suficientes para cruzarlos de forma fiable con el resto.
 
 Salida: alquiler_residencial_limpio.csv con esquema unificado:
     fuente, fecha_captura, precio_mes, habitaciones, m2, zona, planta,
     ascensor, banos, garaje, tipo_alquiler, texto_original
 
 es_duplicado_cruzado = True en las filas que se han identificado como el mismo
-anuncio repetido (en otro portal y/o en la otra fecha de captura). Se conserva
-solo la primera aparicion; las demas se marcan y se quitan en la version final.
+anuncio repetido (en otro portal y/o en otra fecha de captura). Se conserva
+solo la primera aparicion (por orden de fecha_captura, la mas antigua); las
+demas se marcan y se quitan en la version final -- asi, cuando el mismo piso
+sigue publicado semana tras semana, solo cuenta una vez y no infla la muestra.
 """
 
+import os
 import re
 from pathlib import Path
 
@@ -88,128 +104,140 @@ def parse_garaje_texto(detalles):
     return "garaje" in str(detalles).lower()
 
 
+def extraer_fecha_de_nombre(path):
+    m = re.search(r"(\d{4}-\d{2}-\d{2})", path.name)
+    return m.group(1) if m else None
+
+
+def leer_cabecera(path):
+    with open(path, encoding="utf-8-sig") as f:
+        return f.readline()
+
+
 # ---------------------------------------------------------------------------
-# Idealista, sesion del 26/08 (precio;detalles;tag)
+# Descubrimiento de ficheros
 # ---------------------------------------------------------------------------
-def load_idealista_0826():
-    df = pd.read_csv(f"{RAW_DIR}/idealista_san_vicente_raw.csv", sep=";", dtype=str)
-    df = df.dropna(subset=["precio"])
-    out = pd.DataFrame(index=df.index)
-    out["fuente"] = "idealista"
-    out["fecha_captura"] = "2026-08-26"
-    out["precio_mes"] = df["precio"].apply(parse_precio)
-    out["habitaciones"] = df["detalles"].apply(parse_habitaciones_texto)
-    out["m2"] = df["detalles"].apply(parse_m2_texto)
-    out["zona"] = None  # esta extraccion no capturo zona/barrio
-    out["planta"] = df["detalles"].apply(parse_planta_texto)
-    out["ascensor"] = df["detalles"].apply(parse_ascensor_texto)
-    out["banos"] = None
-    out["garaje"] = df["detalles"].apply(parse_garaje_texto)
-    out["tipo_alquiler"] = df["tag"].apply(
-        lambda t: "temporada" if isinstance(t, str) and "temporada" in t.lower() else "anual/no_especificado"
-    )
-    out["texto_original"] = df["precio"].astype(str) + " | " + df["detalles"].astype(str)
+def descubrir_archivos_idealista():
+    return sorted(RAW_DIR.glob("idealista_san_vicente_raw*.csv"))
+
+
+def descubrir_archivos_fotocasa():
+    return sorted(p for p in RAW_DIR.glob("fotocasa_san_vicente_raw*.csv") if "con_grupo" not in p.name)
+
+
+# ---------------------------------------------------------------------------
+# Carga por esquema (auto-detectado por columnas de cabecera)
+# ---------------------------------------------------------------------------
+def cargar_idealista(path):
+    cabecera = leer_cabecera(path)
+    fecha_nombre = extraer_fecha_de_nombre(path)
+
+    if "precio_mes_eur" in cabecera:
+        df = pd.read_csv(path, dtype=str, encoding="utf-8-sig")
+        df = df.dropna(subset=["precio_mes_eur"])
+        out = pd.DataFrame(index=df.index)
+        out["fuente"] = "idealista"
+        out["fecha_captura"] = df["fecha_captura"] if "fecha_captura" in df.columns else (fecha_nombre or "desconocida")
+        out["precio_mes"] = df["precio_mes_eur"].apply(parse_precio)
+        out["habitaciones"] = pd.to_numeric(df["habitaciones"], errors="coerce")
+        out["m2"] = pd.to_numeric(df["superficie_m2"], errors="coerce")
+        out["zona"] = df["zona"]
+        out["planta"] = df["planta"]
+        out["ascensor"] = df["ascensor"].apply(parse_ascensor_texto)
+        out["banos"] = None
+        out["garaje"] = df["descripcion_resumida"].apply(parse_garaje_texto)
+        out["tipo_alquiler"] = df["descripcion_resumida"].apply(
+            lambda t: "temporada" if isinstance(t, str) and "temporada" in t.lower() else "anual/no_especificado"
+        )
+        out["texto_original"] = (
+            df["titulo"].astype(str) + " | " + df["precio_mes_eur"].astype(str)
+            + " | " + df["descripcion_resumida"].astype(str)
+        )
+    else:
+        # esquema "original": precio;detalles;tag
+        df = pd.read_csv(path, sep=";", dtype=str)
+        df = df.dropna(subset=["precio"])
+        out = pd.DataFrame(index=df.index)
+        out["fuente"] = "idealista"
+        out["fecha_captura"] = fecha_nombre or "2026-08-26"  # fichero original, sin fecha en el nombre
+        out["precio_mes"] = df["precio"].apply(parse_precio)
+        out["habitaciones"] = df["detalles"].apply(parse_habitaciones_texto)
+        out["m2"] = df["detalles"].apply(parse_m2_texto)
+        out["zona"] = None
+        out["planta"] = df["detalles"].apply(parse_planta_texto)
+        out["ascensor"] = df["detalles"].apply(parse_ascensor_texto)
+        out["banos"] = None
+        out["garaje"] = df["detalles"].apply(parse_garaje_texto)
+        out["tipo_alquiler"] = df["tag"].apply(
+            lambda t: "temporada" if isinstance(t, str) and "temporada" in t.lower() else "anual/no_especificado"
+        )
+        out["texto_original"] = df["precio"].astype(str) + " | " + df["detalles"].astype(str)
+
     return out
 
 
-# ---------------------------------------------------------------------------
-# Idealista, sesion del 24/08 (fecha_captura,fuente,pagina,titulo,precio_mes_eur,
-# habitaciones,superficie_m2,zona,planta,ascensor,descripcion_resumida,url_fuente)
-# ---------------------------------------------------------------------------
-def load_idealista_0824():
-    path = RAW_DIR / "idealista_san_vicente_raw_2026-08-24.csv"
-    if not path.exists():
-        return pd.DataFrame()
-    df = pd.read_csv(path, dtype=str, encoding="utf-8-sig")
-    df = df.dropna(subset=["precio_mes_eur"])
-    out = pd.DataFrame(index=df.index)
-    out["fuente"] = "idealista"
-    out["fecha_captura"] = df["fecha_captura"]
-    out["precio_mes"] = df["precio_mes_eur"].apply(parse_precio)
-    out["habitaciones"] = pd.to_numeric(df["habitaciones"], errors="coerce")
-    out["m2"] = pd.to_numeric(df["superficie_m2"], errors="coerce")
-    out["zona"] = df["zona"]
-    out["planta"] = df["planta"]
-    out["ascensor"] = df["ascensor"].apply(parse_ascensor_texto)
-    out["banos"] = None
-    out["garaje"] = df["descripcion_resumida"].apply(parse_garaje_texto)
-    out["tipo_alquiler"] = df["descripcion_resumida"].apply(
-        lambda t: "temporada" if isinstance(t, str) and "temporada" in t.lower() else "anual/no_especificado"
-    )
-    out["texto_original"] = (
-        df["titulo"].astype(str) + " | " + df["precio_mes_eur"].astype(str)
-        + " | " + df["descripcion_resumida"].astype(str)
-    )
-    return out
+def cargar_fotocasa(path):
+    cabecera = leer_cabecera(path)
+    fecha_nombre = extraer_fecha_de_nombre(path)
 
+    if "precio_publicado_eur_mes" in cabecera:
+        df = pd.read_csv(path, dtype=str, encoding="utf-8-sig")
+        df = df.dropna(subset=["precio_publicado_eur_mes"])
+        out = pd.DataFrame(index=df.index)
+        out["fuente"] = "fotocasa"
+        out["fecha_captura"] = df["fecha_captura"] if "fecha_captura" in df.columns else (fecha_nombre or "desconocida")
+        out["precio_mes"] = df["precio_publicado_eur_mes"].apply(parse_precio)
+        out["habitaciones"] = pd.to_numeric(df["habitaciones"], errors="coerce")
+        out["m2"] = pd.to_numeric(df["superficie_m2"], errors="coerce")
+        out["zona"] = df["zona"]
+        out["planta"] = df["planta"]
+        out["ascensor"] = df["ascensor"].apply(parse_ascensor_texto)
+        out["banos"] = pd.to_numeric(df["banos"], errors="coerce")
+        out["garaje"] = df["descripcion_resumida"].apply(parse_garaje_texto)
+        out["tipo_alquiler"] = df["tipo_alquiler"].apply(
+            lambda t: "temporada" if isinstance(t, str) and "temporada" in t.lower() else "anual/no_especificado"
+        )
+        out["texto_original"] = (
+            df["titulo_o_referencia"].astype(str) + " | " + df["precio_publicado_eur_mes"].astype(str)
+            + " | " + df["descripcion_resumida"].astype(str)
+        )
+    else:
+        # esquema "original": precio;zona;habitaciones;banos;m2;detalle;tipo_alquiler
+        df = pd.read_csv(path, sep=";", dtype=str)
+        df = df.dropna(subset=["precio"])
+        out = pd.DataFrame(index=df.index)
+        out["fuente"] = "fotocasa"
+        out["fecha_captura"] = fecha_nombre or "2026-08-26"
+        out["precio_mes"] = df["precio"].apply(parse_precio)
+        out["habitaciones"] = pd.to_numeric(df["habitaciones"], errors="coerce")
+        out["m2"] = pd.to_numeric(df["m2"], errors="coerce")
+        out["zona"] = df["zona"]
+        out["planta"] = df["detalle"].apply(parse_planta_texto)
+        out["ascensor"] = df["detalle"].apply(
+            lambda d: True if "ascensor" in str(d).lower() and "sin ascensor" not in str(d).lower() else None
+        )
+        out["banos"] = None
+        out["garaje"] = False
+        out["tipo_alquiler"] = df["tipo_alquiler"].apply(
+            lambda t: "temporada" if isinstance(t, str) and t.strip() != "" else "anual/no_especificado"
+        )
+        out["texto_original"] = df["precio"].astype(str) + " | " + df["zona"].astype(str) + " | " + df["detalle"].astype(str)
 
-# ---------------------------------------------------------------------------
-# Fotocasa, sesion del 26/08 (precio;zona;habitaciones;banos;m2;detalle;tipo_alquiler)
-# ---------------------------------------------------------------------------
-def load_fotocasa_0826():
-    df = pd.read_csv(f"{RAW_DIR}/fotocasa_san_vicente_raw.csv", sep=";", dtype=str)
-    df = df.dropna(subset=["precio"])
-    out = pd.DataFrame(index=df.index)
-    out["fuente"] = "fotocasa"
-    out["fecha_captura"] = "2026-08-26"
-    out["precio_mes"] = df["precio"].apply(parse_precio)
-    out["habitaciones"] = pd.to_numeric(df["habitaciones"], errors="coerce")
-    out["m2"] = pd.to_numeric(df["m2"], errors="coerce")
-    out["zona"] = df["zona"]
-    out["planta"] = df["detalle"].apply(parse_planta_texto)
-    out["ascensor"] = df["detalle"].apply(
-        lambda d: True if "ascensor" in str(d).lower() and "sin ascensor" not in str(d).lower() else None
-    )
-    out["banos"] = None
-    out["garaje"] = False
-    out["tipo_alquiler"] = df["tipo_alquiler"].apply(
-        lambda t: "temporada" if isinstance(t, str) and t.strip() != "" else "anual/no_especificado"
-    )
-    out["texto_original"] = df["precio"].astype(str) + " | " + df["zona"].astype(str) + " | " + df["detalle"].astype(str)
-    return out
-
-
-# ---------------------------------------------------------------------------
-# Fotocasa, sesion del 24/08 (fecha_captura,fuente,titulo_o_referencia,zona,
-# precio_publicado_eur_mes,habitaciones,superficie_m2,planta,banos,tipo_alquiler,
-# descripcion_resumida,ascensor)
-# ---------------------------------------------------------------------------
-def load_fotocasa_0824():
-    path = RAW_DIR / "fotocasa_san_vicente_raw_2026-08-24.csv"
-    if not path.exists():
-        return pd.DataFrame()
-    df = pd.read_csv(path, dtype=str, encoding="utf-8-sig")
-    df = df.dropna(subset=["precio_publicado_eur_mes"])
-    out = pd.DataFrame(index=df.index)
-    out["fuente"] = "fotocasa"
-    out["fecha_captura"] = df["fecha_captura"]
-    out["precio_mes"] = df["precio_publicado_eur_mes"].apply(parse_precio)
-    out["habitaciones"] = pd.to_numeric(df["habitaciones"], errors="coerce")
-    out["m2"] = pd.to_numeric(df["superficie_m2"], errors="coerce")
-    out["zona"] = df["zona"]
-    out["planta"] = df["planta"]
-    out["ascensor"] = df["ascensor"].apply(parse_ascensor_texto)
-    out["banos"] = pd.to_numeric(df["banos"], errors="coerce")
-    out["garaje"] = df["descripcion_resumida"].apply(parse_garaje_texto)
-    out["tipo_alquiler"] = df["tipo_alquiler"].apply(
-        lambda t: "temporada" if isinstance(t, str) and "temporada" in t.lower() else "anual/no_especificado"
-    )
-    out["texto_original"] = (
-        df["titulo_o_referencia"].astype(str) + " | " + df["precio_publicado_eur_mes"].astype(str)
-        + " | " + df["descripcion_resumida"].astype(str)
-    )
     return out
 
 
 def marcar_duplicados(df):
     """
     Duplicado = mismo precio_mes, misma habitaciones y m2 muy similar (+-2 m2),
-    sin importar si viene del mismo portal/fecha o no -> ahora que combinamos
-    4 extracciones (2 portales x 2 fechas), el mismo anuncio puede repetirse
-    tanto entre portales como entre las dos sesiones de captura.
-    Se conserva la primera fila de cada grupo duplicado y se marca el resto.
+    sin importar de que portal o fecha venga -> con N extracciones acumuladas
+    (2 portales x cuantas fechas haya), el mismo anuncio puede repetirse tanto
+    entre portales como entre varias fechas de captura (sigue publicado semanas
+    despues). Se ordena por fecha_captura antes de agrupar para quedarnos
+    siempre con la aparicion MAS ANTIGUA de cada grupo (asi fecha_captura del
+    registro que sobrevive refleja cuando se vio ese piso por primera vez).
     """
     df = df.copy()
+    df = df.sort_values("fecha_captura", na_position="last").reset_index(drop=True)
     df["es_duplicado_cruzado"] = False
     df["m2_bin"] = (df["m2"] / 2).round() * 2
 
@@ -224,15 +252,19 @@ def marcar_duplicados(df):
 
 
 def main():
-    import os
     os.makedirs(OUT_DIR, exist_ok=True)
 
-    fuentes = {
-        "idealista_2026-08-26": load_idealista_0826(),
-        "idealista_2026-08-24": load_idealista_0824(),
-        "fotocasa_2026-08-26": load_fotocasa_0826(),
-        "fotocasa_2026-08-24": load_fotocasa_0824(),
-    }
+    archivos_idealista = descubrir_archivos_idealista()
+    archivos_fotocasa = descubrir_archivos_fotocasa()
+    print(f"Ficheros Idealista encontrados ({len(archivos_idealista)}): {[p.name for p in archivos_idealista]}")
+    print(f"Ficheros Fotocasa encontrados ({len(archivos_fotocasa)}): {[p.name for p in archivos_fotocasa]}")
+    print()
+
+    fuentes = {}
+    for p in archivos_idealista:
+        fuentes[f"idealista::{p.name}"] = cargar_idealista(p)
+    for p in archivos_fotocasa:
+        fuentes[f"fotocasa::{p.name}"] = cargar_fotocasa(p)
 
     for nombre, df in fuentes.items():
         print(f"{nombre}: {len(df)} filas")
@@ -249,7 +281,7 @@ def main():
 
     n_total = len(combinado)
     n_dupes = combinado["es_duplicado_cruzado"].sum()
-    print(f"\nTotal combinado (4 fuentes): {n_total} | Duplicados detectados: {n_dupes}")
+    print(f"\nTotal combinado ({len(fuentes)} ficheros): {n_total} | Duplicados detectados: {n_dupes}")
     print(f"Filas unicas tras deduplicar: {len(final)}")
     print(f"Version completa (con marca de duplicado, para auditar): {con_marcas_path}")
     print(f"Version final (UN SOLO CSV, sin duplicados) -> usar esta para el EDA: {out_path}")
