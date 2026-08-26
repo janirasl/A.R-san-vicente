@@ -124,18 +124,27 @@ def main():
     combinado = marcar_duplicados_cruzados(combinado)
     combinado = marcar_outliers_lujo(combinado)
 
+    # version completa, con duplicados y outliers marcados (no borrados) -> para auditar
+    con_marcas_path = f"{OUT_DIR}/venta_con_marcas.csv"
+    combinado.to_csv(con_marcas_path, sep=";", index=False)
+
+    # version final: un unico CSV, fuera los duplicados cruzados (el outlier de
+    # lujo se deja marcado con es_outlier_lujo por si se quiere excluir aparte,
+    # ya que no es un error de datos, es una vivienda real, solo atipica)
+    final = combinado[~combinado["es_duplicado_cruzado"]].drop(columns=["es_duplicado_cruzado"])
     out_path = f"{OUT_DIR}/venta_limpio.csv"
-    combinado.to_csv(out_path, sep=";", index=False)
+    final.to_csv(out_path, sep=";", index=False)
 
     n_total = len(combinado)
     n_dupes = combinado["es_duplicado_cruzado"].sum()
     n_lujo = combinado["es_outlier_lujo"].sum()
     print(f"Idealista: {len(idealista)} filas | Fotocasa: {len(fotocasa)} filas")
     print(f"Total combinado: {n_total} | Duplicados cruzados: {n_dupes} | Outliers de lujo (p95): {n_lujo}")
+    print(f"Version completa (con marcas, para auditar): {con_marcas_path}")
+    print(f"Version final (unico CSV, sin duplicados) -> usar esta para el EDA: {out_path}")
     print(f"Precio/m2 medio (sin excluir nada): {combinado['precio_m2'].mean():.0f} €/m2")
     print(f"Precio/m2 medio excluyendo duplicados y outliers de lujo: "
           f"{combinado[~combinado['es_duplicado_cruzado'] & ~combinado['es_outlier_lujo']]['precio_m2'].mean():.0f} €/m2")
-    print(f"Guardado en: {out_path}")
 
 
 if __name__ == "__main__":

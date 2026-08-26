@@ -1,111 +1,100 @@
-fuente;precio;habitaciones;m2;zona;tipo_vivienda;texto_original;precio_m2;es_duplicado_cruzado;es_outlier_lujo
-idealista;595000.0;5;575.0;;chalet/villa;595.000€ | Garaje incluido|5 hab.|575 m² | Villa;1035.0;False;False
-idealista;695000.0;5;221.0;;chalet/villa;695.000€ | Garaje incluido|5 hab.|221 m² | Villa;3145.0;False;False
-idealista;589000.0;4;168.0;;piso;589.000€ | Garaje incluido|4 hab.|168 m² | ;3506.0;False;False
-idealista;449000.0;3;110.0;;piso;449.000€ | 3 hab.|110 m² | ;4082.0;False;False
-idealista;300000.0;3;117.0;;piso;300.000€ | Garaje incluido|3 hab.|117 m²|6ª planta exterior con ascensor | ;2564.0;False;False
-idealista;785000.0;7;450.0;;chalet/villa;785.000€ | Garaje incluido|7 hab.|450 m² | Villa;1744.0;False;False
-idealista;550000.0;4;293.0;;chalet/villa;550.000€ | Garaje incluido|4 hab.|293 m² | Villa;1877.0;False;False
-idealista;675000.0;4;310.0;;chalet/villa;675.000€ | Garaje incluido|4 hab.|310 m² | Villa;2177.0;False;False
-idealista;599000.0;4;310.0;;chalet/villa;599.000€ | Garaje incluido|4 hab.|310 m² | Villa;1932.0;False;False
-idealista;319900.0;4;130.0;;piso;319.900€ | Garaje incluido|4 hab.|130 m²|1ª planta exterior con ascensor | ;2461.0;False;False
-idealista;318000.0;3;94.0;;piso;318.000€ | Garaje incluido|3 hab.|94 m²|7ª planta exterior con ascensor | ;3383.0;False;False
-idealista;99950.0;2;62.0;;piso;99.950€ | 2 hab.|62 m²|5ª planta exterior sin ascensor | ;1612.0;False;False
-idealista;230000.0;3;109.0;;piso;230.000€ | 3 hab.|109 m²|5ª planta exterior con ascensor | ;2110.0;False;False
-idealista;359950.0;5;2762.0;;piso;359.950€ | Garaje incluido|5 hab.|2.762 m² | ;130.0;False;False
-idealista;319900.0;4;188.0;;piso;319.900€ | Garaje incluido|4 hab.|188 m²|1ª planta exterior con ascensor | ;1702.0;False;False
-idealista;550000.0;4;293.0;;chalet/villa;550.000€ | Garaje incluido|4 hab.|293 m² | Villa;1877.0;False;False
-idealista;280000.0;2;71.0;;piso;280.000€ | 2 hab.|71 m²|3ª planta exterior con ascensor | Luminoso;3944.0;False;False
-idealista;498000.0;5;280.0;;piso;498.000€ | Garaje incluido|5 hab.|280 m² | ;1779.0;False;False
-idealista;649000.0;4;364.0;;chalet/villa;649.000€ | Garaje incluido|4 hab.|364 m² | Villa;1783.0;False;False
-idealista;219000.0;2;93.0;;piso;219.000€ | Garaje incluido|2 hab.|93 m²|2ª planta exterior con ascensor | ;2355.0;False;False
-idealista;690000.0;4;446.0;;piso;690.000€ | Garaje incluido|4 hab.|446 m² | ;1547.0;False;False
-idealista;167700.0;1;45.0;;apartamento;167.700€ | 1 hab.|45 m²|interior con ascensor | Apartamento;3727.0;False;False
-idealista;420000.0;3;130.0;;bungalow;420.000€ | 3 hab.|130 m² | Bungalow;3231.0;False;False
-idealista;185000.0;3;110.0;;piso;185.000€ | 3 hab.|110 m²|3ª planta exterior sin ascensor | ;1682.0;False;False
-idealista;715000.0;5;221.0;;chalet/villa;715.000€ | Garaje incluido|5 hab.|221 m² | Villa;3235.0;False;False
-idealista;1065000.0;4;480.0;;chalet/villa;1.065.000€ | Garaje incluido|4 hab.|480 m² | Villa;2219.0;False;False
-idealista;308000.0;2;136.0;;piso;308.000€ | Garaje incluido|2 hab.|136 m²|4ª planta exterior con ascensor | ;2265.0;False;False
-idealista;255925.0;2;116.0;;piso;255.925€ | Garaje incluido|2 hab.|116 m²|Bajo exterior con ascensor | ;2206.0;False;False
-idealista;430000.0;4;245.0;;piso;430.000€ | Garaje incluido|4 hab.|245 m² | ;1755.0;False;False
-idealista;200000.0;3;199.0;;piso;200.000€ | Garaje incluido|3 hab.|199 m² | ;1005.0;False;False
-idealista;695000.0;5;221.0;;piso;695.000€ | Garaje incluido|5 hab.|221 m² | ;3145.0;False;False
-idealista;245900.0;3;129.0;;piso;245.900€ | Garaje incluido|3 hab.|129 m²|3ª planta exterior con ascensor | ;1906.0;False;False
-idealista;179000.0;1;90.0;;piso;179.000€ | 1 hab.|90 m²|Bajo exterior sin ascensor | ;1989.0;False;False
-idealista;1150000.0;3;451.0;;chalet/villa;1.150.000€ | Garaje incluido|3 hab.|451 m² | Villa;2550.0;False;True
-idealista;750000.0;6;228.0;;chalet/villa;750.000€ | Garaje incluido|6 hab.|228 m² | Villa;3289.0;False;False
-idealista;730000.0;7;481.0;;piso;730.000€ | 7 hab.|481 m² | ;1518.0;False;False
-idealista;359950.0;5;167.0;;piso;359.950€ | 5 hab.|167 m² | ;2155.0;False;False
-idealista;279900.0;4;180.0;;piso;279.900€ | Garaje incluido|4 hab.|180 m² | ;1555.0;False;False
-idealista;420000.0;3;191.0;;piso;420.000€ | Garaje incluido|3 hab.|191 m² | ;2199.0;False;False
-idealista;199900.0;4;113.0;;piso;199.900€ | 4 hab.|113 m²|2ª planta exterior sin ascensor | ;1769.0;False;False
-idealista;299000.0;2;85.0;;piso;299.000€ | Garaje incluido|2 hab.|85 m²|3ª planta exterior con ascensor | ;3518.0;False;False
-idealista;1150000.0;3;451.0;;chalet/villa;1.150.000€ | Garaje incluido|3 hab.|451 m² | Villa;2550.0;False;True
-idealista;150900.0;3;82.0;;piso;150.900€ | 3 hab.|82 m²|2ª planta exterior sin ascensor | Alquilada;1840.0;False;False
-idealista;210000.0;2;112.0;;piso;210.000€ | Garaje incluido|2 hab.|112 m²|Bajo interior con ascensor | ;1875.0;False;False
-idealista;240000.0;4;123.0;;piso;240.000€ | Garaje incluido|4 hab.|123 m²|1ª planta exterior con ascensor | ;1951.0;False;False
-idealista;1250000.0;5;548.0;;piso;1.250.000€ | Garaje incluido|5 hab.|548 m² | ;2281.0;False;True
-idealista;250000.0;3;100.0;;piso;250.000€ | 3 hab.|100 m²|4ª planta exterior con ascensor | ;2500.0;False;False
-idealista;1650000.0;8;717.0;;piso_lujo;1.650.000€ | Garaje incluido|8 hab.|717 m² | Lujo;2301.0;False;True
-idealista;398000.0;3;196.0;;piso;398.000€ | Garaje incluido|3 hab.|196 m² | ;2031.0;False;False
-idealista;750000.0;5;659.0;;chalet/villa;750.000€ | Garaje incluido|5 hab.|659 m² | Villa;1138.0;False;False
-idealista;145000.0;3;66.0;;piso;145.000€ | 3 hab.|66 m²|4ª planta exterior con ascensor | ;2197.0;False;False
-idealista;540000.0;6;310.0;;piso;540.000€ | 6 hab.|310 m² | ;1742.0;False;False
-idealista;186000.0;2;80.0;;piso;186.000€ | 2 hab.|80 m²|Bajo exterior sin ascensor | ;2325.0;False;False
-idealista;450000.0;4;401.0;;piso;450.000€ | Garaje incluido|4 hab.|401 m² | ;1122.0;False;False
-idealista;520000.0;4;288.0;;piso;520.000€ | Garaje incluido|4 hab.|288 m² | ;1806.0;False;False
-idealista;211000.0;2;78.0;;piso;211.000€ | Garaje incluido|2 hab.|78 m²|4ª planta exterior con ascensor | ;2705.0;False;False
-idealista;250000.0;4;112.0;;piso;250.000€ | 4 hab.|112 m²|1ª planta exterior con ascensor | ;2232.0;False;False
-idealista;299000.0;2;86.0;;piso;299.000€ | Garaje incluido|2 hab.|86 m²|exterior con ascensor | ;3477.0;False;False
-idealista;265000.0;3;102.0;;piso;265.000€ | 3 hab.|102 m² | ;2598.0;False;False
-idealista;227000.0;2;76.0;;piso;227.000€ | 2 hab.|76 m²|4ª planta exterior con ascensor | ;2987.0;False;False
-idealista;239000.0;3;192.0;;piso;239.000€ | 3 hab.|192 m² | ;1245.0;False;False
-idealista;980000.0;5;358.0;;piso;980.000€ | 5 hab.|358 m² | ;2737.0;False;False
-idealista;205000.0;3;77.0;;piso;205.000€ | Garaje incluido|3 hab.|77 m²|exterior con ascensor | ;2662.0;False;False
-idealista;635000.0;6;305.0;;piso;635.000€ | 6 hab.|305 m² | ;2082.0;False;False
-idealista;325000.0;3;117.0;;piso;325.000€ | Garaje incluido|3 hab.|117 m²|7ª planta exterior con ascensor | ;2778.0;False;False
-idealista;239000.0;3;192.0;;piso;239.000€ | 3 hab.|192 m² | ;1245.0;False;False
-idealista;1550000.0;6;724.0;;piso_lujo;1.550.000€ | Garaje incluido|6 hab.|724 m² | Lujo;2141.0;False;True
-idealista;419500.0;4;349.0;;piso;419.500€ | Garaje incluido|4 hab.|349 m² | Urge;1202.0;False;False
-idealista;294480.0;2;91.0;;piso;294.480€ | Garaje incluido|2 hab.|91 m² | ;3236.0;False;False
-idealista;190000.0;3;88.0;;piso;190.000€ | 3 hab.|88 m²|2ª planta exterior sin ascensor | ;2159.0;False;False
-idealista;599000.0;8;360.0;;piso;599.000€ | 8 hab.|360 m² | ;1664.0;False;False
-idealista;180000.0;3;75.0;;piso;180.000€ | 3 hab.|75 m²|2ª planta interior sin ascensor | ;2400.0;False;False
-idealista;210000.0;3;89.0;;piso;210.000€ | Garaje incluido|3 hab.|89 m²|2ª planta exterior con ascensor | ;2360.0;False;False
-idealista;225000.0;3;119.0;;piso;225.000€ | Garaje incluido|3 hab.|119 m²|1ª planta exterior con ascensor | ;1891.0;False;False
-idealista;400000.0;6;369.0;;piso;400.000€ | Garaje incluido|6 hab.|369 m² | ;1084.0;False;False
-idealista;350000.0;4;120.0;;piso;350.000€ | Garaje incluido|4 hab.|120 m² | ;2917.0;False;False
-idealista;165000.0;3;87.0;;piso;165.000€ | 3 hab.|87 m²|3ª planta exterior sin ascensor | ;1897.0;False;False
-idealista;470000.0;5;243.0;;piso;470.000€ | Garaje incluido|5 hab.|243 m² | ;1934.0;False;False
-idealista;390000.0;5;138.0;;piso;390.000€ | Garaje incluido|5 hab.|138 m² | ;2826.0;False;False
-idealista;850000.0;5;450.0;;chalet/villa;850.000€ | Garaje incluido|5 hab.|450 m² | Villa;1889.0;False;False
-idealista;215000.0;3;93.0;;piso;215.000€ | Garaje incluido|3 hab.|93 m²|Bajo exterior con ascensor | ;2312.0;False;False
-idealista;294000.0;2;105.0;;piso;294.000€ | Garaje incluido|2 hab.|105 m²|3ª planta exterior con ascensor | ;2800.0;False;False
-idealista;550000.0;5;370.0;;chalet/villa;550.000€ | Garaje incluido|5 hab.|370 m² | Villa;1486.0;False;False
-idealista;375000.0;3;101.0;;bungalow;375.000€ | Garaje incluido|3 hab.|101 m² | Bungalow;3713.0;False;False
-idealista;167700.0;1;45.0;;piso;167.700€ | 1 hab.|45 m²|Bajo exterior con ascensor | ;3727.0;False;False
-idealista;289000.0;2;109.0;;piso;289.000€ | Garaje incluido|2 hab.|109 m²|4ª planta exterior con ascensor | ;2651.0;False;False
-idealista;365000.0;2;120.0;;piso;365.000€ | Garaje incluido|2 hab.|120 m² | ;3042.0;False;False
-idealista;121600.0;1;35.0;;piso;121.600€ | 1 hab.|35 m²|exterior sin ascensor | ;3474.0;False;False
-idealista;520000.0;4;217.0;;piso;520.000€ | 4 hab.|217 m² | ;2396.0;False;False
-idealista;316000.0;4;120.0;;piso;316.000€ | Garaje incluido|4 hab.|120 m² | ;2633.0;False;False
-fotocasa;177000.0;3;80.0;El Tubo, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;177.000€ | El Tubo, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·1 baño·80 m²·Trastero;2212.0;False;False
-fotocasa;224800.0;4;100.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;224.800€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 4 habs·2 baños·100 m²·Ascensor·Terraza;2248.0;False;False
-fotocasa;42000.0;2;54.0;Haygon - Universidad, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;42.000€ | Haygon - Universidad, San Vicente del Raspeig / Sant Vicent del Raspeig | 2 habs·1 baño·54 m²·5ª Planta;778.0;False;False
-fotocasa;220000.0;2;112.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;220.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 2 habs·1 baño·112 m²·Ascensor·Parking·Calefacción·Aire acondicionado;1964.0;False;False
-fotocasa;420000.0;3;130.0;Parque Lo Torrent, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;420.000€ | Parque Lo Torrent, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·2 baños·130 m²·Terraza·Calefacción·Aire acondicionado·Trastero;3231.0;True;False
-fotocasa;1065000.0;4;480.0;Los Girasoles, San Vicente del Raspeig / Sant Vicent del Raspeig;chalet/villa;1.065.000€ | Los Girasoles, San Vicente del Raspeig / Sant Vicent del Raspeig | 4 habs·5 baños·480 m²·Parking·Terraza·Piscina·Aire acondicionado·Trastero;2219.0;True;False
-fotocasa;186000.0;2;72.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;186.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 2 habs·1 baño·72 m²·Bajos;2583.0;False;False
-fotocasa;117000.0;3;60.0;Haygon - Universidad, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;117.000€ | Haygon - Universidad, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·1 baño·60 m²·1ª Planta;1950.0;False;False
-fotocasa;264800.0;3;90.0;Parque Lo Torrent, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;264.800€ | Parque Lo Torrent, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·2 baños·90 m²·1ª Planta·Ascensor·Parking·Terraza·Aire acondicionado;2942.0;False;False
-fotocasa;300000.0;3;116.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;300.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·2 baños·116 m²·6ª Planta·Ascensor·Parking·Calefacción·Aire acondicionado;2586.0;True;False
-fotocasa;230000.0;3;110.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;230.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·2 baños·110 m²·5ª Planta·Ascensor·Calefacción·Aire acondicionado;2091.0;True;False
-fotocasa;249000.0;4;104.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;249.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 4 habs·2 baños·104 m²·1ª Planta·Ascensor·Aire acondicionado;2394.0;False;False
-fotocasa;240000.0;4;125.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;240.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 4 habs·1 baño·125 m²·1ª Planta·Terraza·Calefacción·Aire acondicionado;1920.0;True;False
-fotocasa;318000.0;3;94.0;Parque Lo Torrent, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;318.000€ | Parque Lo Torrent, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·2 baños·94 m²·+15 planta·Ascensor·Parking·Terraza·Balcón;3383.0;True;False
-fotocasa;420000.0;3;191.0;Parque Lo Torrent, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;420.000€ | Parque Lo Torrent, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·2 baños·191 m²·Parking·Terraza·Calefacción·Aire acondicionado·Trastero;2199.0;True;False
-fotocasa;250000.0;3;100.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;250.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·2 baños·100 m²·+15 planta·Ascensor·Balcón;2500.0;True;False
-fotocasa;312000.0;3;125.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;312.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·2 baños·125 m²·1ª Planta·Ascensor·Terraza·Aire acondicionado;2496.0;False;False
-fotocasa;319900.0;4;130.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;319.900€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 4 habs·2 baños·130 m²·1ª Planta·Ascensor·Parking·Terraza·Balcón;2461.0;True;False
-fotocasa;498000.0;5;280.0;Villamontes - Boqueres, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;498.000€ | Villamontes - Boqueres, San Vicente del Raspeig / Sant Vicent del Raspeig | 5 habs·3 baños·280 m²·Parking·Terraza·Piscina·Aire acondicionado;1779.0;True;False
-fotocasa;498000.0;5;280.0;Villamontes - Boqueres, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;498.000€ | Villamontes - Boqueres, San Vicente del Raspeig / Sant Vicent del Raspeig | 5 habs·3 baños·280 m²·Parking·Terraza·Piscina·Aire acondicionado;1779.0;True;False
+fuente;precio;habitaciones;m2;zona;tipo_vivienda;texto_original;precio_m2;es_outlier_lujo
+idealista;595000.0;5;575.0;;chalet/villa;595.000€ | Garaje incluido|5 hab.|575 m² | Villa;1035.0;False
+idealista;695000.0;5;221.0;;chalet/villa;695.000€ | Garaje incluido|5 hab.|221 m² | Villa;3145.0;False
+idealista;589000.0;4;168.0;;piso;589.000€ | Garaje incluido|4 hab.|168 m² | ;3506.0;False
+idealista;449000.0;3;110.0;;piso;449.000€ | 3 hab.|110 m² | ;4082.0;False
+idealista;300000.0;3;117.0;;piso;300.000€ | Garaje incluido|3 hab.|117 m²|6ª planta exterior con ascensor | ;2564.0;False
+idealista;785000.0;7;450.0;;chalet/villa;785.000€ | Garaje incluido|7 hab.|450 m² | Villa;1744.0;False
+idealista;550000.0;4;293.0;;chalet/villa;550.000€ | Garaje incluido|4 hab.|293 m² | Villa;1877.0;False
+idealista;675000.0;4;310.0;;chalet/villa;675.000€ | Garaje incluido|4 hab.|310 m² | Villa;2177.0;False
+idealista;599000.0;4;310.0;;chalet/villa;599.000€ | Garaje incluido|4 hab.|310 m² | Villa;1932.0;False
+idealista;319900.0;4;130.0;;piso;319.900€ | Garaje incluido|4 hab.|130 m²|1ª planta exterior con ascensor | ;2461.0;False
+idealista;318000.0;3;94.0;;piso;318.000€ | Garaje incluido|3 hab.|94 m²|7ª planta exterior con ascensor | ;3383.0;False
+idealista;99950.0;2;62.0;;piso;99.950€ | 2 hab.|62 m²|5ª planta exterior sin ascensor | ;1612.0;False
+idealista;230000.0;3;109.0;;piso;230.000€ | 3 hab.|109 m²|5ª planta exterior con ascensor | ;2110.0;False
+idealista;359950.0;5;2762.0;;piso;359.950€ | Garaje incluido|5 hab.|2.762 m² | ;130.0;False
+idealista;319900.0;4;188.0;;piso;319.900€ | Garaje incluido|4 hab.|188 m²|1ª planta exterior con ascensor | ;1702.0;False
+idealista;550000.0;4;293.0;;chalet/villa;550.000€ | Garaje incluido|4 hab.|293 m² | Villa;1877.0;False
+idealista;280000.0;2;71.0;;piso;280.000€ | 2 hab.|71 m²|3ª planta exterior con ascensor | Luminoso;3944.0;False
+idealista;498000.0;5;280.0;;piso;498.000€ | Garaje incluido|5 hab.|280 m² | ;1779.0;False
+idealista;649000.0;4;364.0;;chalet/villa;649.000€ | Garaje incluido|4 hab.|364 m² | Villa;1783.0;False
+idealista;219000.0;2;93.0;;piso;219.000€ | Garaje incluido|2 hab.|93 m²|2ª planta exterior con ascensor | ;2355.0;False
+idealista;690000.0;4;446.0;;piso;690.000€ | Garaje incluido|4 hab.|446 m² | ;1547.0;False
+idealista;167700.0;1;45.0;;apartamento;167.700€ | 1 hab.|45 m²|interior con ascensor | Apartamento;3727.0;False
+idealista;420000.0;3;130.0;;bungalow;420.000€ | 3 hab.|130 m² | Bungalow;3231.0;False
+idealista;185000.0;3;110.0;;piso;185.000€ | 3 hab.|110 m²|3ª planta exterior sin ascensor | ;1682.0;False
+idealista;715000.0;5;221.0;;chalet/villa;715.000€ | Garaje incluido|5 hab.|221 m² | Villa;3235.0;False
+idealista;1065000.0;4;480.0;;chalet/villa;1.065.000€ | Garaje incluido|4 hab.|480 m² | Villa;2219.0;False
+idealista;308000.0;2;136.0;;piso;308.000€ | Garaje incluido|2 hab.|136 m²|4ª planta exterior con ascensor | ;2265.0;False
+idealista;255925.0;2;116.0;;piso;255.925€ | Garaje incluido|2 hab.|116 m²|Bajo exterior con ascensor | ;2206.0;False
+idealista;430000.0;4;245.0;;piso;430.000€ | Garaje incluido|4 hab.|245 m² | ;1755.0;False
+idealista;200000.0;3;199.0;;piso;200.000€ | Garaje incluido|3 hab.|199 m² | ;1005.0;False
+idealista;695000.0;5;221.0;;piso;695.000€ | Garaje incluido|5 hab.|221 m² | ;3145.0;False
+idealista;245900.0;3;129.0;;piso;245.900€ | Garaje incluido|3 hab.|129 m²|3ª planta exterior con ascensor | ;1906.0;False
+idealista;179000.0;1;90.0;;piso;179.000€ | 1 hab.|90 m²|Bajo exterior sin ascensor | ;1989.0;False
+idealista;1150000.0;3;451.0;;chalet/villa;1.150.000€ | Garaje incluido|3 hab.|451 m² | Villa;2550.0;True
+idealista;750000.0;6;228.0;;chalet/villa;750.000€ | Garaje incluido|6 hab.|228 m² | Villa;3289.0;False
+idealista;730000.0;7;481.0;;piso;730.000€ | 7 hab.|481 m² | ;1518.0;False
+idealista;359950.0;5;167.0;;piso;359.950€ | 5 hab.|167 m² | ;2155.0;False
+idealista;279900.0;4;180.0;;piso;279.900€ | Garaje incluido|4 hab.|180 m² | ;1555.0;False
+idealista;420000.0;3;191.0;;piso;420.000€ | Garaje incluido|3 hab.|191 m² | ;2199.0;False
+idealista;199900.0;4;113.0;;piso;199.900€ | 4 hab.|113 m²|2ª planta exterior sin ascensor | ;1769.0;False
+idealista;299000.0;2;85.0;;piso;299.000€ | Garaje incluido|2 hab.|85 m²|3ª planta exterior con ascensor | ;3518.0;False
+idealista;1150000.0;3;451.0;;chalet/villa;1.150.000€ | Garaje incluido|3 hab.|451 m² | Villa;2550.0;True
+idealista;150900.0;3;82.0;;piso;150.900€ | 3 hab.|82 m²|2ª planta exterior sin ascensor | Alquilada;1840.0;False
+idealista;210000.0;2;112.0;;piso;210.000€ | Garaje incluido|2 hab.|112 m²|Bajo interior con ascensor | ;1875.0;False
+idealista;240000.0;4;123.0;;piso;240.000€ | Garaje incluido|4 hab.|123 m²|1ª planta exterior con ascensor | ;1951.0;False
+idealista;1250000.0;5;548.0;;piso;1.250.000€ | Garaje incluido|5 hab.|548 m² | ;2281.0;True
+idealista;250000.0;3;100.0;;piso;250.000€ | 3 hab.|100 m²|4ª planta exterior con ascensor | ;2500.0;False
+idealista;1650000.0;8;717.0;;piso_lujo;1.650.000€ | Garaje incluido|8 hab.|717 m² | Lujo;2301.0;True
+idealista;398000.0;3;196.0;;piso;398.000€ | Garaje incluido|3 hab.|196 m² | ;2031.0;False
+idealista;750000.0;5;659.0;;chalet/villa;750.000€ | Garaje incluido|5 hab.|659 m² | Villa;1138.0;False
+idealista;145000.0;3;66.0;;piso;145.000€ | 3 hab.|66 m²|4ª planta exterior con ascensor | ;2197.0;False
+idealista;540000.0;6;310.0;;piso;540.000€ | 6 hab.|310 m² | ;1742.0;False
+idealista;186000.0;2;80.0;;piso;186.000€ | 2 hab.|80 m²|Bajo exterior sin ascensor | ;2325.0;False
+idealista;450000.0;4;401.0;;piso;450.000€ | Garaje incluido|4 hab.|401 m² | ;1122.0;False
+idealista;520000.0;4;288.0;;piso;520.000€ | Garaje incluido|4 hab.|288 m² | ;1806.0;False
+idealista;211000.0;2;78.0;;piso;211.000€ | Garaje incluido|2 hab.|78 m²|4ª planta exterior con ascensor | ;2705.0;False
+idealista;250000.0;4;112.0;;piso;250.000€ | 4 hab.|112 m²|1ª planta exterior con ascensor | ;2232.0;False
+idealista;299000.0;2;86.0;;piso;299.000€ | Garaje incluido|2 hab.|86 m²|exterior con ascensor | ;3477.0;False
+idealista;265000.0;3;102.0;;piso;265.000€ | 3 hab.|102 m² | ;2598.0;False
+idealista;227000.0;2;76.0;;piso;227.000€ | 2 hab.|76 m²|4ª planta exterior con ascensor | ;2987.0;False
+idealista;239000.0;3;192.0;;piso;239.000€ | 3 hab.|192 m² | ;1245.0;False
+idealista;980000.0;5;358.0;;piso;980.000€ | 5 hab.|358 m² | ;2737.0;False
+idealista;205000.0;3;77.0;;piso;205.000€ | Garaje incluido|3 hab.|77 m²|exterior con ascensor | ;2662.0;False
+idealista;635000.0;6;305.0;;piso;635.000€ | 6 hab.|305 m² | ;2082.0;False
+idealista;325000.0;3;117.0;;piso;325.000€ | Garaje incluido|3 hab.|117 m²|7ª planta exterior con ascensor | ;2778.0;False
+idealista;239000.0;3;192.0;;piso;239.000€ | 3 hab.|192 m² | ;1245.0;False
+idealista;1550000.0;6;724.0;;piso_lujo;1.550.000€ | Garaje incluido|6 hab.|724 m² | Lujo;2141.0;True
+idealista;419500.0;4;349.0;;piso;419.500€ | Garaje incluido|4 hab.|349 m² | Urge;1202.0;False
+idealista;294480.0;2;91.0;;piso;294.480€ | Garaje incluido|2 hab.|91 m² | ;3236.0;False
+idealista;190000.0;3;88.0;;piso;190.000€ | 3 hab.|88 m²|2ª planta exterior sin ascensor | ;2159.0;False
+idealista;599000.0;8;360.0;;piso;599.000€ | 8 hab.|360 m² | ;1664.0;False
+idealista;180000.0;3;75.0;;piso;180.000€ | 3 hab.|75 m²|2ª planta interior sin ascensor | ;2400.0;False
+idealista;210000.0;3;89.0;;piso;210.000€ | Garaje incluido|3 hab.|89 m²|2ª planta exterior con ascensor | ;2360.0;False
+idealista;225000.0;3;119.0;;piso;225.000€ | Garaje incluido|3 hab.|119 m²|1ª planta exterior con ascensor | ;1891.0;False
+idealista;400000.0;6;369.0;;piso;400.000€ | Garaje incluido|6 hab.|369 m² | ;1084.0;False
+idealista;350000.0;4;120.0;;piso;350.000€ | Garaje incluido|4 hab.|120 m² | ;2917.0;False
+idealista;165000.0;3;87.0;;piso;165.000€ | 3 hab.|87 m²|3ª planta exterior sin ascensor | ;1897.0;False
+idealista;470000.0;5;243.0;;piso;470.000€ | Garaje incluido|5 hab.|243 m² | ;1934.0;False
+idealista;390000.0;5;138.0;;piso;390.000€ | Garaje incluido|5 hab.|138 m² | ;2826.0;False
+idealista;850000.0;5;450.0;;chalet/villa;850.000€ | Garaje incluido|5 hab.|450 m² | Villa;1889.0;False
+idealista;215000.0;3;93.0;;piso;215.000€ | Garaje incluido|3 hab.|93 m²|Bajo exterior con ascensor | ;2312.0;False
+idealista;294000.0;2;105.0;;piso;294.000€ | Garaje incluido|2 hab.|105 m²|3ª planta exterior con ascensor | ;2800.0;False
+idealista;550000.0;5;370.0;;chalet/villa;550.000€ | Garaje incluido|5 hab.|370 m² | Villa;1486.0;False
+idealista;375000.0;3;101.0;;bungalow;375.000€ | Garaje incluido|3 hab.|101 m² | Bungalow;3713.0;False
+idealista;167700.0;1;45.0;;piso;167.700€ | 1 hab.|45 m²|Bajo exterior con ascensor | ;3727.0;False
+idealista;289000.0;2;109.0;;piso;289.000€ | Garaje incluido|2 hab.|109 m²|4ª planta exterior con ascensor | ;2651.0;False
+idealista;365000.0;2;120.0;;piso;365.000€ | Garaje incluido|2 hab.|120 m² | ;3042.0;False
+idealista;121600.0;1;35.0;;piso;121.600€ | 1 hab.|35 m²|exterior sin ascensor | ;3474.0;False
+idealista;520000.0;4;217.0;;piso;520.000€ | 4 hab.|217 m² | ;2396.0;False
+idealista;316000.0;4;120.0;;piso;316.000€ | Garaje incluido|4 hab.|120 m² | ;2633.0;False
+fotocasa;177000.0;3;80.0;El Tubo, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;177.000€ | El Tubo, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·1 baño·80 m²·Trastero;2212.0;False
+fotocasa;224800.0;4;100.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;224.800€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 4 habs·2 baños·100 m²·Ascensor·Terraza;2248.0;False
+fotocasa;42000.0;2;54.0;Haygon - Universidad, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;42.000€ | Haygon - Universidad, San Vicente del Raspeig / Sant Vicent del Raspeig | 2 habs·1 baño·54 m²·5ª Planta;778.0;False
+fotocasa;220000.0;2;112.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;220.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 2 habs·1 baño·112 m²·Ascensor·Parking·Calefacción·Aire acondicionado;1964.0;False
+fotocasa;186000.0;2;72.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;186.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 2 habs·1 baño·72 m²·Bajos;2583.0;False
+fotocasa;117000.0;3;60.0;Haygon - Universidad, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;117.000€ | Haygon - Universidad, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·1 baño·60 m²·1ª Planta;1950.0;False
+fotocasa;264800.0;3;90.0;Parque Lo Torrent, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;264.800€ | Parque Lo Torrent, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·2 baños·90 m²·1ª Planta·Ascensor·Parking·Terraza·Aire acondicionado;2942.0;False
+fotocasa;249000.0;4;104.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;249.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 4 habs·2 baños·104 m²·1ª Planta·Ascensor·Aire acondicionado;2394.0;False
+fotocasa;312000.0;3;125.0;Centro, San Vicente del Raspeig / Sant Vicent del Raspeig;piso;312.000€ | Centro, San Vicente del Raspeig / Sant Vicent del Raspeig | 3 habs·2 baños·125 m²·1ª Planta·Ascensor·Terraza·Aire acondicionado;2496.0;False

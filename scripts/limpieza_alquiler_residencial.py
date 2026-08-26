@@ -151,15 +151,22 @@ def main():
     combinado = pd.concat([idealista, fotocasa], ignore_index=True)
     combinado = marcar_duplicados_cruzados(combinado)
 
+    # version completa, con los duplicados marcados (no borrados) -> para auditar
+    con_marcas_path = f"{OUT_DIR}/alquiler_residencial_con_marcas.csv"
+    combinado.to_csv(con_marcas_path, sep=";", index=False)
+
+    # version final: un unico CSV, con los duplicados cruzados ya fuera
+    final = combinado[~combinado["es_duplicado_cruzado"]].drop(columns=["es_duplicado_cruzado"])
     out_path = f"{OUT_DIR}/alquiler_residencial_limpio.csv"
-    combinado.to_csv(out_path, sep=";", index=False)
+    final.to_csv(out_path, sep=";", index=False)
 
     n_total = len(combinado)
     n_dupes = combinado["es_duplicado_cruzado"].sum()
     print(f"Idealista: {len(idealista)} filas | Fotocasa: {len(fotocasa)} filas")
     print(f"Total combinado: {n_total} | Duplicados cruzados detectados: {n_dupes}")
-    print(f"Filas unicas tras deduplicar: {n_total - n_dupes}")
-    print(f"Guardado en: {out_path}")
+    print(f"Filas unicas tras deduplicar: {len(final)}")
+    print(f"Version completa (con marca de duplicado, para auditar): {con_marcas_path}")
+    print(f"Version final (unico CSV, sin duplicados) -> usar esta para el EDA: {out_path}")
 
     # sin precio o sin m2 no sirven para comparar -> los contamos aparte, no los borramos
     incompletos = combinado[combinado["precio_mes"].isna() | combinado["m2"].isna()]
