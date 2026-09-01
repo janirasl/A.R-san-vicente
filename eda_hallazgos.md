@@ -113,6 +113,25 @@ A partir de qué ocupación el turístico supera al residencial, según la estru
 
 Esto es lo verdaderamente interesante del análisis: la decisión no depende solo de cuánta ocupación consigas, sino de **cómo gestiones los costes**. Con gestión externalizada necesitas la mitad del año ocupado para batir a un alquiler residencial tranquilo; autogestionando, te basta con algo más de un cuarto.
 
+## El resultado más sólido: punto de equilibrio en noches
+
+Los escenarios de arriba tienen un problema de fondo: parten de "asumo una ocupación del X%", y la ocupación es justo el dato que no tenemos. La conclusión acababa dependiendo de una cifra que me inventé yo.
+
+`scripts/punto_equilibrio_dias.py` invierte la pregunta: parte **solo de precios observados** y despeja cuántas noches al mes hacen falta. La ocupación deja de ser un supuesto de entrada y pasa a ser el resultado.
+
+| Estructura de costes | Noches/mes para igualar al residencial | Al año | Ocupación equivalente |
+|---|---|---|---|
+| **SUELO — solo comisión documentada** | **6,9** | 83 | 22,6% |
+| Costes optimistas | 7,9 | 95 | 26,1% |
+| Costes base | 10,7 | 128 | 35,1% |
+| Costes pesimistas | 15,3 | 184 | 50,4% |
+
+Y para las otras referencias, con costes base: **8,7 noches/mes** para igualar al estudiantil, y solo **2,9 noches/mes** para cubrir gastos (ROI 0).
+
+**El caso SUELO es la cifra más defendible de todo el proyecto.** Usa únicamente el coste que sí está documentado (la comisión de plataforma, 12%, de las tarifas publicadas de Booking y Airbnb) e ignora limpieza, suministros, gestión y mantenimiento. Es un límite inferior real: pase lo que pase con los costes, **es imposible que el turístico bata al residencial con menos de ~7 noches al mes**. Y ese número no depende de ninguna estimación mía.
+
+El rango realista, por tanto, está entre **7 y 15 noches al mes** (83-184 al año) según cómo se gestionen los costes. Lo que estos datos no responden —y hay que decirlo así en la memoria— es si un piso de 3 habitaciones en San Vicente consigue efectivamente esas noches. Para saberlo habría que mirar la disponibilidad real de los 4-5 pisos que ya operan allí.
+
 ## Estacionalidad y horizonte temporal
 
 La serie mensual (`powerbi/flujo_mensual_estrategias.csv`, 30 años × 4 estrategias) usa exactamente los mismos supuestos que el modelo anual — los importa del mismo archivo, así que los dos modelos no pueden contradecirse.

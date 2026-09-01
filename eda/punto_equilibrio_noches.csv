@@ -1,0 +1,13 @@
+estructura_costes;objetivo;noches_mes;noches_ano;ocupacion_equivalente
+SUELO (solo comision documentada);Residencial anual;6.9;83;0.226
+SUELO (solo comision documentada);Estudiantil x habitacion;5.4;65;0.178
+SUELO (solo comision documentada);Cubrir gastos (ROI 0);1.2;14;0.04
+costes pesimista;Residencial anual;15.3;184;0.504
+costes pesimista;Estudiantil x habitacion;12.5;150;0.412
+costes pesimista;Cubrir gastos (ROI 0);4.5;54;0.149
+costes base;Residencial anual;10.7;128;0.351
+costes base;Estudiantil x habitacion;8.7;104;0.285
+costes base;Cubrir gastos (ROI 0);2.9;35;0.096
+costes optimista;Residencial anual;7.9;95;0.261
+costes optimista;Estudiantil x habitacion;6.4;77;0.211
+costes optimista;Cubrir gastos (ROI 0);2.1;25;0.068
