@@ -1,0 +1,746 @@
+<title>Anatomía del proyecto San Vicente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,500;0,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --paper: #F1F3F2;
+    --surface: #FAFBFA;
+    --surface-2: #E7EBE9;
+    --ink: #16211F;
+    --ink-2: #465552;
+    --ink-3: #6E7C79;
+    --rule: #CBD5D1;
+    --rule-strong: #16211F;
+    --accent: #1B6B5F;
+    --accent-soft: #D3E4DF;
+    --caution: #9C4B2A;
+    --caution-soft: #F0DDD3;
+
+    --display: "Newsreader", Georgia, "Times New Roman", serif;
+    --body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+    --measure: 66ch;
+    --step--1: clamp(0.82rem, 0.8rem + 0.1vw, 0.88rem);
+    --step-0: clamp(1rem, 0.97rem + 0.14vw, 1.08rem);
+    --step-1: clamp(1.2rem, 1.13rem + 0.3vw, 1.4rem);
+    --step-2: clamp(1.45rem, 1.32rem + 0.6vw, 1.85rem);
+    --step-3: clamp(1.9rem, 1.6rem + 1.3vw, 2.9rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #101614;
+      --surface: #182220;
+      --surface-2: #1F2B28;
+      --ink: #E4EAE7;
+      --ink-2: #A9B7B3;
+      --ink-3: #7E8D89;
+      --rule: #2E3C39;
+      --rule-strong: #E4EAE7;
+      --accent: #5FBFAC;
+      --accent-soft: #1E3A35;
+      --caution: #D98A62;
+      --caution-soft: #372018;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #101614;
+    --surface: #182220;
+    --surface-2: #1F2B28;
+    --ink: #E4EAE7;
+    --ink-2: #A9B7B3;
+    --ink-3: #7E8D89;
+    --rule: #2E3C39;
+    --rule-strong: #E4EAE7;
+    --accent: #5FBFAC;
+    --accent-soft: #1E3A35;
+    --caution: #D98A62;
+    --caution-soft: #372018;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: var(--step-0);
+    line-height: 1.65;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .shell {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+  }
+
+  @media (min-width: 1000px) {
+    .shell {
+      grid-template-columns: 15rem 1fr;
+      gap: 4rem;
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    grid-column: 1 / -1;
+    border-bottom: 2px solid var(--rule-strong);
+    padding: 4.5rem 0 2rem;
+    margin-bottom: 3rem;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--step--1);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1.4rem;
+  }
+  .masthead h1 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: var(--step-3);
+    line-height: 1.06;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    margin: 0 0 1.2rem;
+    max-width: 20ch;
+  }
+  .standfirst {
+    font-family: var(--display);
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 54ch;
+    margin: 0;
+  }
+
+  /* ---------- nav ---------- */
+  nav.toc {
+    display: none;
+  }
+  @media (min-width: 1000px) {
+    nav.toc {
+      display: block;
+      position: sticky;
+      top: 2rem;
+      align-self: start;
+      max-height: calc(100vh - 4rem);
+      overflow-y: auto;
+    }
+  }
+  nav.toc p {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin: 0 0 1rem;
+  }
+  nav.toc ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    counter-reset: toc;
+  }
+  nav.toc a {
+    display: grid;
+    grid-template-columns: 1.9rem 1fr;
+    font-size: var(--step--1);
+    line-height: 1.35;
+    color: var(--ink-2);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    padding-left: 0.7rem;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  nav.toc a::before {
+    counter-increment: toc;
+    content: counter(toc, decimal-leading-zero);
+    font-family: var(--mono);
+    color: var(--ink-3);
+  }
+  nav.toc a:hover, nav.toc a:focus-visible {
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+
+  /* ---------- main ---------- */
+  main { grid-column: 1 / -1; min-width: 0; }
+  @media (min-width: 1000px) { main { grid-column: 2; } }
+
+  section { margin: 0 0 4.5rem; scroll-margin-top: 2rem; }
+
+  h2 {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: var(--step-2);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 0.4rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule-strong);
+  }
+  h2 .num {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+    margin-bottom: 0.7rem;
+  }
+  h3 {
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: var(--step-0);
+    letter-spacing: 0.005em;
+    margin: 2.4rem 0 0.5rem;
+  }
+  p { max-width: var(--measure); margin: 0 0 1.1rem; }
+  .lede { color: var(--ink-2); font-size: 1.03em; max-width: 60ch; margin-bottom: 2rem; }
+  a { color: var(--accent); }
+  strong { font-weight: 600; }
+  em { font-style: italic; }
+  code {
+    font-family: var(--mono);
+    font-size: 0.87em;
+    background: var(--surface-2);
+    padding: 0.1em 0.36em;
+    border-radius: 2px;
+  }
+  ul, ol.plain { max-width: var(--measure); padding-left: 1.1rem; margin: 0 0 1.2rem; }
+  li { margin-bottom: 0.5rem; }
+
+  /* ---------- idea blocks ---------- */
+  .idea {
+    border-left: 2px solid var(--accent);
+    padding: 0.1rem 0 0.1rem 1.3rem;
+    margin: 0 0 2.2rem;
+  }
+  .idea h3 { margin-top: 0; }
+  .idea .tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    display: block;
+    margin-bottom: 0.35rem;
+  }
+
+  /* ---------- data / assumption registers ---------- */
+  .register {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    margin: 1.6rem 0 2rem;
+  }
+  @media (min-width: 640px) { .register { grid-template-columns: 1fr 1fr; } }
+  .reg {
+    padding: 1.2rem 1.3rem;
+    background: var(--surface);
+  }
+  .reg.medido { border: 1px solid var(--rule-strong); }
+  .reg.supuesto { border: 1px dashed var(--caution); }
+  .reg h4 {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    margin: 0 0 0.7rem;
+  }
+  .reg.medido h4 { color: var(--ink); }
+  .reg.supuesto h4 { color: var(--caution); }
+  .reg p { font-size: var(--step--1); margin: 0; color: var(--ink-2); }
+
+  /* ---------- tables ---------- */
+  .scroll { overflow-x: auto; margin: 1.4rem 0 1.8rem; }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.6rem 0.9rem 0.6rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  th {
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    border-bottom: 1px solid var(--rule-strong);
+    white-space: nowrap;
+  }
+  td.num, th.num { text-align: right; font-family: var(--mono); padding-right: 0; }
+  tr:last-child td { border-bottom: none; }
+  .win { color: var(--accent); font-weight: 600; }
+
+  /* ---------- figure cards ---------- */
+  .figs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 1.6rem 0 2rem;
+  }
+  .fig { background: var(--surface); padding: 1.1rem 1.2rem; }
+  .fig .k {
+    font-family: var(--mono);
+    font-size: var(--step-1);
+    font-weight: 500;
+    display: block;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .fig .l {
+    font-size: 0.78rem;
+    color: var(--ink-2);
+    display: block;
+    margin-top: 0.4rem;
+    line-height: 1.35;
+  }
+  .fig .n {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-3);
+    display: block;
+    margin-top: 0.3rem;
+  }
+
+  /* ---------- pipeline ---------- */
+  .pipe { display: flex; flex-direction: column; gap: 0; margin: 1.6rem 0 2rem; }
+  .stage {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.2rem 1.4rem;
+    padding: 1.1rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  @media (min-width: 700px) { .stage { grid-template-columns: 13rem 1fr; } }
+  .stage:last-child { border-bottom: 1px solid var(--rule); }
+  .stage .file {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--ink);
+    word-break: break-all;
+  }
+  .stage .what { font-size: var(--step--1); color: var(--ink-2); margin: 0; max-width: 58ch; }
+  .stage .what strong { color: var(--ink); }
+
+  /* ---------- Q&A ---------- */
+  .qa { border-top: 1px solid var(--rule); padding: 1.4rem 0; }
+  .qa:last-of-type { border-bottom: 1px solid var(--rule); }
+  .qa .q {
+    font-family: var(--display);
+    font-size: var(--step-1);
+    font-style: italic;
+    color: var(--ink);
+    margin: 0 0 0.7rem;
+    max-width: 52ch;
+  }
+  .qa .a { margin: 0; color: var(--ink-2); }
+  .qa .a strong { color: var(--ink); }
+
+  /* ---------- callout ---------- */
+  .callout {
+    background: var(--accent-soft);
+    padding: 1.4rem 1.5rem;
+    margin: 2rem 0;
+    max-width: var(--measure);
+  }
+  .callout p { margin: 0; }
+  .callout p + p { margin-top: 0.9rem; }
+  .callout .lbl {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+
+  footer {
+    grid-column: 1 / -1;
+    border-top: 2px solid var(--rule-strong);
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+    font-size: var(--step--1);
+    color: var(--ink-3);
+    font-family: var(--mono);
+  }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="shell">
+
+  <header class="masthead">
+    <p class="eyebrow">Guía de estudio · Rentabilidad de alquiler</p>
+    <h1>Anatomía del proyecto San Vicente</h1>
+    <p class="standfirst">Todo lo que hay dentro del análisis: de dónde sale cada cifra, qué decisión metodológica hay detrás de cada paso, y qué contestar cuando alguien pregunte lo incómodo.</p>
+  </header>
+
+  <nav class="toc" aria-label="Índice">
+    <p>Índice</p>
+    <ol>
+      <li><a href="#pregunta">La pregunta y por qué no es trivial</a></li>
+      <li><a href="#datos">De dónde sale cada cifra</a></li>
+      <li><a href="#ideas">Las ocho ideas del proyecto</a></li>
+      <li><a href="#finanzas">El vocabulario financiero</a></li>
+      <li><a href="#pipeline">El pipeline, script a script</a></li>
+      <li><a href="#resultados">Qué sabemos y con cuánta certeza</a></li>
+      <li><a href="#defensa">Cómo defenderlo</a></li>
+      <li><a href="#calibracion">Dónde está el nivel de verdad</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <!-- 1 -->
+    <section id="pregunta">
+      <h2><span class="num">Sección 01</span>La pregunta y por qué no es trivial</h2>
+      <p class="lede">Si compras un piso en San Vicente del Raspeig para alquilarlo, ¿qué modelo de alquiler te renta más: inquilino tradicional, habitaciones a estudiantes, Airbnb, o una mezcla?</p>
+
+      <p>Parece una pregunta sencilla y es una trampa. Los cuatro modelos <em>no son comparables tal cual</em>, y ahí está casi todo el trabajo:</p>
+
+      <ul>
+        <li><strong>Cobran en unidades distintas.</strong> El residencial cobra €/mes, el turístico €/noche, el de habitaciones €/habitación/mes. No se pueden poner en la misma columna.</li>
+        <li><strong>Tienen costes distintos.</strong> En residencial los suministros los paga el inquilino; en turístico los paga el propietario, y encima hay limpieza entre estancias.</li>
+        <li><strong>Tributan distinto.</strong> El residencial tiene una reducción del 50% en el IRPF; el turístico, ninguna.</li>
+        <li><strong>Dependen de cosas que no se pueden medir igual de bien.</strong> El precio del alquiler se observa en 39 anuncios; la ocupación turística real del municipio no se observa en ninguna parte.</li>
+      </ul>
+
+      <p>El proyecto consiste en hacerlos comparables sin hacer trampas, y en decir con claridad dónde deja de haber datos y empieza a haber suposiciones.</p>
+
+      <p>San Vicente del Raspeig, además, es un caso interesante y no aleatorio: tiene la Universidad de Alicante dentro, con unos 28.000 estudiantes, y <em>no</em> tiene playa. Dos motores de demanda en tensión, y ninguno obvio de antemano.</p>
+    </section>
+
+    <!-- 2 -->
+    <section id="datos">
+      <h2><span class="num">Sección 02</span>De dónde sale cada cifra</h2>
+      <p class="lede">Solo cuatro números del proyecto son datos medidos en San Vicente. Todo lo demás, o se deriva de ellos, o es un supuesto.</p>
+
+      <div class="figs">
+        <div class="fig"><span class="k">237.950 €</span><span class="l">Precio de compra del arquetipo</span><span class="n">mediana · n=22</span></div>
+        <div class="fig"><span class="k">990 €</span><span class="l">Alquiler residencial mensual</span><span class="n">mediana · n=39</span></div>
+        <div class="fig"><span class="k">292 €</span><span class="l">Habitación a estudiante, al mes</span><span class="n">mediana · n=28</span></div>
+        <div class="fig"><span class="k">145 €</span><span class="l">Noche en alquiler turístico</span><span class="n">mediana · n=4</span></div>
+      </div>
+
+      <h3>Las cuatro fuentes y qué aporta cada una</h3>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr><th>Fuente</th><th>Qué aporta</th><th>Su sesgo</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Idealista + Fotocasa</td><td>Precios de alquiler y de venta</td><td>Son precios <em>pedidos</em>, no cerrados. Tienden a estar por encima del mercado real</td></tr>
+            <tr><td>Bolsa de Alojamiento de la UA</td><td>Alquiler por habitación a estudiantes</td><td>Solo capta la oferta que se anuncia por el canal universitario</td></tr>
+            <tr><td>Airbnb + Booking</td><td>Precio por noche</td><td>Muestra diminuta, y el municipio tiene poquísimo producto comparable</td></tr>
+            <tr><td>SERPAVI + registro VUT</td><td>Referencia oficial de alquiler y censo de viviendas turísticas</td><td>SERPAVI es de 2024 y mide contratos de fianza, no anuncios</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <span class="lbl">Un contraste que hay que saber explicar</span>
+        <p>La muestra de anuncios da <strong>11,1 €/m²/mes</strong> de media. El dato oficial de SERPAVI para el municipio es <strong>6,4 €/m²/mes</strong>. No se contradicen: SERPAVI mide contratos realmente depositados y nuestra muestra mide precios publicados, que siempre son más altos. Además nuestra extracción de Idealista llevaba un filtro que dejaba fuera lo más barato.</p>
+        <p>Si alguien te señala esa diferencia, la respuesta no es defender la cifra: es explicar que miden cosas distintas y que la oficial es la que vale como referencia legal.</p>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section id="ideas">
+      <h2><span class="num">Sección 03</span>Las ocho ideas del proyecto</h2>
+      <p class="lede">Esto es el núcleo. Si entiendes estas ocho decisiones, entiendes el proyecto entero — el código es solo su ejecución.</p>
+
+      <div class="idea">
+        <span class="tag">Idea 1 · Comparabilidad</span>
+        <h3>El arquetipo</h3>
+        <p>No se comparan «los pisos de alquiler» contra «los pisos turísticos», porque serían viviendas distintas y la comparación no diría nada. Se fija <strong>una vivienda de referencia</strong> —piso de 3 habitaciones, 70-130 m²— y se pregunta qué renta esa misma vivienda bajo cada modelo.</p>
+        <p>Se eligió ese perfil porque es el más frecuente en las tres fuentes a la vez: 46% de la oferta de alquiler, el grupo mayor en venta, y el mayoritario en piso completo de la UA. Elegir el arquetipo es una decisión analítica, no un detalle técnico.</p>
+      </div>
+
+      <div class="idea">
+        <span class="tag">Idea 2 · Trazabilidad</span>
+        <h3>Marcar, nunca borrar</h3>
+        <p>Ninguna fila problemática se elimina del dataset: se etiqueta. <code>es_duplicado_cruzado</code>, <code>es_outlier_lujo</code>, <code>m2_sospechoso</code>, <code>villa_no_comparable</code>. Se generan dos ficheros: uno completo con las marcas, para auditar, y otro ya filtrado, para analizar.</p>
+        <p>La razón es que un criterio de exclusión es una <em>opinión</em>. Si borras, tu opinión queda incrustada e invisible; si marcas, quien revisa puede discrepar y rehacerlo sin volver a extraer.</p>
+      </div>
+
+      <div class="idea">
+        <span class="tag">Idea 3 · Registros duplicados</span>
+        <h3>Deduplicar sin clave única</h3>
+        <p>El mismo piso puede estar en Idealista y en Fotocasa a la vez, y seguir publicado dos semanas después. Contarlo tres veces desplazaría las medias. Pero no hay identificador: los portales no publican la calle en los listados.</p>
+        <p>La solución es una <strong>clave compuesta aproximada</strong>: mismo precio, mismas habitaciones y m² parecidos (±2). De 261 anuncios, 117 resultaron duplicados y quedaron 144 únicos.</p>
+        <p>Y aquí la parte importante: <em>es una heurística, no una certeza</em>. En un mercado donde los precios se redondean a 900 y 1.000 €, dos pisos distintos pueden coincidir por casualidad. El proyecto lo dice explícitamente en vez de presentarlo como exacto.</p>
+      </div>
+
+      <div class="idea">
+        <span class="tag">Idea 4 · Calidad del dato</span>
+        <h3>Cuando el campo declarado miente</h3>
+        <p>La Bolsa de la UA tiene un campo <code>régimen</code> que en teoría distingue piso completo de habitación. Al inspeccionar los datos aparecieron anuncios en régimen «A» (piso completo) cuyo texto decía <em>«buscamos una persona más»</em> y cuyo precio era de 250 €: evidentemente una habitación.</p>
+        <p>La solución fue no fiarse de un solo campo y triangular tres señales: el régimen, palabras clave en el texto libre, y un umbral de precio. El resultado pasó de 10/35 a <strong>28 habitaciones / 17 pisos completos</strong>. Fiarse del campo declarado habría invertido toda una estrategia del análisis.</p>
+      </div>
+
+      <div class="idea">
+        <span class="tag">Idea 5 · La columna vertebral</span>
+        <h3>Datos y supuestos no se mezclan</h3>
+        <p>Esta es la idea más importante del proyecto. Todo número que entra al modelo pertenece a una de dos categorías, y están separadas físicamente en el código y en dos ficheros distintos.</p>
+        <div class="register">
+          <div class="reg medido">
+            <h4>Dato observado</h4>
+            <p>Medido en San Vicente, con su tamaño de muestra y su fichero de origen. Cuatro cifras, ni una más. Viven en <code>datos_observados.csv</code>.</p>
+          </div>
+          <div class="reg supuesto">
+            <h4>Supuesto</h4>
+            <p>Hipótesis del modelo: ocupaciones, comisiones, limpieza, gestión, IBI estimado. Ninguna medida localmente. Viven en <code>supuestos_modelo.csv</code>, cada una con su justificación.</p>
+          </div>
+        </div>
+        <p>Por qué importa tanto: sin esta separación, una conclusión como «el turístico rinde un 12%» parece un hallazgo, cuando en realidad es la consecuencia aritmética de una ocupación que alguien se inventó. La separación te obliga a ser honesta sobre de qué depende cada resultado.</p>
+      </div>
+
+      <div class="idea">
+        <span class="tag">Idea 6 · Incertidumbre</span>
+        <h3>Escenarios en vez de un número</h3>
+        <p>Cuando una variable clave no está medida, dar un único resultado es engañarse. Se construyen tres escenarios —pesimista, base, optimista— que mueven <em>a la vez</em> la ocupación turística y sus costes, porque en la realidad van juntas: quien externaliza la gestión tiene más ocupación pero paga más.</p>
+        <p>El hallazgo es que <strong>el orden entre estrategias cambia según el escenario</strong>. Eso no es un fracaso del análisis; es su resultado.</p>
+      </div>
+
+      <div class="idea">
+        <span class="tag">Idea 7 · La jugada maestra</span>
+        <h3>Invertir el modelo</h3>
+        <p>El modelo normal dice: <em>asumo una ocupación del 60% → calculo un ROI del 6,5%</em>. El problema es evidente: la conclusión hereda toda la fragilidad del supuesto.</p>
+        <p>La inversión consiste en preguntar al revés: partiendo solo de los precios observados, <strong>¿cuántas noches al mes necesita el turístico para igualar al residencial?</strong> La ocupación deja de ser una entrada inventada y pasa a ser el resultado.</p>
+        <p>Y se lleva un paso más allá con el <strong>caso suelo</strong>: se calcula usando <em>únicamente</em> el coste que sí está documentado (la comisión de plataforma) y poniendo a cero todos los estimados. Salen <strong>6,9 noches al mes</strong>. Ese número es un límite inferior matemático: pase lo que pase con los costes reales, el turístico no puede batir al residencial con menos. No depende de ninguna suposición, y por eso es la cifra más defendible de todo el trabajo.</p>
+      </div>
+
+      <div class="idea">
+        <span class="tag">Idea 8 · Honestidad</span>
+        <h3>Escribir lo que no se puede responder</h3>
+        <p>El proyecto tiene una sección dedicada a las preguntas que <em>no</em> contesta, con el motivo y con cómo se resolverían: la ocupación real, la revalorización del inmueble, las tarifas reales de limpieza y gestión, si el municipio está declarado zona tensionada, el valor catastral exacto.</p>
+        <p>Enumerar los límites no debilita el trabajo: demuestra que sabes dónde están. Un análisis sin limitaciones declaradas no es más sólido — es menos consciente.</p>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section id="finanzas">
+      <h2><span class="num">Sección 04</span>El vocabulario financiero</h2>
+      <p class="lede">Cinco conceptos que probablemente no diste en el bootcamp y que aquí sostienen todo el modelo.</p>
+
+      <h3>Ingreso bruto → ingreso neto</h3>
+      <p>El bruto es lo que entra: alquiler cobrado. El neto es lo que queda tras los gastos del propietario: IBI, comunidad, seguro de impago, y —en turístico— comisión de plataforma, limpieza, suministros, mantenimiento y gestión. La distancia entre ambos es enorme en turístico: <strong>entre el 18% y el 61% del bruto se va en costes</strong>.</p>
+
+      <h3>Yield bruto y ROI neto</h3>
+      <p>El <em>yield bruto</em> es ingreso bruto anual ÷ precio de compra. Es la cifra que suelen citar los portales inmobiliarios, y es optimista por construcción, porque ignora todos los gastos. El <em>ROI neto</em> usa el ingreso neto. Es el que vale para decidir.</p>
+
+      <h3>El denominador importa</h3>
+      <p>Comprar el piso cuesta 237.950 €, pero desembolsas <strong>264.124 €</strong>: hay que sumar ITP, notaría, registro y gestoría (~11%). Calcular la rentabilidad sobre el precio de compra la infla artificialmente. El proyecto reporta las dos y usa la segunda como referencia, porque es el dinero que realmente sale de tu bolsillo.</p>
+
+      <h3>Payback</h3>
+      <p>Años hasta que el ingreso neto acumulado cubre la inversión. Es <em>payback simple</em>: no descuenta el valor temporal del dinero ni incluye la revalorización del inmueble. Por eso salen 30 años en residencial — es el payback del alquiler, no la rentabilidad de la inversión completa. Decirlo así es obligatorio.</p>
+
+      <h3>Reducción del IRPF</h3>
+      <p>El alquiler de vivienda habitual tiene una reducción del 50% sobre el rendimiento neto. El turístico sin servicios de hostelería no tiene ninguna: tributa el 100%. Es una diferencia estructural que penaliza al turístico y que hay que mencionar aunque no se calcule el impuesto final (para eso haría falta el tipo marginal del contribuyente, que no es un dato de mercado).</p>
+    </section>
+
+    <!-- 5 -->
+    <section id="pipeline">
+      <h2><span class="num">Sección 05</span>El pipeline, script a script</h2>
+      <p class="lede">Diez scripts, 2.225 líneas, en cuatro etapas encadenadas. La numeración es real: es el orden de ejecución.</p>
+
+      <div class="pipe">
+        <div class="stage">
+          <span class="file">limpieza_alquiler_residencial.py</span>
+          <p class="what"><strong>Etapa 1 · Limpieza.</strong> Junta Idealista y Fotocasa de todas las sesiones. Descubre los ficheros por patrón de nombre y detecta el esquema leyendo la cabecera, así que no hay que tocarlo al añadir extracciones nuevas. Hace la deduplicación cruzada.</p>
+        </div>
+        <div class="stage">
+          <span class="file">limpieza_venta.py</span>
+          <p class="what">Misma lógica para venta, con tolerancia de ±5 m² y marcado de outliers de lujo por percentil 95.</p>
+        </div>
+        <div class="stage">
+          <span class="file">limpieza_ua.py</span>
+          <p class="what">Reclasifica habitación frente a piso completo triangulando régimen, texto y precio (la idea 4).</p>
+        </div>
+        <div class="stage">
+          <span class="file">limpieza_turistico_ampliado.py</span>
+          <p class="what">Procesa la captura acotada por mapa. Separa villas de pisos mirando el nombre además del tipo declarado, porque Airbnb etiqueta «Vivienda» a villas con piscina.</p>
+        </div>
+        <div class="stage">
+          <span class="file">unificar_datasets.py</span>
+          <p class="what"><strong>Etapa 2 · Unificación.</strong> Concatena los cinco limpios en <code>dataset_unificado.csv</code>. El precio va en tres columnas excluyentes para que sea imposible promediar un alquiler con una compra.</p>
+        </div>
+        <div class="stage">
+          <span class="file">eda_exploratorio.py</span>
+          <p class="what"><strong>Etapa 3 · Exploración.</strong> Distribuciones, precio/m², boxplots. Aquí se detectaron las cuatro viviendas con m² imposible.</p>
+        </div>
+        <div class="stage">
+          <span class="file">modelo_financiero.py</span>
+          <p class="what"><strong>Etapa 4 · Modelo.</strong> El núcleo, 469 líneas. Bloque de datos observados y bloque de supuestos, separados. Calcula 4 estrategias × 3 escenarios, con ROI sobre los dos denominadores.</p>
+        </div>
+        <div class="stage">
+          <span class="file">punto_equilibrio_dias.py</span>
+          <p class="what">Invierte el modelo (la idea 7). <strong>Importa</strong> las constantes de <code>modelo_financiero.py</code> en vez de repetirlas.</p>
+        </div>
+        <div class="stage">
+          <span class="file">serie_temporal_estrategias.py</span>
+          <p class="what">Expande el modelo a 360 meses con estacionalidad. Calcula payback y cruces entre estrategias. Alimenta Power BI. También importa del modelo.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <span class="lbl">Detalle de diseño que conviene saber explicar</span>
+        <p>Los dos últimos scripts <strong>importan</strong> los supuestos de <code>modelo_financiero.py</code> en lugar de tener su propia copia. Es deliberado: si cada uno tuviera sus constantes, al cambiar una en un sitio los modelos empezarían a contradecirse entre sí sin que nadie se diera cuenta. Con una sola fuente de verdad, eso no puede pasar.</p>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section id="resultados">
+      <h2><span class="num">Sección 06</span>Qué sabemos y con cuánta certeza</h2>
+
+      <h3>Lo que está firme</h3>
+      <p><strong>Entre residencial y estudiantil gana el residencial</strong>, 3,30% frente a 2,44% de ROI neto. Esta comparación no depende del supuesto de ocupación turística, se apoya en las dos muestras más grandes (n=39 y n=28), y se sostiene tal cual.</p>
+      <p>El mecanismo: tres habitaciones a 292 € dan 876 €/mes brutos, menos que los 990 € del piso completo, y encima el modelo estudiantil pierde julio y agosto, cuando la demanda universitaria desaparece.</p>
+
+      <h3>Lo que depende del escenario</h3>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr><th>Estrategia</th><th class="num">Pesimista</th><th class="num">Base</th><th class="num">Optimista</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Residencial anual</td><td class="num win">3,30%</td><td class="num">3,30%</td><td class="num">3,30%</td></tr>
+            <tr><td>Estudiantil por habitación</td><td class="num">2,44%</td><td class="num">2,44%</td><td class="num">2,44%</td></tr>
+            <tr><td>Turístico</td><td class="num">2,80%</td><td class="num win">6,51%</td><td class="num win">11,95%</td></tr>
+            <tr><td>Mixto (curso + verano)</td><td class="num">2,84%</td><td class="num">3,45%</td><td class="num">4,36%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>El umbral que lo decide todo</h3>
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr><th>Estructura de costes</th><th class="num">Noches/mes</th><th class="num">Al año</th><th class="num">Ocupación</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Suelo — solo coste documentado</strong></td><td class="num win">6,9</td><td class="num">83</td><td class="num">22,6%</td></tr>
+            <tr><td>Costes optimistas</td><td class="num">7,9</td><td class="num">95</td><td class="num">26,1%</td></tr>
+            <tr><td>Costes base</td><td class="num">10,7</td><td class="num">128</td><td class="num">35,1%</td></tr>
+            <tr><td>Costes pesimistas</td><td class="num">15,3</td><td class="num">184</td><td class="num">50,4%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Leído en cristiano: con gestión externalizada necesitas medio año ocupado para batir a un inquilino tranquilo; autogestionando, te basta con algo más de un cuarto. <strong>La decisión no depende solo de cuánta ocupación consigas, sino de cómo gestiones los costes.</strong></p>
+
+      <h3>El hallazgo lateral</h3>
+      <p>Al intentar ampliar la muestra turística apareció algo que no se buscaba: acotando la búsqueda a las coordenadas del municipio, Airbnb tiene entre 10 y 14 alojamientos enteros, y Booking solo 2. De 16 propiedades únicas, <strong>9 son villas o chalets</strong> con piscina para grupos grandes. Solo 4 o 5 son pisos comparables al arquetipo.</p>
+      <p>Es decir: n=4 no es un defecto de la extracción, <em>es el tamaño real del mercado</em>. Y convertir un piso estándar en turístico allí significa entrar en un mercado dominado por otro producto y otro cliente.</p>
+
+      <h3>Y un patrón de estacionalidad</h3>
+      <p>Consultando las mismas propiedades en tres fechas: las villas suben mucho en verano (+75% la más grande, +30% otra), pero <strong>los pisos se quedan planos</strong>, e incluso bajan. Sugiere que la demanda turística de pisos en San Vicente no es de playa sino universitaria: familias de visita, profesorado, congresos.</p>
+    </section>
+
+    <!-- 7 -->
+    <section id="defensa">
+      <h2><span class="num">Sección 07</span>Cómo defenderlo</h2>
+      <p class="lede">Las preguntas que te pueden hacer y que conviene tener contestadas de antemano. En todas, la respuesta buena reconoce el límite en vez de esquivarlo.</p>
+
+      <div class="qa">
+        <p class="q">Con solo 4 anuncios turísticos, ¿esto vale para algo?</p>
+        <p class="a">Vale para lo que dice que vale. Cuatro comparables no permiten hablar de «precio de mercado» en sentido estadístico, y por eso el n aparece siempre junto a la cifra. Pero <strong>ese n pequeño es en sí un resultado</strong>: el municipio solo tiene 4 o 5 pisos turísticos comparables porque su parque turístico son villas. Lo comprobamos con dos plataformas y el registro oficial.</p>
+      </div>
+
+      <div class="qa">
+        <p class="q">La ocupación del 77% es de Alicante, no de San Vicente. ¿No invalida el modelo?</p>
+        <p class="a">Invalidaría un modelo que dependiera de ella, y por eso el resultado principal no depende. El punto de equilibrio en noches se calcula sin asumir ocupación ninguna: parte de precios observados y despeja. El 77% solo aparece como el techo del escenario optimista, y está declarado como proxy.</p>
+      </div>
+
+      <div class="qa">
+        <p class="q">Los costes de limpieza y gestión te los has inventado.</p>
+        <p class="a">Correcto, y está dicho en el documento de supuestos: <strong>de los siete parámetros de coste, solo la comisión de plataforma está documentada</strong>. Precisamente por eso existe el caso suelo, que los pone todos a cero y da un límite inferior de 6,9 noches que no depende de ninguna estimación. Afinarlos requeriría presupuestos reales de proveedores de la zona.</p>
+      </div>
+
+      <div class="qa">
+        <p class="q">¿Cómo sabes que dos anuncios son el mismo piso?</p>
+        <p class="a">No lo sé con certeza, y el proyecto no lo afirma. Los portales no publican la calle en los listados, así que se empareja por precio, habitaciones y m² aproximados. Es una heurística declarada como tal, los duplicados quedan marcados y no borrados, y existe un fichero de auditoría para revisarlos uno a uno.</p>
+      </div>
+
+      <div class="qa">
+        <p class="q">Dices que el piso se amortiza en 30 años. Eso es malísimo, ¿no?</p>
+        <p class="a">Es el payback <em>del alquiler</em>, no de la inversión. No incluye la revalorización del inmueble, que en una decisión real de compra pesa mucho. No la incluye porque de venta solo tenemos una foto de precios, no una serie histórica — haría falta el IPV del INE. Es una limitación declarada, no un olvido.</p>
+      </div>
+
+      <div class="qa">
+        <p class="q">Tu media de €/m² es casi el doble que el dato oficial.</p>
+        <p class="a">Sí, y es esperable: SERPAVI mide contratos de fianza depositados y nuestra muestra mide precios publicados, que siempre están por encima. Además la extracción llevaba un filtro que excluía lo más barato. Como referencia legal vale la oficial; la nuestra sirve para comparar estrategias entre sí, que es para lo que se usa.</p>
+      </div>
+
+      <div class="qa">
+        <p class="q">¿Por qué ese arquetipo y no otro?</p>
+        <p class="a">Porque es el perfil más frecuente en las tres fuentes a la vez, lo que garantiza que hay comparables en todas. Es una decisión discutible y por eso está escrita: con otro arquetipo los números cambiarían, aunque el mecanismo del análisis seguiría siendo el mismo.</p>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section id="calibracion">
+      <h2><span class="num">Sección 08</span>Dónde está el nivel de verdad</h2>
+      <p class="lede">Una lectura honesta de qué tiene este proyecto por encima de un trabajo de bootcamp, y qué no.</p>
+
+      <h3>Por encima</h3>
+      <ul>
+        <li><strong>Integración de cuatro fuentes heterogéneas</strong> con esquemas distintos, frente a un único CSV ya montado.</li>
+        <li><strong>Deduplicación sin clave</strong>, asumida y declarada como heurística.</li>
+        <li><strong>Modelo financiero</strong> con costes, fiscalidad y dos denominadores, no solo estadística descriptiva.</li>
+        <li><strong>Escenarios y análisis de sensibilidad</strong> en lugar de un número único.</li>
+        <li><strong>Inversión del modelo</strong> para no depender de un parámetro no medido. Esto es lo más difícil de todo el trabajo y no es habitual ni a nivel profesional junior.</li>
+        <li><strong>Separación explícita de datos y supuestos</strong>, con ficheros distintos.</li>
+        <li><strong>Corrección documentada de errores propios</strong>: el proyecto lleva escrito que una versión anterior daba 12,2% al turístico por no contar los costes operativos, y por qué eso estaba mal.</li>
+      </ul>
+
+      <h3>Por debajo, todavía</h3>
+      <ul>
+        <li><strong>Sin estadística inferencial.</strong> No hay intervalos de confianza ni contrastes; con estas muestras sería exigible al menos discutir la incertidumbre de forma cuantitativa.</li>
+        <li><strong>La heurística de duplicados no está validada.</strong> Habría que revisar a mano una muestra de los pares marcados y dar una tasa de acierto.</li>
+        <li><strong>Faltan los costes de puesta a punto</strong> (amueblar y equipar), sensiblemente mayores en turístico, que penalizarían al turístico en los primeros años.</li>
+        <li><strong>Sin tests.</strong> Los scripts de limpieza no tienen pruebas automáticas.</li>
+      </ul>
+
+      <div class="callout">
+        <span class="lbl">La frase que resume el proyecto</span>
+        <p>El alquiler turístico maximiza la rentabilidad <strong>bajo escenarios de ocupación superiores al 26-51%</strong> según cómo se gestionen los costes, mientras que el residencial ofrece menor rentabilidad potencial pero mucha menor exposición a la estacionalidad, a los costes operativos y a la carga de gestión. La ocupación turística real de San Vicente del Raspeig no está medida en este trabajo: es el supuesto del que depende la conclusión.</p>
+        <p>Fíjate en la forma. No dice qué es mejor: dice <em>bajo qué condiciones</em> cada cosa es mejor, y termina señalando su propio punto débil. Esa es la diferencia entre calcular un ROI y hacer análisis.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Proyecto de rentabilidad de alquiler · San Vicente del Raspeig, Alicante
+  </footer>
+</div>
