@@ -165,7 +165,22 @@ def cargar_arquetipo(verbose=True):
     arquetipo_venta = venta[(venta["habitaciones"] == 3) & (venta["m2"].between(70, 130)) &
                              (~venta["es_outlier_lujo"])]
     ua_hab = ua[ua["tipo_oferta_simplificado"] == "habitacion"]["precio_num"]
-    tur_completa = turistico[turistico["categoria"] == "vivienda_completa"]["precio_noche"]
+
+    # Precio turistico: se prefiere la captura ampliada de 2026-09-01 (busqueda
+    # acotada por mapa al municipio + filtro alojamiento entero + 3 fechas), que
+    # ademas separa villas/chalets de pisos. Solo se usan los PISOS de 3-4 dorm.
+    # y se excluye el que tiene piscina en azotea (producto premium), porque el
+    # arquetipo del proyecto es un piso estandar sin piscina.
+    # Si ese fichero no existe, se cae a la captura antigua (n=7, peor).
+    comparables_path = LIMPIO_DIR / "turistico_comparables_arquetipo.csv"
+    if comparables_path.exists():
+        comp = pd.read_csv(comparables_path, sep=";")
+        comp = comp[~comp["nombre"].str.contains("piscina", case=False, na=False)]
+        tur_completa = comp["precio_noche"]
+        origen_turistico = "turistico_comparables_arquetipo.csv (pisos 3-4 dorm., sin piscina)"
+    else:
+        tur_completa = turistico[turistico["categoria"] == "vivienda_completa"]["precio_noche"]
+        origen_turistico = "turistico_precios_limpio.csv (captura antigua)"
 
     datos = {
         "precio_compra": arquetipo_venta["precio"].median(),
@@ -176,6 +191,7 @@ def cargar_arquetipo(verbose=True):
         "n_habitacion": int(ua_hab.count()),
         "precio_noche_turistico": tur_completa.median(),
         "n_turistico": int(tur_completa.count()),
+        "origen_turistico": origen_turistico,
     }
 
     if verbose:
@@ -186,6 +202,7 @@ def cargar_arquetipo(verbose=True):
         print(f"Alquiler residencial ............ {datos['precio_residencial_mes']:>10,.0f} EUR/mes        (mediana, n={datos['n_residencial']})")
         print(f"Alquiler por habitacion (UA) .... {datos['precio_habitacion_mes']:>10,.0f} EUR/hab./mes   (mediana, n={datos['n_habitacion']})")
         print(f"Precio/noche turistico .......... {datos['precio_noche_turistico']:>10,.0f} EUR/noche      (mediana, n={datos['n_turistico']})  <-- n pequeño, menos robusto")
+        print(f"    fuente del precio turistico: {datos['origen_turistico']}")
         print()
         print("=" * 78)
         print("BLOQUE 2 — SUPUESTOS (hipotesis del modelo, NO datos de San Vicente)")

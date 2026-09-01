@@ -1,0 +1,37 @@
+fecha_captura;fuente;temporada;nombre;tipo_alojamiento;municipio;en_san_vicente;dormitorios;camas;banos;m2;anfitrion;noches;precio_total_eur;valoracion;num_valoraciones;busqueda
+2026-09-01;Airbnb;media (oct);Luminoso apartamento de 4 dormitorios cerca de Alicante;Apartamento;Sant Vicent del Raspeig;si;4;5;1.5;;profesional;5;750;5.0;5;mapa acotado SVR 2026-10-05/10 entire_home
+2026-09-01;Airbnb;media (oct);Amplio Loft al lado de la Universidad;Loft;San Vicente del Raspeig;si;1;1;1;;particular;5;456;4.78;49;mapa acotado SVR 2026-10-05/10 entire_home
+2026-09-01;Airbnb;media (oct);Casa lulu, enorme piscina, jardin, suite;Villa;San Vicente del Raspeig;si;6;7;4;;particular;5;2043;4.82;11;mapa acotado SVR 2026-10-05/10 entire_home
+2026-09-01;Airbnb;media (oct);Villa Lago;Villa;San Vicente del Raspeig;si;5;7;4;;particular;5;3659;;;mapa acotado SVR 2026-10-05/10 entire_home
+2026-09-01;Airbnb;media (oct);Villa Mulet con piscina exotica para 8 personas;Vivienda;San Vicente del Raspeig;si;3;5;1;;profesional;5;1407;4.71;17;mapa acotado SVR 2026-10-05/10 entire_home
+2026-09-01;Airbnb;media (oct);Villa con piscina de diseno y gran estanque;Chalet;San Vicente del Raspeig;si;4;5;2;;particular;5;1569;;;mapa acotado SVR 2026-10-05/10 entire_home
+2026-09-01;Airbnb;media (oct);Casa abedul;Chalet;San Vicente del Raspeig;si;6;6;3;;particular;5;2371;;;mapa acotado SVR 2026-10-05/10 entire_home
+2026-09-01;Airbnb;media (oct);La casa de la chimenea;Casa rural;Alicante;no;2;3;1;;particular;5;851;4.95;22;mapa acotado SVR 2026-10-05/10 entire_home
+2026-09-01;Airbnb;media (oct);La Cocina De Paqui;Vivienda;Alicante;no;2;5;1;;profesional;5;927;4.33;3;mapa acotado SVR 2026-10-05/10 entire_home
+2026-09-01;Airbnb;media (oct);La Campaneta a 15 min del centro y playa;Vivienda;Alicante;no;3;;1;;particular;5;902;;;mapa acotado SVR 2026-10-05/10 entire_home
+2026-09-01;Airbnb;alta (jul);Alojamiento rural con piscina privada;Casa rural;San Vicente del Raspeig;si;1;1;1;;particular;5;902;5.0;89;mapa acotado SVR 2027-07-12/17 entire_home
+2026-09-01;Airbnb;alta (jul);Piso moderno a 15 de la playa;Vivienda;San Vicente del Raspeig;si;3;3;1;;profesional;5;591;4.17;6;mapa acotado SVR 2027-07-12/17 entire_home
+2026-09-01;Airbnb;alta (jul);Villa Sensation Seasons mediterranea;Villa;San Vicente del Raspeig;si;10;16;6.5;;profesional;5;8827;4.83;6;mapa acotado SVR 2027-07-12/17 entire_home
+2026-09-01;Airbnb;alta (jul);Apartamento 3 dormitorios con piscina en cubierta;Apartamento;San Vicente del Raspeig;si;3;3;2;90;particular;5;1394;5.0;4;mapa acotado SVR 2027-07-12/17 entire_home
+2026-09-01;Airbnb;alta (jul);Villa Mulet con piscina exotica para 8 personas;Vivienda;San Vicente del Raspeig;si;3;5;1;;profesional;5;1757;4.71;17;mapa acotado SVR 2027-07-12/17 entire_home
+2026-09-01;Airbnb;alta (jul);Bungalow Navarro;Adosado;San Vicente del Raspeig;si;5;5;2.5;;particular;5;814;4.82;11;mapa acotado SVR 2027-07-12/17 entire_home
+2026-09-01;Airbnb;alta (jul);Piso coqueto a 15 de la playa;Vivienda;San Vicente del Raspeig;si;3;3;1;;profesional;5;703;4.33;9;mapa acotado SVR 2027-07-12/17 entire_home
+2026-09-01;Airbnb;alta (jul);La casa de la chimenea;Casa rural;Alicante;no;2;3;1;;particular;5;1009;4.95;22;mapa acotado SVR 2027-07-12/17 entire_home
+2026-09-01;Airbnb;alta (jul);La Cocina De Paqui;Vivienda;Alicante;no;2;5;1;;profesional;5;989;4.33;3;mapa acotado SVR 2027-07-12/17 entire_home
+2026-09-01;Airbnb;alta (jul);La Campaneta a 15 min del centro y playa;Vivienda;Alicante;no;3;;1;;particular;5;902;;;mapa acotado SVR 2027-07-12/17 entire_home
+2026-09-01;Airbnb;baja (feb);Luminoso apartamento de 4 dormitorios cerca de Alicante;Apartamento;Sant Vicent del Raspeig;si;4;5;1.5;;profesional;5;756;5.0;5;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);Alojamiento rural con piscina privada;Casa rural;San Vicente del Raspeig;si;1;1;1;;particular;5;785;5.0;89;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);Amplio Loft al lado de la Universidad;Loft;San Vicente del Raspeig;si;1;1;1;;particular;5;525;4.78;49;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);Villa Haygon con piscina climatizada, bbq y sauna;Vivienda;San Vicente del Raspeig;si;5;6;3;;particular;5;2815;4.93;147;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);Villa Sensation Seasons mediterranea;Villa;San Vicente del Raspeig;si;10;16;6.5;;profesional;5;5030;4.83;6;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);Villa Lago;Villa;San Vicente del Raspeig;si;5;7;4;;particular;5;3396;;;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);Bungalow Navarro;Adosado;San Vicente del Raspeig;si;5;5;2.5;;particular;5;814;4.82;11;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);Casa lulu, enorme piscina, jardin, suite;Villa;San Vicente del Raspeig;si;6;7;4;;particular;5;2087;4.82;11;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);Villa Mulet con piscina exotica para 8 personas;Vivienda;San Vicente del Raspeig;si;3;5;1;;profesional;5;1354;4.71;17;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);Casa abedul;Chalet;San Vicente del Raspeig;si;6;6;3;;particular;5;2928;;;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);La casa de la chimenea;Casa rural;Alicante;no;2;3;1;;particular;5;772;4.95;22;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);Casa de campo con piscina;Vivienda;Alicante;no;4;7;2;;particular;5;1757;4.69;29;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);La Cocina De Paqui;Vivienda;Alicante;no;2;5;1;;profesional;5;927;4.33;3;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Airbnb;baja (feb);La Campaneta a 15 min del centro y playa;Vivienda;Alicante;no;3;;1;;particular;5;902;;;mapa acotado SVR 2027-02-08/13 entire_home
+2026-09-01;Booking;alta (jul);Habitacion en San Vicente del Raspeig Alicante;Apartamento;San Vicente del Raspeig;si;1;1;1;17;particular;5;284;3.6;15;busqueda SVR 2027-07-12/17 apartamentos
+2026-09-01;Booking;alta (jul);Apartamento 3 dormitorios (piscina en azotea);Apartamento;San Vicente del Raspeig;si;3;3;2;90;particular;5;997;9.2;7;busqueda SVR 2027-07-12/17 apartamentos

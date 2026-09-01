@@ -2,4 +2,4 @@ concepto;valor;unidad;n;fuente;tipo
 Precio de compra (arquetipo 3 hab.);237950.0;EUR;22;limpio/venta_limpio.csv;DATO OBSERVADO
 Alquiler residencial anual;990.0;EUR/mes;39;limpio/alquiler_residencial_limpio.csv;DATO OBSERVADO
 Alquiler por habitacion (UA);292.5;EUR/hab./mes;28;limpio/ua_limpio.csv;DATO OBSERVADO
-Precio/noche turistico (vivienda completa);122.33333333333331;EUR/noche;7;limpio/turistico_precios_limpio.csv;DATO OBSERVADO
+Precio/noche turistico (vivienda completa);145.3;EUR/noche;4;limpio/turistico_precios_limpio.csv;DATO OBSERVADO

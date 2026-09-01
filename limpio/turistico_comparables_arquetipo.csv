@@ -1,0 +1,7 @@
+fecha_captura;fuente;temporada;nombre;tipo_alojamiento;municipio;en_san_vicente;dormitorios;camas;banos;m2;anfitrion;noches;precio_total_eur;valoracion;num_valoraciones;busqueda;precio_noche;es_villa_o_chalet
+2026-09-01;Airbnb;media (oct);Luminoso apartamento de 4 dormitorios cerca de Alicante;Apartamento;Sant Vicent del Raspeig;si;4;5.0;1.5;;profesional;5;750;5.0;5.0;mapa acotado SVR 2026-10-05/10 entire_home;150.0;False
+2026-09-01;Airbnb;alta (jul);Piso moderno a 15 de la playa;Vivienda;San Vicente del Raspeig;si;3;3.0;1.0;;profesional;5;591;4.17;6.0;mapa acotado SVR 2027-07-12/17 entire_home;118.2;False
+2026-09-01;Airbnb;alta (jul);Apartamento 3 dormitorios con piscina en cubierta;Apartamento;San Vicente del Raspeig;si;3;3.0;2.0;90.0;particular;5;1394;5.0;4.0;mapa acotado SVR 2027-07-12/17 entire_home;278.8;False
+2026-09-01;Airbnb;alta (jul);Piso coqueto a 15 de la playa;Vivienda;San Vicente del Raspeig;si;3;3.0;1.0;;profesional;5;703;4.33;9.0;mapa acotado SVR 2027-07-12/17 entire_home;140.6;False
+2026-09-01;Airbnb;baja (feb);Luminoso apartamento de 4 dormitorios cerca de Alicante;Apartamento;Sant Vicent del Raspeig;si;4;5.0;1.5;;profesional;5;756;5.0;5.0;mapa acotado SVR 2027-02-08/13 entire_home;151.2;False
+2026-09-01;Booking;alta (jul);Apartamento 3 dormitorios (piscina en azotea);Apartamento;San Vicente del Raspeig;si;3;3.0;2.0;90.0;particular;5;997;9.2;7.0;busqueda SVR 2027-07-12/17 apartamentos;199.4;False
