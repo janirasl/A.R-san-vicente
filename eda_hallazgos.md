@@ -1,83 +1,122 @@
 # EDA y modelo financiero — hallazgos
 
-Resultado del análisis exploratorio (`scripts/eda_exploratorio.py`) y del modelo financiero comparativo (`scripts/modelo_financiero.py`) sobre los 5 CSV limpios. Sigue tu metodología: distribución de precios → comparación de viviendas equivalentes (mismo arquetipo) → ingresos brutos − gastos = ingresos netos → ROI.
+Resultado del análisis exploratorio (`scripts/eda_exploratorio.py`), del modelo financiero por escenarios (`scripts/modelo_financiero.py`) y de la serie temporal mensual (`scripts/serie_temporal_estrategias.py`).
 
-## El arquetipo usado para comparar
+> **Nota de versión.** Este documento recoge el modelo corregido tras una revisión crítica. La versión anterior daba al turístico un ROI del 12,2% porque solo le imputaba una comisión de plataforma del 10% y ningún coste operativo, y porque asumía que el alquiler estudiantil se cobraba 12 meses al año. Ambas cosas estaban mal y se han corregido. Las conclusiones han cambiado de forma sustancial.
 
-Para que las 4 estrategias sean comparables hace falta fijar una misma vivienda de referencia. Se eligió **piso de 3 habitaciones, ~90-100 m²**, por ser el más representativo en las tres fuentes a la vez: 46% del alquiler residencial (66/144), el grupo más numeroso en venta (31/99) y el mayoritario en piso completo de la UA (10/17).
+## Principio metodológico: datos ≠ supuestos
 
-| Dato del arquetipo | Valor | Fuente / n |
-|---|---|---|
-| Precio de compra | 237.950 € (mediana) | venta_limpio, n=22 |
-| Alquiler residencial anual | 968 €/mes (mediana) | alquiler_residencial_limpio, n=34 |
-| Alquiler por habitación (UA) | 292 €/hab./mes (mediana) | ua_limpio, n=28 |
-| Precio/noche turístico (vivienda completa) | 122 €/noche (mediana) | turistico_precios_limpio, n=7 |
+Todo lo que sigue distingue explícitamente dos cosas:
 
-## Distribuciones (EDA exploratorio)
+- **Datos observados** — salen de los CSV limpios del proyecto, cada uno con su tamaño de muestra. Es lo único que se puede defender como "dato de San Vicente del Raspeig". Exportados en `eda/datos_observados.csv`.
+- **Supuestos** — hipótesis del modelo. **Ninguna** procede de una medición local. Exportados en `eda/supuestos_modelo.csv`, con su justificación.
 
-- **Alquiler residencial**: precio/m² medio 11,1 €/m²/mes (mediana 10,5), muy por encima del dato oficial SERPAVI (6,4 €/m²/mes) y también del agregador de mercado (7,6 €/m²/mes). Es esperable en parte: la muestra de Idealista se extrajo con filtro "hasta 2.000€, 2-5 hab." y muchos anuncios son de temporada/estudiantes, que suelen cotizar más caro por m² que el alquiler tradicional de larga duración que mide SERPAVI — no es necesariamente un error de los datos, pero conviene mencionarlo como limitación de la muestra en la memoria.
-- El precio/m² baja según sube el número de habitaciones (pisos grandes más baratos por m², patrón típico del mercado).
-- Se detectaron 4 viviendas con m² claramente mal extraído de la fuente RAW (precio/m² por debajo de 3€, imposible en este mercado) — quedan marcadas (`m2_sospechoso`) y excluidas solo de los cálculos de precio/m², no borradas.
-- **Venta**: precio/m² medio 2.273 €/m² excluyendo los 5 outliers de lujo (p95). Apartamento y bungalow salen más caros por m² que piso y chalet/villa en esta muestra — con pocas filas por tipo, tómalo como orientativo, no concluyente.
-- **UA bolsa de alojamiento**: habitación suelta 292€/mes (mediana) vs. piso completo 1.050€/mes (mediana) — la relación no es exactamente ×3 porque el piso completo tiene descuento por volumen respecto a sumar 3 habitaciones sueltas.
-- **Turístico**: vivienda completa 122€/noche (mediana), habitación/hotel 72€/noche, villas 484€/noche (categoría aparte, no comparable al arquetipo). Con solo 22 anuncios en San Vicente (frente a los cientos de Idealista/Fotocasa), estas cifras tienen más incertidumbre que las de alquiler/venta.
+### Datos observados (arquetipo: piso 3 hab., ~90-100 m²)
 
-## Comparativa de las 4 estrategias (ingreso NETO y ROI)
+| Concepto | Valor | n | Fuente |
+|---|---|---|---|
+| Precio de compra | 237.950 € | 22 | `venta_limpio.csv` |
+| Alquiler residencial | 990 €/mes | 39 | `alquiler_residencial_limpio.csv` |
+| Alquiler por habitación (UA) | 292 €/hab./mes | 28 | `ua_limpio.csv` |
+| Precio/noche turístico | 122 €/noche | **7** | `turistico_precios_limpio.csv` |
 
-Gastos aplicados: IBI estimado (0,767% sobre un valor catastral asumido al 55% del precio de mercado, ya que no hay valor catastral real por vivienda) + comunidad (70€/mes, punto medio del rango 40-100€) + seguro de impago (6,5% del bruto, solo residencial/estudiantil) + comisión de plataforma (10% del bruto, solo turístico). Todos los supuestos están marcados en el propio script (`modelo_financiero.py`) para que los puedas cambiar sin tocar el resto del código.
+El arquetipo se eligió por ser el más representativo en las tres fuentes: 46% del alquiler residencial, el grupo más numeroso en venta y el mayoritario en piso completo de la UA.
 
-| Estrategia | Ingreso bruto/año | Gastos/año | Ingreso neto/año | Neto/mes | Yield bruto | **ROI neto** | Payback |
-|---|---|---|---|---|---|---|---|
-| 1. Residencial anual | 11.610 € | 2.598 € | 9.012 € | 751 € | 4,88% | **3,79%** | 26,4 años |
-| 2. Estudiantil x habitación | 10.530 € | 2.528 € | 8.002 € | 667 € | 4,43% | **3,36%** | 29,7 años |
-| 3. Turístico (Airbnb/Booking) | 34.363 € | 5.280 € | 29.083 € | 2.424 € | 14,44% | **12,22%** | 8,2 años |
-| 4. Mixto (9m estudiantil + 3m turístico) | 16.488 € | 3.216 € | 13.272 € | 1.106 € | 6,93% | **5,58%** | 17,9 años |
+**Atención al n=7 del precio turístico.** Es, con diferencia, la cifra menos robusta del modelo, y además alimenta la estrategia sobre la que gira toda la conclusión. Debe aparecer siempre con su n al lado, nunca sola.
 
-*(tabla completa, con más decimales, en `eda/comparativa_estrategias.csv`)*
+### Inversión real
 
-**El turístico gana claramente en ROI neto antes de impuestos** (12,2% anual, casi el triple que el residencial). El modelo mixto (curso académico + verano turístico) queda en un cómodo segundo puesto, muy por encima de las dos estrategias "puras" de alquiler tradicional.
+La rentabilidad se calcula sobre **dos denominadores**, porque no son lo mismo:
 
-### Pero hay un matiz fiscal importante
+- Precio de compra: 237.950 €
+- **Inversión total desembolsada: 264.124 €** (compra + ~11% de ITP, notaría, registro y gestoría)
 
-El turístico **no tiene ninguna reducción de IRPF** (tributa el 100% del rendimiento neto), mientras que residencial y estudiantil tienen una reducción del 50% sobre la base imponible (caso general). Eso significa que, aunque el turístico gana en neto antes de impuestos, una parte mayor de ese neto tributa:
+La segunda es la que refleja el dinero que realmente sale del bolsillo, y es la que se usa como referencia principal.
 
-| Estrategia | Base imponible IRPF | % del neto que tributa |
-|---|---|---|
-| 1. Residencial anual | 4.506 € | 50% |
-| 2. Estudiantil x habitación | 4.001 € | 50% |
-| 3. Turístico | 29.083 € | 100% |
-| 4. Mixto | 10.094 € | 76% |
+## Lo que faltaba: los costes operativos del turístico
 
-Aun así, con un ROI neto pre-impuestos casi 3-4× superior, el turístico probablemente sigue ganando después de aplicar el IRPF salvo en tramos marginales muy altos — pero para dar una cifra exacta de ROI *después* de impuestos haría falta tu tipo marginal de IRPF (no está en el alcance de datos de mercado que hemos recopilado).
+Este es el cambio más importante del modelo. El alquiler vacacional no es alquiler residencial con más ingresos: tiene una estructura de costes completamente distinta, y el modelo anterior la ignoraba casi por completo.
 
-## Limitaciones a mencionar en la memoria
+| Coste | Escenario pesimista | Base | Optimista |
+|---|---|---|---|
+| Limpieza entre estancias | 3.283 € | 2.736 € | 2.528 € |
+| Suministros (los paga el propietario) | 1.800 € | 1.440 € | 1.200 € |
+| Mantenimiento / reposición | 1.406 € | 1.339 € | 1.375 € |
+| Gestión | 3.615 € | 2.678 € | 0 € |
+| Comisión de plataforma | 3.012 € | 3.213 € | 1.718 € |
+| **Total operativo** | **13.116 €** | **11.406 €** | **6.821 €** |
+| **% del ingreso bruto** | **65,3%** | **42,6%** | **19,8%** |
 
-- La deduplicación cruzada Idealista↔Fotocasa/sesiones es heurística (precio+habitaciones+m², sin dirección exacta) — puede haber falsos positivos/negativos.
-- La ocupación turística (77%) es un proxy de Alicante ciudad, no un dato específico de San Vicente (el INE no cubre el municipio). Es el supuesto que más impacta el resultado de las estrategias 3 y 4 — por eso se añadió un análisis de sensibilidad (ver sección siguiente).
-- IBI, seguro de hogar, mantenimiento y gestión turística no tienen cifra oficial única — se usaron puntos medios de rangos documentados, marcados como `_ASUNCION` en el script.
-- El arquetipo de "estudiantil x habitación" asume ocupación completa de las 3 habitaciones los 12 meses; en la práctica el curso universitario no cubre el verano, que es justo el hueco que cubre la estrategia 4 (mixta).
-- Muestra turística pequeña (n=22 en San Vicente) frente a las ~250 de alquiler/venta — los precios turísticos tienen más margen de error.
+Entre el 20% y el 65% del ingreso bruto turístico se va en costes operativos. El modelo anterior contaba un 10%. De ahí venía la sobreestimación.
 
-## Análisis de sensibilidad: ¿y si Airbnb no está siempre alquilado?
+Dos detalles que suelen pasarse por alto y que aquí sí están: en vacacional **los suministros los paga el propietario** (en residencial los paga el inquilino), y **la limpieza escala con la rotación** — a estancias más cortas, más limpiezas por el mismo número de noches ocupadas.
 
-El modelo base asume el turístico ocupado el 77% del año (~281 noches), pero esa cifra es un **proxy de Alicante ciudad**, no un dato real de San Vicente del Raspeig (el INE no publica ocupación para el municipio — ver limitaciones). Es el supuesto que más pesa en el resultado, así que en vez de quedarnos con un único número se calculó el ROI del turístico y del mixto para ocupaciones entre el 10% y el 90%, y se buscó el punto de equilibrio frente al residencial.
+## Resultados por escenario
 
-Como el precio de compra, la comisión de plataforma y los gastos fijos son constantes, el ROI de ambas estrategias es una función **lineal** de la ocupación — el punto de equilibrio se puede calcular de forma exacta, no es una aproximación visual.
+Los tres escenarios mueven a la vez ocupación y costes, porque son justo las variables sin dato local:
 
-**Resultado (gráfico `graficos/07_sensibilidad_ocupacion.png`, tabla `eda/sensibilidad_ocupacion.csv`):**
+| Estrategia | Pesimista (oc. 45%) | Base (oc. 60%) | Optimista (oc. 77%) |
+|---|---|---|---|
+| 1. Residencial anual | **3,30%** | 3,30% | 3,30% |
+| 2. Estudiantil x habitación | 2,44% | 2,44% | 2,44% |
+| 3. Turístico | 1,94% | **5,12%** | **9,73%** |
+| 4. Mixto (curso + verano) | 2,69% | 3,22% | 3,99% |
 
-- El turístico deja de ganar al residencial (3,79% ROI) solo si la ocupación real cae **por debajo del 27%** (~99 noches/año, menos de 1 de cada 3 días con la vivienda alquilada).
-- El mixto deja de ganar al residencial solo si la ocupación de la parte de verano cae **por debajo del 34,6%**.
-- Con el supuesto base (77%), hay bastante margen de seguridad: la ocupación tendría que desplomarse a menos de un tercio de lo asumido para que el alquiler tradicional fuera mejor opción.
+*(ROI neto anual sobre inversión total; tabla completa en `eda/comparativa_estrategias_escenarios.csv`)*
 
-Dicho de otra forma: el resultado del turístico como estrategia ganadora **no depende de forma frágil** del 77% asumido — se sostiene incluso con una ocupación bastante más pesimista y realista para un municipio sin playa como San Vicente. Aun así, conviene declarar este supuesto explícitamente en la memoria del proyecto y, si en algún momento consigues una cifra de ocupación real (por ejemplo pidiendo datos a AirDNA o similar, o mirando reseñas/disponibilidad de anuncios concretos en Airbnb/Booking), sustituirla en `OCUPACION_TURISTICA` dentro de `modelo_financiero.py`.
+**El resultado ya no es "el turístico gana".** En el escenario pesimista, el residencial es la mejor opción — el turístico cae al último puesto, porque sus costes fijos y operativos no bajan proporcionalmente cuando cae la ocupación.
+
+### Umbrales de decisión
+
+A partir de qué ocupación el turístico supera al residencial, según la estructura de costes:
+
+| Estructura de costes | El turístico gana a partir de |
+|---|---|
+| Pesimista (gestión externalizada, estancias cortas, comisión alta) | **63,5%** de ocupación |
+| Base | **42,9%** de ocupación |
+| Optimista (autogestión, estancias largas, Airbnb split-fee) | **31,5%** de ocupación |
+
+Esto es lo verdaderamente interesante del análisis: la decisión no depende solo de cuánta ocupación consigas, sino de **cómo gestiones los costes**. Con gestión externalizada necesitas casi dos tercios del año ocupado para batir a un alquiler residencial tranquilo; autogestionando, te basta con un tercio.
+
+## Estacionalidad y horizonte temporal
+
+La serie mensual (`powerbi/flujo_mensual_estrategias.csv`, 30 años × 4 estrategias) usa exactamente los mismos supuestos que el modelo anual — los importa del mismo archivo, así que los dos modelos no pueden contradecirse.
+
+- **Estudiantil**: ocupación alta en curso (sep-jun) y baja en verano (jul-ago). Ya **no** se asume que se cobren 12 meses; esa corrección baja su ROI de 3,36% a 2,44% y la deja como la peor de las cuatro.
+- **Turístico**: curva estacional con pico en agosto, media anual igual a la del escenario.
+- **Residencial**: 95% todo el año (rotación de inquilinos).
+
+Payback sobre la inversión total, escenario base: turístico 19,7 años, mixto 28,2 años, residencial y estudiantil no la recuperan dentro de los 30 años analizados. El mixto adelanta al residencial en el mes 23.
+
+Ojo: es **payback simple**. No incorpora valor temporal del dinero, inflación, revalorización del inmueble, valor residual ni coste de oportunidad. Sirve para comparar estrategias entre sí sobre la misma vivienda, no para juzgar si comprar es buena inversión frente a otras alternativas.
+
+## Efecto fiscal
+
+El turístico no tiene reducción de IRPF (tributa el 100% del rendimiento neto); residencial y estudiantil tienen la reducción general del 50%. Esto se reporta como **base imponible**, no como rentabilidad después de impuestos — calcular el IRPF real exigiría el tipo marginal de la contribuyente, que no forma parte de los datos de mercado recopilados.
+
+## Conclusión (condicional)
+
+> El alquiler turístico maximiza la rentabilidad **bajo escenarios de ocupación superiores al 31-64%** —según cómo se gestionen los costes operativos—, mientras que el alquiler residencial ofrece menor rentabilidad potencial (3,30%) pero mucha menor exposición a la estacionalidad, a los costes operativos y a la carga de gestión. El alquiler estudiantil por habitaciones, una vez se deja de asumir que se cobra los 12 meses, es la menos rentable de las cuatro (2,44%).
+>
+> La ocupación turística real de San Vicente del Raspeig **no está medida en este trabajo**: es el supuesto del que depende toda la conclusión.
+
+## Limitaciones
+
+- La deduplicación cruzada Idealista↔Fotocasa es heurística (precio + habitaciones + m², sin dirección exacta): los portales no publican la calle en las páginas de resultados.
+- Ninguna ocupación del modelo (residencial 95%, estudiantil 95/30%, turística 45-77%) procede de una serie histórica local. Son supuestos.
+- Los costes operativos turísticos son estimaciones de mercado, no presupuestos pedidos a proveedores de la zona. Afinarlos requeriría pedir precios reales a una gestora y a un servicio de limpieza locales.
+- El IBI se estima aplicando el tipo oficial (0,767%) sobre un valor catastral supuesto al 55% del de mercado. El valor catastral real de una vivienda concreta puede diferir bastante.
+- No se incluye el coste de puesta a punto inicial (amueblar y equipar), que es sensiblemente mayor en turístico que en residencial y penalizaría más al turístico en los primeros años.
+- Muestra turística pequeña (n=7 para el precio del arquetipo).
+- El umbral de 600 € que separa habitación de piso completo en los datos de la UA es una regla heurística calibrada sobre esta muestra concreta, no una verdad general.
 
 ## Cómo reproducir / ajustar
 
 ```
 cd scripts
-python3 eda_exploratorio.py      # distribuciones y graficos/*.png
-python3 modelo_financiero.py     # tabla comparativa y graficos/06_comparativa_neta_roi.png
+python3 eda_exploratorio.py           # distribuciones y graficos/*.png
+python3 modelo_financiero.py          # escenarios, umbrales y eda/*.csv
+python3 serie_temporal_estrategias.py # serie mensual para Power BI
 ```
 
-Para probar otros supuestos (ocupación turística, comisión de plataforma, comunidad, etc.), cambia las constantes al principio de `modelo_financiero.py` y vuelve a ejecutar — no hace falta tocar el resto del script.
+Todos los supuestos están agrupados al principio de `modelo_financiero.py`, en un bloque marcado como tal. `serie_temporal_estrategias.py` los importa de ahí, así que basta con cambiarlos en un sitio para que los dos modelos se actualicen a la vez.

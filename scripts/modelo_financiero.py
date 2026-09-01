@@ -1,28 +1,41 @@
 """
 Modelo financiero comparativo de las 4 estrategias, sobre UN MISMO arquetipo
-de vivienda (para que la comparacion sea justa): piso de 3 habitaciones,
-~90-100 m2, San Vicente del Raspeig. Es el piso mas representativo de la
-muestra tanto en alquiler (66/144 = 46%) como en venta (31/99) y en UA piso
-completo (10/17).
+de vivienda: piso de 3 habitaciones, ~90-100 m2, San Vicente del Raspeig.
 
-Metodologia (la tuya): ingresos brutos - gastos = ingresos netos -> ROI.
-ROI aqui = ingreso neto anual / precio de compra del arquetipo (rentabilidad
-neta anual sobre la inversion, sin financiacion/hipoteca).
+Metodologia: ingresos brutos - gastos = ingresos netos -> ROI.
 
-Las 4 estrategias:
-  1. Residencial anual  -> todo el año, piso completo, un solo inquilino/familia.
-  2. Estudiantil x hab. -> todo el año, alquilado por habitaciones sueltas (UA).
-  3. Turistico           -> todo el año, Airbnb/Booking, precio/noche x ocupacion.
-  4. Mixto                -> 9 meses curso academico (estudiantil x hab.) +
-                             3 meses verano (turistico). Es la estrategia mas
-                             realista para una vivienda cerca de la UA: cubre el
-                             hueco de demanda turistica/estudiantil que tiene
-                             cada una por separado el resto del año.
+PRINCIPIO DE ESTE SCRIPT: separar siempre DATOS OBSERVADOS de SUPUESTOS.
+  - BLOQUE 1 (DATOS OBSERVADOS): sale de los CSV limpios del proyecto, cada
+    cifra con su tamaño de muestra (n). Es lo unico que se puede defender como
+    "dato de San Vicente del Raspeig".
+  - BLOQUE 2 (SUPUESTOS): hipotesis del modelo. NO son datos. Ninguna procede
+    de una medicion local; van con su justificacion y su rango. Se exportan a
+    eda/supuestos_modelo.csv para que en Power BI se vean como lo que son.
 
-TODOS los parametros de gasto/fiscalidad estan sacados de
-resumen_recopilacion_datos.md (seccion 6) y quedan marcados como supuesto
-('_ASUNCION') cuando la fuente da un rango en vez de una cifra unica, para que
-se puedan cambiar facilmente sin tocar el resto del script.
+Por eso las conclusiones de este script son CONDICIONALES: no dicen "el
+turistico rinde un X%", dicen "bajo un escenario de ocupacion del X% y unos
+costes operativos de Y, el modelo estima Z%".
+
+Las 4 estrategias (todas sobre el mismo piso, mismo precio de compra):
+  1. Residencial anual  -> todo el año, piso completo, un inquilino.
+  2. Estudiantil x hab. -> por habitaciones; curso academico (sep-jun) con
+     ocupacion alta y verano (jul-ago) con ocupacion baja. NO se asume que
+     los estudiantes paguen 12 meses: esa era una distorsion del modelo
+     anterior que inflaba esta estrategia.
+  3. Turistico          -> Airbnb/Booking, precio/noche x ocupacion, con los
+     costes operativos reales del vacacional (limpieza por estancia,
+     suministros a cargo del propietario, mantenimiento/reposicion, gestion
+     y comision de plataforma).
+  4. Mixto              -> curso academico por habitaciones + verano turistico.
+
+Se evalua en 3 ESCENARIOS (pesimista / base / optimista) que mueven a la vez
+la ocupacion turistica y sus costes, porque son justo las variables sin dato
+local y de las que depende toda la conclusion.
+
+ROI se reporta sobre DOS denominadores:
+  - precio de compra (237.950 €)
+  - inversion total = precio de compra + gastos de adquisicion (~264.000 €)
+La segunda es la que refleja el dinero realmente desembolsado.
 """
 
 import os
@@ -38,24 +51,109 @@ LIMPIO_DIR = SCRIPT_DIR.parent / "limpio"
 EDA_DIR = SCRIPT_DIR.parent / "eda"
 GRAF_DIR = SCRIPT_DIR.parent / "graficos"
 
-# ---------------------------------------------------------------------------
-# Supuestos / parametros (fuente: resumen_recopilacion_datos.md, seccion 6)
-# ---------------------------------------------------------------------------
-COMUNIDAD_MES = 70.0                 # ASUNCION: punto medio del rango 40-100 EUR/mes (piso estandar)
-SEGURO_IMPAGO_PCT = 0.065            # ASUNCION: punto medio del rango 5-8% de la renta bruta anual
-IBI_PCT_CATASTRAL = 0.00767          # dato oficial: tipo urbano San Vicente del Raspeig
-RATIO_CATASTRAL_MERCADO = 0.55       # ASUNCION: valor catastral suele rondar 50-60% del valor de mercado
-COMISION_TURISTICO_PCT = 0.10        # ASUNCION: punto medio entre Airbnb split-fee (~3%) y Booking (~15%)
-OCUPACION_TURISTICA = 0.77           # proxy Alicante (INE no cubre San Vicente), ~281 noches/año
-ITP_MAS_GASTOS_COMPRA_PCT = 0.11     # ASUNCION: punto medio del 10-12% (ITP 9% + notaria + registro + gestoria)
+# ===========================================================================
+# BLOQUE 2 — SUPUESTOS (esto NO son datos observados)
+# ===========================================================================
+# Calendario (compartido con serie_temporal_estrategias.py para que los dos
+# modelos no se contradigan)
+MESES_ACADEMICOS = {9, 10, 11, 12, 1, 2, 3, 4, 5, 6}   # sep-jun
+N_MESES_CURSO = len(MESES_ACADEMICOS)                   # 10
+N_MESES_VERANO = 12 - N_MESES_CURSO                     # 2 (jul-ago)
+
+# Gastos comunes a cualquier estrategia
+COMUNIDAD_MES = 70.0
+IBI_PCT_CATASTRAL = 0.00767          # dato oficial del municipio (tipo urbano)
+RATIO_CATASTRAL_MERCADO = 0.55       # SUPUESTO: valor catastral ~50-60% del de mercado
+ITP_MAS_GASTOS_COMPRA_PCT = 0.11     # SUPUESTO: punto medio del 10-12%
+
+# Residencial / estudiantil
+SEGURO_IMPAGO_PCT = 0.065            # SUPUESTO: punto medio del rango 5-8%
+OCUPACION_RESIDENCIAL = 0.95         # SUPUESTO: rotacion de inquilinos
+OCUPACION_ESTUDIANTIL_CURSO = 0.95   # SUPUESTO
+OCUPACION_ESTUDIANTIL_VERANO = 0.30  # SUPUESTO: la demanda universitaria desaparece
+
+# Fiscalidad
 REDUCCION_IRPF_RESIDENCIAL = 0.50    # caso general, contratos posteriores a mayo 2023
 REDUCCION_IRPF_TURISTICO = 0.0       # sin reduccion (capital inmobiliario puro)
 
-MESES_CURSO = 9
-MESES_VERANO = 3
+# --- Escenarios turisticos: ocupacion Y costes se mueven juntos -------------
+# Ninguna de estas cifras es un dato de San Vicente del Raspeig. La ocupacion
+# base (77%) es un proxy de Alicante ciudad; los costes operativos son
+# estimaciones de mercado, no presupuestos pedidos a proveedores locales.
+ESCENARIOS = {
+    "pesimista": dict(
+        ocupacion=0.45,
+        comision_pct=0.15,          # todo via Booking (~15%)
+        gestion_pct=0.18,           # gestion integral externalizada
+        limpieza_por_estancia=60.0,
+        noches_por_estancia=3.0,    # estancias cortas -> mas limpiezas
+        suministros_mes=150.0,      # aire acondicionado en verano, todo a cargo del propietario
+        mantenimiento_pct=0.07,     # reposicion textil/menaje, mayor desgaste
+    ),
+    "base": dict(
+        ocupacion=0.60,
+        comision_pct=0.12,          # mezcla Airbnb split-fee / Booking
+        gestion_pct=0.10,           # gestion parcial
+        limpieza_por_estancia=50.0,
+        noches_por_estancia=4.0,
+        suministros_mes=120.0,
+        mantenimiento_pct=0.05,
+    ),
+    "optimista": dict(
+        ocupacion=0.77,             # el proxy de Alicante ciudad pasa a ser el TECHO, no el caso base
+        comision_pct=0.05,          # casi todo Airbnb con split-fee (~3%)
+        gestion_pct=0.0,            # autogestion (coste en tiempo propio, no en dinero)
+        limpieza_por_estancia=45.0,
+        noches_por_estancia=5.0,    # estancias largas -> menos limpiezas
+        suministros_mes=100.0,
+        mantenimiento_pct=0.04,
+    ),
+}
+
+SUPUESTOS_DOC = [
+    ("comunidad_mes", COMUNIDAD_MES, "EUR/mes", "todas",
+     "Punto medio del rango 40-100 EUR/mes para piso estandar sin extras"),
+    ("ibi_pct_catastral", IBI_PCT_CATASTRAL, "% s/ valor catastral", "todas",
+     "DATO OFICIAL del municipio (tipo urbano). Lo que es supuesto es el valor catastral, no el tipo"),
+    ("ratio_catastral_mercado", RATIO_CATASTRAL_MERCADO, "ratio", "todas",
+     "SUPUESTO: el valor catastral suele rondar el 50-60% del de mercado. No es el valor catastral real de una vivienda concreta"),
+    ("itp_mas_gastos_compra_pct", ITP_MAS_GASTOS_COMPRA_PCT, "% s/ precio compra", "todas",
+     "Punto medio del 10-12% (ITP 9% CV + notaria + registro + gestoria)"),
+    ("seguro_impago_pct", SEGURO_IMPAGO_PCT, "% s/ renta bruta", "residencial/estudiantil",
+     "Punto medio del rango 5-8% de la renta anual bruta"),
+    ("ocupacion_residencial", OCUPACION_RESIDENCIAL, "ratio", "residencial",
+     "SUPUESTO: vacancia por rotacion de inquilinos. Sin dato local de rotacion"),
+    ("ocupacion_estudiantil_curso", OCUPACION_ESTUDIANTIL_CURSO, "ratio", "estudiantil/mixto",
+     "SUPUESTO: habitaciones casi siempre ocupadas durante el curso"),
+    ("ocupacion_estudiantil_verano", OCUPACION_ESTUDIANTIL_VERANO, "ratio", "estudiantil",
+     "SUPUESTO: la demanda universitaria desaparece en jul-ago. Sin serie historica de la UA"),
+    ("meses_curso", N_MESES_CURSO, "meses", "estudiantil/mixto",
+     "Calendario academico sep-jun"),
+    ("reduccion_irpf_residencial", REDUCCION_IRPF_RESIDENCIAL, "ratio", "residencial/estudiantil",
+     "Normativa: reduccion general del 50% del rendimiento neto (contratos post mayo 2023)"),
+    ("reduccion_irpf_turistico", REDUCCION_IRPF_TURISTICO, "ratio", "turistico",
+     "Normativa: el vacacional sin servicios de hosteleria no tiene reduccion"),
+]
 
 
-def cargar_arquetipo():
+def documentar_supuestos():
+    """Exporta los supuestos a CSV para que en Power BI se puedan mostrar
+    separados de los datos observados (y para que se vea que NINGUNO es una
+    medicion local)."""
+    filas = [dict(clave=c, valor=v, unidad=u, ambito=a, justificacion=j, tipo="SUPUESTO")
+             for c, v, u, a, j in SUPUESTOS_DOC]
+    for nombre, esc in ESCENARIOS.items():
+        for clave, valor in esc.items():
+            filas.append(dict(clave=f"{clave}", valor=valor, unidad="", ambito=f"turistico [escenario {nombre}]",
+                              justificacion="Escenario turistico: ninguna de estas cifras es un dato de San Vicente",
+                              tipo="SUPUESTO"))
+    return pd.DataFrame(filas)
+
+
+# ===========================================================================
+# BLOQUE 1 — DATOS OBSERVADOS (de los CSV limpios, con su n)
+# ===========================================================================
+def cargar_arquetipo(verbose=True):
     alq = pd.read_csv(LIMPIO_DIR / "alquiler_residencial_limpio.csv", sep=";")
     venta = pd.read_csv(LIMPIO_DIR / "venta_limpio.csv", sep=";")
     ua = pd.read_csv(LIMPIO_DIR / "ua_limpio.csv", sep=";")
@@ -66,247 +164,288 @@ def cargar_arquetipo():
                          (alq["tipo_alquiler"] == "anual/no_especificado")]
     arquetipo_venta = venta[(venta["habitaciones"] == 3) & (venta["m2"].between(70, 130)) &
                              (~venta["es_outlier_lujo"])]
+    ua_hab = ua[ua["tipo_oferta_simplificado"] == "habitacion"]["precio_num"]
+    tur_completa = turistico[turistico["categoria"] == "vivienda_completa"]["precio_noche"]
 
-    precio_compra = arquetipo_venta["precio"].median()
-    precio_residencial_mes = arquetipo_alq["precio_mes"].median()
-    precio_habitacion_mes = ua[ua["tipo_oferta_simplificado"] == "habitacion"]["precio_num"].median()
-    precio_noche_turistico = turistico[turistico["categoria"] == "vivienda_completa"]["precio_noche"].median()
-
-    print("--- Arquetipo: piso 3 hab. / 70-130 m2, San Vicente del Raspeig ---")
-    print(f"Precio de compra (mediana venta, n={len(arquetipo_venta)}): {precio_compra:,.0f} EUR")
-    print(f"Alquiler residencial anual (mediana, n={len(arquetipo_alq)}): {precio_residencial_mes:,.0f} EUR/mes")
-    print(f"Alquiler por habitacion UA (mediana, n={(ua['tipo_oferta_simplificado']=='habitacion').sum()}): {precio_habitacion_mes:,.0f} EUR/hab./mes")
-    print(f"Precio/noche turistico vivienda completa (mediana, n={(turistico['categoria']=='vivienda_completa').sum()}): {precio_noche_turistico:,.0f} EUR/noche")
-    print()
-
-    return {
-        "precio_compra": precio_compra,
-        "precio_residencial_mes": precio_residencial_mes,
-        "precio_habitacion_mes": precio_habitacion_mes,
-        "precio_noche_turistico": precio_noche_turistico,
+    datos = {
+        "precio_compra": arquetipo_venta["precio"].median(),
+        "n_compra": len(arquetipo_venta),
+        "precio_residencial_mes": arquetipo_alq["precio_mes"].median(),
+        "n_residencial": len(arquetipo_alq),
+        "precio_habitacion_mes": ua_hab.median(),
+        "n_habitacion": int(ua_hab.count()),
+        "precio_noche_turistico": tur_completa.median(),
+        "n_turistico": int(tur_completa.count()),
     }
 
+    if verbose:
+        print("=" * 78)
+        print("BLOQUE 1 — DATOS OBSERVADOS (de los CSV limpios del proyecto)")
+        print("=" * 78)
+        print(f"Precio de compra ................ {datos['precio_compra']:>10,.0f} EUR/vivienda   (mediana, n={datos['n_compra']})")
+        print(f"Alquiler residencial ............ {datos['precio_residencial_mes']:>10,.0f} EUR/mes        (mediana, n={datos['n_residencial']})")
+        print(f"Alquiler por habitacion (UA) .... {datos['precio_habitacion_mes']:>10,.0f} EUR/hab./mes   (mediana, n={datos['n_habitacion']})")
+        print(f"Precio/noche turistico .......... {datos['precio_noche_turistico']:>10,.0f} EUR/noche      (mediana, n={datos['n_turistico']})  <-- n pequeño, menos robusto")
+        print()
+        print("=" * 78)
+        print("BLOQUE 2 — SUPUESTOS (hipotesis del modelo, NO datos de San Vicente)")
+        print("=" * 78)
+        print("Ocupaciones, comisiones, limpieza, suministros, gestion, IBI estimado,")
+        print("gastos de compra y reducciones de IRPF -> ver eda/supuestos_modelo.csv")
+        print()
 
+    return datos
+
+
+def datos_observados_df(datos):
+    return pd.DataFrame([
+        dict(concepto="Precio de compra (arquetipo 3 hab.)", valor=datos["precio_compra"],
+             unidad="EUR", n=datos["n_compra"], fuente="limpio/venta_limpio.csv", tipo="DATO OBSERVADO"),
+        dict(concepto="Alquiler residencial anual", valor=datos["precio_residencial_mes"],
+             unidad="EUR/mes", n=datos["n_residencial"], fuente="limpio/alquiler_residencial_limpio.csv", tipo="DATO OBSERVADO"),
+        dict(concepto="Alquiler por habitacion (UA)", valor=datos["precio_habitacion_mes"],
+             unidad="EUR/hab./mes", n=datos["n_habitacion"], fuente="limpio/ua_limpio.csv", tipo="DATO OBSERVADO"),
+        dict(concepto="Precio/noche turistico (vivienda completa)", valor=datos["precio_noche_turistico"],
+             unidad="EUR/noche", n=datos["n_turistico"], fuente="limpio/turistico_precios_limpio.csv", tipo="DATO OBSERVADO"),
+    ])
+
+
+# ===========================================================================
+# Motor de calculo
+# ===========================================================================
 def gastos_fijos_anuales(precio_compra):
-    """Gastos que aplican TODOS los años, independientemente de la estrategia."""
     ibi = precio_compra * RATIO_CATASTRAL_MERCADO * IBI_PCT_CATASTRAL
     comunidad = COMUNIDAD_MES * 12
     return ibi, comunidad
 
 
-def neto_turistico(datos, gastos_fijos, ocupacion):
-    """Ingreso neto anual de la estrategia turistica pura, para una ocupacion dada."""
-    bruto = datos["precio_noche_turistico"] * 30.4 * ocupacion * 12
-    comision = bruto * COMISION_TURISTICO_PCT
-    neto = bruto - gastos_fijos - comision
-    return bruto, comision, neto
+def bruto_turistico_anual(datos, ocupacion, meses=12):
+    return datos["precio_noche_turistico"] * 30.4 * ocupacion * meses
 
 
-def neto_mixto(datos, gastos_fijos, ocupacion):
-    """Ingreso neto anual del modelo mixto (9m estudiantil + 3m turistico),
-    para una ocupacion turistica de verano dada."""
-    bruto_curso = datos["precio_habitacion_mes"] * 3 * MESES_CURSO
-    bruto_verano = datos["precio_noche_turistico"] * 30.4 * ocupacion * MESES_VERANO
-    bruto = bruto_curso + bruto_verano
-    seguro_impago_curso = bruto_curso * SEGURO_IMPAGO_PCT
-    comision_verano = bruto_verano * COMISION_TURISTICO_PCT
-    neto = bruto - gastos_fijos - seguro_impago_curso - comision_verano
-    return bruto, bruto_curso, bruto_verano, seguro_impago_curso, comision_verano, neto
+def gastos_operativos_turistico(datos, esc, ocupacion, meses=12):
+    """
+    Costes que el modelo anterior NO tenia y que son propios del vacacional:
+      - limpieza entre estancias (depende de cuantas estancias hay: a mas
+        rotacion, mas limpiezas)
+      - suministros: en vacacional los paga el propietario, no el inquilino
+      - mantenimiento/reposicion: textiles, menaje, mayor desgaste
+      - gestion: si no la lleva el propietario
+      - comision de plataforma
+    """
+    bruto = bruto_turistico_anual(datos, ocupacion, meses)
+    noches_ocupadas = 30.4 * ocupacion * meses
+    n_estancias = noches_ocupadas / esc["noches_por_estancia"]
+
+    limpieza = n_estancias * esc["limpieza_por_estancia"]
+    suministros = esc["suministros_mes"] * meses
+    mantenimiento = bruto * esc["mantenimiento_pct"]
+    gestion = bruto * esc["gestion_pct"]
+    comision = bruto * esc["comision_pct"]
+
+    total = limpieza + suministros + mantenimiento + gestion + comision
+    detalle = dict(limpieza=limpieza, suministros=suministros, mantenimiento=mantenimiento,
+                   gestion=gestion, comision=comision)
+    return total, detalle
 
 
-def calcular_estrategias(datos):
+def calcular_estrategias(datos, nombre_escenario):
+    esc = ESCENARIOS[nombre_escenario]
     precio_compra = datos["precio_compra"]
+    inversion_total = precio_compra * (1 + ITP_MAS_GASTOS_COMPRA_PCT)
     ibi, comunidad = gastos_fijos_anuales(precio_compra)
     gastos_fijos = ibi + comunidad
 
     filas = []
 
-    # 1. Residencial anual (piso completo, todo el año)
-    bruto = datos["precio_residencial_mes"] * 12
-    seguro_impago = bruto * SEGURO_IMPAGO_PCT
-    neto = bruto - gastos_fijos - seguro_impago
-    base_irpf = neto * (1 - REDUCCION_IRPF_RESIDENCIAL)
-    filas.append(dict(estrategia="1. Residencial anual", ingreso_bruto=bruto,
-                       gastos=gastos_fijos + seguro_impago, ingreso_neto=neto,
-                       base_imponible_irpf=base_irpf, roi_neto=neto / precio_compra))
+    # --- 1. Residencial anual ---
+    bruto = datos["precio_residencial_mes"] * 12 * OCUPACION_RESIDENCIAL
+    gastos = gastos_fijos + bruto * SEGURO_IMPAGO_PCT
+    neto = bruto - gastos
+    filas.append(dict(escenario=nombre_escenario, estrategia="1. Residencial anual",
+                      ingreso_bruto=bruto, gastos=gastos, ingreso_neto=neto,
+                      base_imponible_irpf=neto * (1 - REDUCCION_IRPF_RESIDENCIAL)))
 
-    # 2. Estudiantil por habitacion (3 hab., todo el año)
-    bruto = datos["precio_habitacion_mes"] * 3 * 12
-    seguro_impago = bruto * SEGURO_IMPAGO_PCT
-    neto = bruto - gastos_fijos - seguro_impago
-    base_irpf = neto * (1 - REDUCCION_IRPF_RESIDENCIAL)
-    filas.append(dict(estrategia="2. Estudiantil x habitacion", ingreso_bruto=bruto,
-                       gastos=gastos_fijos + seguro_impago, ingreso_neto=neto,
-                       base_imponible_irpf=base_irpf, roi_neto=neto / precio_compra))
+    # --- 2. Estudiantil por habitacion (curso + verano por separado) ---
+    bruto_curso = datos["precio_habitacion_mes"] * 3 * N_MESES_CURSO * OCUPACION_ESTUDIANTIL_CURSO
+    bruto_verano = datos["precio_habitacion_mes"] * 3 * N_MESES_VERANO * OCUPACION_ESTUDIANTIL_VERANO
+    bruto = bruto_curso + bruto_verano
+    gastos = gastos_fijos + bruto * SEGURO_IMPAGO_PCT
+    neto = bruto - gastos
+    filas.append(dict(escenario=nombre_escenario, estrategia="2. Estudiantil x habitacion",
+                      ingreso_bruto=bruto, gastos=gastos, ingreso_neto=neto,
+                      base_imponible_irpf=neto * (1 - REDUCCION_IRPF_RESIDENCIAL)))
 
-    # 3. Turistico (todo el año, Airbnb/Booking) -- ocupacion asumida, ver sensibilidad mas abajo
-    bruto, comision, neto = neto_turistico(datos, gastos_fijos, OCUPACION_TURISTICA)
-    base_irpf = neto * (1 - REDUCCION_IRPF_TURISTICO)
-    filas.append(dict(estrategia="3. Turistico (Airbnb/Booking)", ingreso_bruto=bruto,
-                       gastos=gastos_fijos + comision, ingreso_neto=neto,
-                       base_imponible_irpf=base_irpf, roi_neto=neto / precio_compra))
+    # --- 3. Turistico (con costes operativos completos) ---
+    bruto = bruto_turistico_anual(datos, esc["ocupacion"], 12)
+    op, _ = gastos_operativos_turistico(datos, esc, esc["ocupacion"], 12)
+    gastos = gastos_fijos + op
+    neto = bruto - gastos
+    filas.append(dict(escenario=nombre_escenario, estrategia="3. Turistico (Airbnb/Booking)",
+                      ingreso_bruto=bruto, gastos=gastos, ingreso_neto=neto,
+                      base_imponible_irpf=neto * (1 - REDUCCION_IRPF_TURISTICO)))
 
-    # 4. Mixto: 9 meses estudiantil x hab. + 3 meses turistico (verano)
-    bruto, bruto_curso, bruto_verano, seguro_impago_curso, comision_verano, neto = \
-        neto_mixto(datos, gastos_fijos, OCUPACION_TURISTICA)
-    # aproximacion: se prorratea la reduccion IRPF solo sobre la parte residencial
+    # --- 4. Mixto: curso por habitaciones + verano turistico ---
+    bruto_curso = datos["precio_habitacion_mes"] * 3 * N_MESES_CURSO * OCUPACION_ESTUDIANTIL_CURSO
+    bruto_verano = bruto_turistico_anual(datos, esc["ocupacion"], N_MESES_VERANO)
+    bruto = bruto_curso + bruto_verano
+    op_verano, _ = gastos_operativos_turistico(datos, esc, esc["ocupacion"], N_MESES_VERANO)
+    gastos = gastos_fijos + bruto_curso * SEGURO_IMPAGO_PCT + op_verano
+    neto = bruto - gastos
     base_irpf = (neto * (bruto_curso / bruto)) * (1 - REDUCCION_IRPF_RESIDENCIAL) + \
                 (neto * (bruto_verano / bruto)) * (1 - REDUCCION_IRPF_TURISTICO)
-    filas.append(dict(estrategia="4. Mixto (9m estudiantil + 3m turistico)", ingreso_bruto=bruto,
-                       gastos=gastos_fijos + seguro_impago_curso + comision_verano, ingreso_neto=neto,
-                       base_imponible_irpf=base_irpf, roi_neto=neto / precio_compra))
+    filas.append(dict(escenario=nombre_escenario, estrategia="4. Mixto (curso+verano turistico)",
+                      ingreso_bruto=bruto, gastos=gastos, ingreso_neto=neto,
+                      base_imponible_irpf=base_irpf))
 
     df = pd.DataFrame(filas)
     df["ingreso_neto_mes"] = df["ingreso_neto"] / 12
-    df["yield_bruto"] = df["ingreso_bruto"] / precio_compra
-    df["payback_anos"] = precio_compra / df["ingreso_neto"]
-    return df, gastos_fijos, ibi, comunidad
+    df["yield_bruto_s_compra"] = df["ingreso_bruto"] / precio_compra
+    df["roi_neto_s_compra"] = df["ingreso_neto"] / precio_compra
+    df["roi_neto_s_inversion_total"] = df["ingreso_neto"] / inversion_total
+    df["payback_anos_s_inversion_total"] = inversion_total / df["ingreso_neto"]
+    return df
+
+
+def ocupacion_break_even(datos, nombre_escenario, roi_objetivo_eur):
+    """Ocupacion turistica a la que el NETO del turistico iguala un neto dado
+    (p.ej. el del residencial). Los costes operativos hacen que la relacion ya
+    no sea perfectamente lineal (la limpieza escala con las noches ocupadas),
+    asi que se resuelve por barrido fino en vez de por interpolacion."""
+    esc = ESCENARIOS[nombre_escenario]
+    precio_compra = datos["precio_compra"]
+    ibi, comunidad = gastos_fijos_anuales(precio_compra)
+    gastos_fijos = ibi + comunidad
+
+    anterior = None
+    for i in range(1, 991):
+        oc = i / 1000
+        bruto = bruto_turistico_anual(datos, oc, 12)
+        op, _ = gastos_operativos_turistico(datos, esc, oc, 12)
+        neto = bruto - gastos_fijos - op
+        if anterior is not None and anterior < roi_objetivo_eur <= neto:
+            return oc
+        anterior = neto
+    return None
 
 
 def main():
     os.makedirs(EDA_DIR, exist_ok=True)
     datos = cargar_arquetipo()
-    df, gastos_fijos, ibi, comunidad = calcular_estrategias(datos)
 
     precio_compra = datos["precio_compra"]
-    gastos_compra = precio_compra * ITP_MAS_GASTOS_COMPRA_PCT
+    inversion_total = precio_compra * (1 + ITP_MAS_GASTOS_COMPRA_PCT)
+    ibi, comunidad = gastos_fijos_anuales(precio_compra)
 
-    print(f"Gastos fijos anuales (IBI estimado {ibi:,.0f} EUR + comunidad {comunidad:,.0f} EUR): {gastos_fijos:,.0f} EUR/año")
-    print(f"Gastos de compra (ITP + notaria + registro + gestoria, {ITP_MAS_GASTOS_COMPRA_PCT:.0%}): {gastos_compra:,.0f} EUR (pago unico)")
+    print(f"Inversion total desembolsada: {inversion_total:,.0f} EUR "
+          f"(compra {precio_compra:,.0f} + gastos de adquisicion {inversion_total - precio_compra:,.0f})")
+    print(f"Gastos fijos anuales: {ibi + comunidad:,.0f} EUR (IBI estimado {ibi:,.0f} + comunidad {comunidad:,.0f})")
     print()
 
-    cols_mostrar = ["estrategia", "ingreso_bruto", "gastos", "ingreso_neto",
-                     "ingreso_neto_mes", "yield_bruto", "roi_neto", "payback_anos"]
-    tabla = df[cols_mostrar].copy()
-    tabla["ingreso_bruto"] = tabla["ingreso_bruto"].round(0)
-    tabla["gastos"] = tabla["gastos"].round(0)
-    tabla["ingreso_neto"] = tabla["ingreso_neto"].round(0)
-    tabla["ingreso_neto_mes"] = tabla["ingreso_neto_mes"].round(0)
-    tabla["yield_bruto"] = (tabla["yield_bruto"] * 100).round(2)
-    tabla["roi_neto"] = (tabla["roi_neto"] * 100).round(2)
-    tabla["payback_anos"] = tabla["payback_anos"].round(1)
-    print(tabla.to_string(index=False))
+    todos = pd.concat([calcular_estrategias(datos, nombre) for nombre in ESCENARIOS], ignore_index=True)
 
-    ganador = df.loc[df["roi_neto"].idxmax()]
-    print(f"\n>>> Mayor ROI neto (antes de IRPF): {ganador['estrategia']} — {ganador['roi_neto']*100:.2f}% anual")
+    for nombre in ESCENARIOS:
+        esc = ESCENARIOS[nombre]
+        sub = todos[todos["escenario"] == nombre]
+        print("-" * 78)
+        print(f"ESCENARIO {nombre.upper()}  (ocupacion turistica {esc['ocupacion']:.0%}, "
+              f"comision {esc['comision_pct']:.0%}, gestion {esc['gestion_pct']:.0%}, "
+              f"limpieza {esc['limpieza_por_estancia']:.0f}EUR/{esc['noches_por_estancia']:.0f}noches)")
+        print("-" * 78)
+        tabla = sub[["estrategia", "ingreso_bruto", "gastos", "ingreso_neto", "ingreso_neto_mes",
+                     "roi_neto_s_compra", "roi_neto_s_inversion_total", "payback_anos_s_inversion_total"]].copy()
+        for c in ["ingreso_bruto", "gastos", "ingreso_neto", "ingreso_neto_mes"]:
+            tabla[c] = tabla[c].round(0)
+        for c in ["roi_neto_s_compra", "roi_neto_s_inversion_total"]:
+            tabla[c] = (tabla[c] * 100).round(2)
+        tabla["payback_anos_s_inversion_total"] = tabla["payback_anos_s_inversion_total"].round(1)
+        print(tabla.to_string(index=False))
+        ganador = sub.loc[sub["ingreso_neto"].idxmax()]
+        print(f"  -> Mejor en este escenario: {ganador['estrategia']} "
+              f"({ganador['roi_neto_s_inversion_total']*100:.2f}% ROI neto sobre inversion total)")
+        print()
 
-    print("\n--- Efecto fiscal (base imponible IRPF, sin reduccion en turistico) ---")
-    for _, row in df.iterrows():
-        print(f"  {row['estrategia']}: base imponible {row['base_imponible_irpf']:,.0f} EUR "
-              f"(vs. ingreso neto {row['ingreso_neto']:,.0f} EUR)")
-    df["ratio_base_irpf"] = df["base_imponible_irpf"] / df["ingreso_neto"]
-    ganador_fiscal = df.loc[df["ratio_base_irpf"].idxmin()]
-    print(f"  -> Menor base imponible en proporcion al neto: {ganador_fiscal['estrategia']} "
-          f"(mejor tratamiento fiscal relativo)")
+    # --- desglose de costes turisticos (lo que faltaba en el modelo anterior) ---
+    print("=" * 78)
+    print("DESGLOSE DE COSTES OPERATIVOS DEL TURISTICO (lo que el modelo anterior no contaba)")
+    print("=" * 78)
+    filas_costes = []
+    for nombre, esc in ESCENARIOS.items():
+        bruto = bruto_turistico_anual(datos, esc["ocupacion"], 12)
+        _, det = gastos_operativos_turistico(datos, esc, esc["ocupacion"], 12)
+        fila = dict(escenario=nombre, ingreso_bruto=round(bruto))
+        fila.update({k: round(v) for k, v in det.items()})
+        fila["total_operativo"] = round(sum(det.values()))
+        fila["pct_sobre_bruto"] = round(sum(det.values()) / bruto * 100, 1)
+        filas_costes.append(fila)
+    costes_df = pd.DataFrame(filas_costes)
+    print(costes_df.to_string(index=False))
+    print()
 
-    out_path = EDA_DIR / "comparativa_estrategias.csv"
-    df.to_csv(out_path, sep=";", index=False)
-    print(f"\nTabla completa guardada en: {out_path}")
+    # --- conclusion CONDICIONAL ---
+    print("=" * 78)
+    print("CONCLUSION (condicional, como debe ser)")
+    print("=" * 78)
+    for nombre in ESCENARIOS:
+        sub = todos[todos["escenario"] == nombre]
+        neto_resid = sub[sub["estrategia"] == "1. Residencial anual"]["ingreso_neto"].iloc[0]
+        be = ocupacion_break_even(datos, nombre, neto_resid)
+        esc = ESCENARIOS[nombre]
+        if be:
+            print(f"  [{nombre}] con esa estructura de costes, el turistico supera al residencial "
+                  f"a partir del {be:.1%} de ocupacion (el escenario asume {esc['ocupacion']:.0%}).")
+        else:
+            print(f"  [{nombre}] el turistico no alcanza al residencial en ningun nivel de ocupacion realista.")
+    print()
+    print("  Redaccion recomendada para la memoria:")
+    print("  \"El alquiler turistico maximiza la rentabilidad bajo escenarios de ocupacion")
+    print("   superiores a los umbrales indicados, mientras que el residencial ofrece menor")
+    print("   rentabilidad potencial pero mucha menor exposicion a la estacionalidad y a los")
+    print("   costes operativos. La ocupacion turistica real de San Vicente del Raspeig no")
+    print("   esta medida en este trabajo: es el supuesto del que depende la conclusion.\"")
 
-    graficar_comparativa(df)
+    # --- exportaciones para Power BI ---
+    todos.to_csv(EDA_DIR / "comparativa_estrategias_escenarios.csv", sep=";", index=False)
+    costes_df.to_csv(EDA_DIR / "costes_turistico_desglose.csv", sep=";", index=False)
+    documentar_supuestos().to_csv(EDA_DIR / "supuestos_modelo.csv", sep=";", index=False)
+    datos_observados_df(datos).to_csv(EDA_DIR / "datos_observados.csv", sep=";", index=False)
 
-    roi_residencial = df.loc[df["estrategia"] == "1. Residencial anual", "roi_neto"].iloc[0]
-    roi_estudiantil = df.loc[df["estrategia"] == "2. Estudiantil x habitacion", "roi_neto"].iloc[0]
-    analisis_sensibilidad_ocupacion(datos, gastos_fijos, precio_compra, roi_residencial, roi_estudiantil)
+    # compatibilidad: el escenario base se sigue exportando con el nombre de siempre
+    base = todos[todos["escenario"] == "base"].copy()
+    base.to_csv(EDA_DIR / "comparativa_estrategias.csv", sep=";", index=False)
 
+    print(f"\nExportado a {EDA_DIR}:")
+    print("  comparativa_estrategias_escenarios.csv (3 escenarios x 4 estrategias)")
+    print("  costes_turistico_desglose.csv | supuestos_modelo.csv | datos_observados.csv")
 
-def analisis_sensibilidad_ocupacion(datos, gastos_fijos, precio_compra, roi_residencial, roi_estudiantil):
-    """
-    El 77% de ocupacion turistica (OCUPACION_TURISTICA) es un proxy de Alicante
-    ciudad -- no hay dato real de San Vicente del Raspeig (el INE no cubre el
-    municipio, ver resumen_recopilacion_datos.md seccion 1). Es el supuesto que
-    mas pesa en el resultado, asi que en vez de dar un unico numero se calcula
-    el ROI del turistico y del mixto para un rango de ocupaciones (10%-90%) y
-    se busca el punto de equilibrio ("break-even") en el que igualan al
-    residencial -- para saber cuanto puede caer la ocupacion antes de que deje
-    de ser la mejor opcion.
-    """
-    ocupaciones = [i / 100 for i in range(10, 91, 5)]
-    filas = []
-    for oc in ocupaciones:
-        _, _, neto_tur = neto_turistico(datos, gastos_fijos, oc)
-        _, _, _, _, _, neto_mix = neto_mixto(datos, gastos_fijos, oc)
-        filas.append(dict(ocupacion=oc, roi_turistico=neto_tur / precio_compra,
-                           roi_mixto=neto_mix / precio_compra))
-    sens = pd.DataFrame(filas)
-
-    def break_even(col, objetivo):
-        """Interpolacion lineal entre los dos puntos que rodean el cruce (las
-        funciones de ROI vs ocupacion son lineales, asi que la interpolacion
-        es exacta, no una aproximacion)."""
-        cruces = sens[(sens[col] - objetivo) * (sens[col].shift(1) - objetivo) < 0]
-        if cruces.empty:
-            return None
-        idx = cruces.index[0]
-        x0, x1 = sens.loc[idx - 1, "ocupacion"], sens.loc[idx, "ocupacion"]
-        y0, y1 = sens.loc[idx - 1, col], sens.loc[idx, col]
-        return x0 + (objetivo - y0) * (x1 - x0) / (y1 - y0)
-
-    be_tur_vs_resid = break_even("roi_turistico", roi_residencial)
-    be_tur_vs_cero = break_even("roi_turistico", 0.0)
-    be_mix_vs_resid = break_even("roi_mixto", roi_residencial)
-
-    print("\n--- Analisis de sensibilidad: ocupacion turistica (supuesto mas incierto) ---")
-    print(f"Ocupacion asumida en el modelo base: {OCUPACION_TURISTICA:.0%} (proxy Alicante ciudad, no dato real de San Vicente)")
-    if be_tur_vs_resid:
-        print(f"El turistico deja de ganar al residencial ({roi_residencial*100:.2f}% ROI) por debajo de {be_tur_vs_resid:.1%} de ocupacion")
-    if be_tur_vs_cero:
-        print(f"El turistico deja de ser rentable (ROI < 0) por debajo de {be_tur_vs_cero:.1%} de ocupacion")
-    if be_mix_vs_resid:
-        print(f"El mixto deja de ganar al residencial por debajo de {be_mix_vs_resid:.1%} de ocupacion (en la parte turistica de verano)")
-    print("-> Incluso con una ocupacion bastante mas baja que el proxy de Alicante, el turistico y el mixto")
-    print("   siguen por delante del alquiler tradicional en este arquetipo -- pero si en la practica la")
-    print("   ocupacion real cae por debajo de esos umbrales, el ranking cambia.")
-
-    fig, ax = plt.subplots(figsize=(8, 5))
-    ax.plot(sens["ocupacion"] * 100, sens["roi_turistico"] * 100, marker="o", color="#3ba55d", label="Turistico")
-    ax.plot(sens["ocupacion"] * 100, sens["roi_mixto"] * 100, marker="o", color="#8a4fb5", label="Mixto")
-    ax.axhline(roi_residencial * 100, color="#3b6ea5", linestyle="--", label="Residencial anual (ref.)")
-    ax.axhline(roi_estudiantil * 100, color="#e0a020", linestyle="--", label="Estudiantil x hab. (ref.)")
-    ax.axvline(OCUPACION_TURISTICA * 100, color="gray", linestyle=":", alpha=0.7)
-    ax.text(OCUPACION_TURISTICA * 100 + 1, ax.get_ylim()[1] * 0.95, "supuesto\ndel modelo\nbase (77%)",
-            fontsize=8, va="top", color="gray")
-    ax.set_xlabel("Ocupacion turistica asumida (%)")
-    ax.set_ylabel("ROI neto anual (%)")
-    ax.set_title("Sensibilidad del ROI a la ocupacion turistica\n(arquetipo 3 hab. / ~90-100 m2)")
-    ax.legend()
-    fig.tight_layout()
-    out_path = GRAF_DIR / "07_sensibilidad_ocupacion.png"
-    fig.savefig(out_path)
-    plt.close(fig)
-    print(f"Grafico de sensibilidad guardado en: {out_path}")
-
-    sens_out = EDA_DIR / "sensibilidad_ocupacion.csv"
-    sens.to_csv(sens_out, sep=";", index=False)
-    print(f"Tabla de sensibilidad guardada en: {sens_out}")
+    graficar_escenarios(todos)
 
 
-def graficar_comparativa(df):
+def graficar_escenarios(todos):
     os.makedirs(GRAF_DIR, exist_ok=True)
-    labels = [e.split(". ")[1] for e in df["estrategia"]]
-    colors = ["#3b6ea5", "#e0a020", "#3ba55d", "#8a4fb5"]
+    fig, ax = plt.subplots(figsize=(11, 5))
+    estrategias = todos["estrategia"].unique()
+    escenarios = list(ESCENARIOS.keys())
+    ancho = 0.25
+    colores = {"pesimista": "#a53b3b", "base": "#3b6ea5", "optimista": "#3ba55d"}
 
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.8))
+    for i, esc in enumerate(escenarios):
+        sub = todos[todos["escenario"] == esc].set_index("estrategia").loc[estrategias]
+        pos = [j + (i - 1) * ancho for j in range(len(estrategias))]
+        ax.bar(pos, sub["roi_neto_s_inversion_total"] * 100, ancho, label=esc, color=colores[esc])
 
-    axes[0].bar(labels, df["roi_neto"] * 100, color=colors)
-    axes[0].set_title("ROI neto anual por estrategia\n(arquetipo 3 hab. / ~90-100 m2, antes de IRPF)")
-    axes[0].set_ylabel("% anual")
-    axes[0].tick_params(axis="x", rotation=20)
-    for i, v in enumerate(df["roi_neto"] * 100):
-        axes[0].text(i, v + 0.2, f"{v:.1f}%", ha="center")
-
-    axes[1].bar(labels, df["ingreso_neto_mes"], color=colors)
-    axes[1].set_title("Ingreso NETO mensual por estrategia")
-    axes[1].set_ylabel("EUR/mes")
-    axes[1].tick_params(axis="x", rotation=20)
-    for i, v in enumerate(df["ingreso_neto_mes"]):
-        axes[1].text(i, v + 20, f"{v:.0f}€", ha="center")
-
+    ax.set_xticks(range(len(estrategias)))
+    ax.set_xticklabels([e.split(". ")[1] for e in estrategias], rotation=15, ha="right")
+    ax.set_ylabel("ROI neto anual (%) sobre inversion total")
+    ax.set_title("ROI por estrategia y escenario turistico\n"
+                 "(la ocupacion y los costes operativos del turistico son SUPUESTOS, no datos locales)")
+    ax.legend(title="escenario")
+    ax.grid(axis="y", alpha=0.3)
     fig.tight_layout()
-    out_path = GRAF_DIR / "06_comparativa_neta_roi.png"
-    fig.savefig(out_path)
+    out = GRAF_DIR / "09_escenarios_roi.png"
+    fig.savefig(out)
     plt.close(fig)
-    print(f"Grafico guardado en: {out_path}")
+    print(f"Grafico guardado en: {out}")
 
 
 if __name__ == "__main__":

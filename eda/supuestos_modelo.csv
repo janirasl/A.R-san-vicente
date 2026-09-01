@@ -1,0 +1,33 @@
+clave;valor;unidad;ambito;justificacion;tipo
+comunidad_mes;70.0;EUR/mes;todas;Punto medio del rango 40-100 EUR/mes para piso estandar sin extras;SUPUESTO
+ibi_pct_catastral;0.00767;% s/ valor catastral;todas;DATO OFICIAL del municipio (tipo urbano). Lo que es supuesto es el valor catastral, no el tipo;SUPUESTO
+ratio_catastral_mercado;0.55;ratio;todas;SUPUESTO: el valor catastral suele rondar el 50-60% del de mercado. No es el valor catastral real de una vivienda concreta;SUPUESTO
+itp_mas_gastos_compra_pct;0.11;% s/ precio compra;todas;Punto medio del 10-12% (ITP 9% CV + notaria + registro + gestoria);SUPUESTO
+seguro_impago_pct;0.065;% s/ renta bruta;residencial/estudiantil;Punto medio del rango 5-8% de la renta anual bruta;SUPUESTO
+ocupacion_residencial;0.95;ratio;residencial;SUPUESTO: vacancia por rotacion de inquilinos. Sin dato local de rotacion;SUPUESTO
+ocupacion_estudiantil_curso;0.95;ratio;estudiantil/mixto;SUPUESTO: habitaciones casi siempre ocupadas durante el curso;SUPUESTO
+ocupacion_estudiantil_verano;0.3;ratio;estudiantil;SUPUESTO: la demanda universitaria desaparece en jul-ago. Sin serie historica de la UA;SUPUESTO
+meses_curso;10.0;meses;estudiantil/mixto;Calendario academico sep-jun;SUPUESTO
+reduccion_irpf_residencial;0.5;ratio;residencial/estudiantil;Normativa: reduccion general del 50% del rendimiento neto (contratos post mayo 2023);SUPUESTO
+reduccion_irpf_turistico;0.0;ratio;turistico;Normativa: el vacacional sin servicios de hosteleria no tiene reduccion;SUPUESTO
+ocupacion;0.45;;turistico [escenario pesimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+comision_pct;0.15;;turistico [escenario pesimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+gestion_pct;0.18;;turistico [escenario pesimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+limpieza_por_estancia;60.0;;turistico [escenario pesimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+noches_por_estancia;3.0;;turistico [escenario pesimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+suministros_mes;150.0;;turistico [escenario pesimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+mantenimiento_pct;0.07;;turistico [escenario pesimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+ocupacion;0.6;;turistico [escenario base];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+comision_pct;0.12;;turistico [escenario base];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+gestion_pct;0.1;;turistico [escenario base];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+limpieza_por_estancia;50.0;;turistico [escenario base];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+noches_por_estancia;4.0;;turistico [escenario base];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+suministros_mes;120.0;;turistico [escenario base];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+mantenimiento_pct;0.05;;turistico [escenario base];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+ocupacion;0.77;;turistico [escenario optimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+comision_pct;0.05;;turistico [escenario optimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+gestion_pct;0.0;;turistico [escenario optimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+limpieza_por_estancia;45.0;;turistico [escenario optimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+noches_por_estancia;5.0;;turistico [escenario optimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+suministros_mes;100.0;;turistico [escenario optimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO
+mantenimiento_pct;0.04;;turistico [escenario optimista];Escenario turistico: ninguna de estas cifras es un dato de San Vicente;SUPUESTO

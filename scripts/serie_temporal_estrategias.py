@@ -39,10 +39,17 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from modelo_financiero import (
-    cargar_arquetipo, gastos_fijos_anuales,
-    SEGURO_IMPAGO_PCT, COMISION_TURISTICO_PCT, ITP_MAS_GASTOS_COMPRA_PCT,
-    OCUPACION_TURISTICA,
+    cargar_arquetipo, gastos_fijos_anuales, gastos_operativos_turistico,
+    SEGURO_IMPAGO_PCT, ITP_MAS_GASTOS_COMPRA_PCT, ESCENARIOS,
+    MESES_ACADEMICOS, OCUPACION_RESIDENCIAL,
+    OCUPACION_ESTUDIANTIL_CURSO, OCUPACION_ESTUDIANTIL_VERANO,
 )
+
+# Escenario turistico sobre el que se construye la serie temporal. Se importa
+# de modelo_financiero.py para que los dos modelos no puedan contradecirse:
+# si cambias los supuestos alli, esta serie cambia con ellos.
+ESCENARIO = "base"
+OCUPACION_TURISTICA = ESCENARIOS[ESCENARIO]["ocupacion"]
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 GRAF_DIR = SCRIPT_DIR.parent / "graficos"
@@ -52,12 +59,9 @@ N_ANIOS = 30  # suficiente para que el payback de las 4 estrategias sea visible 
 N_MESES = N_ANIOS * 12
 FECHA_INICIO = pd.Timestamp("2026-09-01")  # primer mes tras la compra (supuesto)
 
-# --- Supuestos de ocupacion/vacancia por estrategia (NUEVOS respecto al modelo anual) ---
-OCUPACION_RESIDENCIAL = 0.95   # ASUNCION: ~18 dias/año vacios por cambio de inquilino
-MESES_ACADEMICOS = {9, 10, 11, 12, 1, 2, 3, 4, 5, 6}  # sep-jun
-OCUPACION_ESTUDIANTIL_CURSO = 0.95   # ASUNCION: casi siempre ocupado en curso
-OCUPACION_ESTUDIANTIL_VERANO = 0.30  # ASUNCION: la mayoria de estudiantes se va en verano
-AMPLITUD_ESTACIONAL_TURISTICO = 0.20  # ASUNCION: +/-20 puntos sobre la media anual, pico en agosto
+# Ocupacion residencial/estudiantil y calendario academico se importan de
+# modelo_financiero.py (unica fuente de verdad de los supuestos).
+AMPLITUD_ESTACIONAL_TURISTICO = 0.20  # SUPUESTO: +/-20 puntos sobre la media anual, pico en agosto
 
 
 def ocupacion_turistica_mes(mes_calendario):
@@ -102,14 +106,16 @@ def construir_flujo_mensual(datos):
                            mes_calendario=mes_cal, fecha=fecha, ocupacion_asumida=oc,
                            ingreso_bruto=bruto, gastos=gastos_fijos_mes + seguro, ingreso_neto=neto))
 
-        # 3. Turistico (Airbnb/Booking)
+        # 3. Turistico (Airbnb/Booking) -- con costes operativos completos
+        # (limpieza por estancia, suministros, mantenimiento, gestion, comision),
+        # calculados con la misma funcion que usa el modelo anual.
         oc = ocupacion_turistica_mes(mes_cal)
         bruto = datos["precio_noche_turistico"] * 30.4 * oc
-        comision = bruto * COMISION_TURISTICO_PCT
-        neto = bruto - gastos_fijos_mes - comision
+        op_mes, _ = gastos_operativos_turistico(datos, ESCENARIOS[ESCENARIO], oc, meses=1)
+        neto = bruto - gastos_fijos_mes - op_mes
         filas.append(dict(estrategia="3. Turistico (Airbnb/Booking)", mes_absoluto=m_abs, anio=anio,
                            mes_calendario=mes_cal, fecha=fecha, ocupacion_asumida=oc,
-                           ingreso_bruto=bruto, gastos=gastos_fijos_mes + comision, ingreso_neto=neto))
+                           ingreso_bruto=bruto, gastos=gastos_fijos_mes + op_mes, ingreso_neto=neto))
 
         # 4. Mixto: curso -> estudiantil x hab. | verano -> turistico
         if mes_cal in MESES_ACADEMICOS:
@@ -119,7 +125,7 @@ def construir_flujo_mensual(datos):
         else:
             oc = ocupacion_turistica_mes(mes_cal)
             bruto = datos["precio_noche_turistico"] * 30.4 * oc
-            gasto_var = bruto * COMISION_TURISTICO_PCT
+            gasto_var, _ = gastos_operativos_turistico(datos, ESCENARIOS[ESCENARIO], oc, meses=1)
         neto = bruto - gastos_fijos_mes - gasto_var
         filas.append(dict(estrategia="4. Mixto (curso+verano)", mes_absoluto=m_abs, anio=anio,
                            mes_calendario=mes_cal, fecha=fecha, ocupacion_asumida=oc,
