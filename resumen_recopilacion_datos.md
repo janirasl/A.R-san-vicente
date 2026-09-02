@@ -7,9 +7,29 @@ Resumen de toda la información recabada hasta ahora: fuentes oficiales (INE, SE
 ### SERPAVI (Sistema Estatal de Referencia del Precio del Alquiler)
 SERPAVI no publica un único precio de referencia por municipio, sino un rango de valores calculado según la ubicación exacta y las características de cada vivienda (superficie, antigüedad, planta, ascensor, etc.). Para obtenerlo hay una calculadora oficial en **serpavi.mivau.gob.es**, en la que introduces la dirección y los datos de la vivienda y te devuelve un rango de referencia en €/mes. Esto encaja bien con tu metodología de comparar viviendas equivalentes: te recomiendo pasar cada arquetipo de vivienda que uses en el análisis (p. ej. piso de 90 m² / 3 hab. en el centro) por esa calculadora para tener el "precio de referencia oficial" de cada comparable. También hay visores por sección censal, distrito, municipio, provincia y CCAA con datos agregados 2011-2024 descargables en Excel, útiles para contexto histórico.
 
-Como referencia de mercado (no oficial-SERPAVI, sino de un agregador que sí desglosa por municipio), el precio medio de alquiler en San Vicente del Raspeig ronda los **7,6 €/m²/mes en pisos y 9,25 €/m²/mes en casas** (agosto 2026), frente a un precio medio de venta de **~1.697 €/m²**. Conviene contrastar esta cifra con la calculadora oficial de SERPAVI antes de usarla como definitiva en el TFG/proyecto.
+### Índices de precio de Idealista y Fotocasa — la referencia de mercado que usamos
 
-Dato oficial ya disponible en tu carpeta (`serpavi_san_vicente.csv`): el precio de referencia SERPAVI real para San Vicente del Raspeig, año 2024, es **6,4 €/m²/mes** (mediana, sobre 2.755 testigos; rango intercuartil 5,2-8,0 €/m²/mes), con un alquiler mediano de 575 €/mes sobre una superficie mediana de 92 m². Esta cifra oficial queda **por debajo** de los 7,6 €/m²/mes del agregador citado arriba — normal, porque son fuentes y metodologías distintas (SERPAVI usa contratos de fianza depositados; el agregador usa anuncios publicados, que tienden a sobrestimar el precio real de mercado). Para el proyecto, usa el dato SERPAVI (6,4 €/m²/mes, o la cifra que te dé la calculadora oficial para tu arquetipo concreto) como referencia legal/oficial, y el del agregador solo como contexto de precio publicado.
+Para el precio de **oferta** (lo que se pide hoy por un alquiler), la referencia más sólida y pública disponible a nivel municipal son los índices de precio de Idealista y Fotocasa. Están en `alquiler_mercado_mensual.csv`, con serie mensual de agosto 2025 a agosto 2026 para San Vicente del Raspeig:
+
+- Idealista: de **10,1 a 10,7 €/m²/mes** en el periodo (**+5,9% interanual**)
+- Fotocasa: de 10,0 a 11,0 €/m²/mes
+
+**Estos índices validan nuestra muestra propia.** La mediana de los 136 anuncios que extrajimos es de **10,49 €/m²/mes**, un **−2,0%** respecto al índice de Idealista del mismo periodo. Es decir: nuestro método de extracción no introdujo un sesgo apreciable. Es la comprobación externa que le faltaba al proyecto (ver `scripts/validacion_indice_mercado.py` y `graficos/11_validacion_indice_mercado.png`).
+
+Del índice sale además un dato que el modelo financiero no incorpora: **el alquiler sube ~6% interanual**. El modelo asume renta constante, así que el ROI residencial de los años siguientes sería algo mayor que el calculado. Es una limitación a declarar, no un error.
+
+### SERPAVI: qué mide y para qué sirve (y para qué no)
+
+`serpavi_san_vicente.csv` da el dato oficial de San Vicente del Raspeig, 2024: **6,4 €/m²/mes** (mediana, 2.755 testigos; rango intercuartil 5,2-8,0), con alquiler mediano de 575 €/mes sobre 92 m².
+
+Está un **64% por debajo** de la oferta publicada, y conviene entender por qué antes de usarlo: SERPAVI se construye con **fuentes fiscales** (fianzas depositadas), así que mide **contratos realmente formalizados en el stock vivo** — incluyendo contratos antiguos con renta congelada, alquileres familiares por debajo de mercado y vivienda protegida. Los índices de portales miden **lo que se pide hoy** por las viviendas que están libres.
+
+No son dos versiones del mismo número con distinta calidad: **son dos poblaciones distintas**. De ahí se deriva el criterio de uso:
+
+- **SERPAVI sirve** como referencia legal (es la que aplica en zonas declaradas tensionadas, donde limita la renta) y para dimensionar la brecha entre lo que se pide y lo que se paga en el parque existente.
+- **SERPAVI NO sirve** como estimador de lo que podrías cobrar tú al alquilar un piso vacío hoy. Para eso, la referencia correcta es el índice de oferta, que es lo que usa el modelo.
+
+El sector inmobiliario critica SERPAVI por sesgo a la baja, y el sesgo estructural existe; pero conviene recordar que en esa discusión ambas partes tienen incentivos, y que el modelo financiero de este proyecto **nunca ha usado SERPAVI**: usa los 990 €/mes observados en los anuncios comparables.
 
 ### INE — apartamentos turísticos y vivienda
 La encuesta de ocupación e índice de precios de apartamentos turísticos del INE se publica a nivel nacional, autonómico, provincial, de zona turística y de **punto turístico**, pero solo cubre los municipios que el INE define expresamente como "puntos turísticos". San Vicente del Raspeig no es uno de ellos (no es un destino de costa/turístico clásico), así que no vas a encontrar cifras de ocupación/precio específicas del municipio en esta operación — es una limitación real a mencionar en la memoria del proyecto, no un fallo de búsqueda. Sí puedes usar la provincia de Alicante como referencia de contexto, o el IPV (índice de precios de vivienda) del INE para venta, si más adelante retomas esa línea.
@@ -87,7 +107,7 @@ Esto cierra el segundo hueco que comentábamos: sin esto no se puede calcular RO
 - Alquiler turístico/vacacional (Airbnb/Booking sin servicios de hostelería): tributa como rendimiento del capital inmobiliario **sin ninguna reducción** — este es un punto clave para tu comparativa de estrategias, porque penaliza fiscalmente al turístico frente al residencial aunque genere más ingresos brutos
 
 ## Pendiente / posibles siguientes pasos
-- Pasar tus arquetipos de vivienda por la calculadora oficial de SERPAVI para tener el precio de referencia legal de cada comparable.
+- Pasar tus arquetipos por la calculadora oficial de SERPAVI si el municipio llegara a declararse zona tensionada, ya que ahí el dato pasa a ser vinculante. Para estimar renta alcanzable, la referencia es el índice de oferta.
 - Segmentar piso vs. chalet/villa en los datos de venta antes de calcular el ROI de compra, dado el efecto outlier de las viviendas de lujo en el precio medio.
 - Confirmar si San Vicente del Raspeig está declarada zona de mercado residencial tensionado (afecta a la reducción IRPF del residencial y por tanto a la comparativa de estrategias).
 - Si se quiere afinar comunidad/mantenimiento/gestión turística, lo más fiable sería pedir presupuesto real a una administración de fincas o gestora turística de la zona, ya que no hay cifra oficial única.

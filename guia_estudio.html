@@ -462,16 +462,26 @@
             <tr><td>Idealista + Fotocasa</td><td>Precios de alquiler y de venta</td><td>Son precios <em>pedidos</em>, no cerrados. Tienden a estar por encima del mercado real</td></tr>
             <tr><td>Bolsa de Alojamiento de la UA</td><td>Alquiler por habitación a estudiantes</td><td>Solo capta la oferta que se anuncia por el canal universitario</td></tr>
             <tr><td>Airbnb + Booking</td><td>Precio por noche</td><td>Muestra diminuta, y el municipio tiene poquísimo producto comparable</td></tr>
-            <tr><td>SERPAVI + registro VUT</td><td>Referencia oficial de alquiler y censo de viviendas turísticas</td><td>SERPAVI es de 2024 y mide contratos de fianza, no anuncios</td></tr>
+            <tr><td>Índices Idealista y Fotocasa</td><td>Serie mensual de precio de oferta por municipio</td><td>Mide lo mismo que nuestra muestra, así que sirve para validarla</td></tr>
+            <tr><td>SERPAVI + registro VUT</td><td>Contratos formalizados y censo de viviendas turísticas</td><td>SERPAVI es de 2024 y mide contratos de fianza, no anuncios</td></tr>
           </tbody>
         </table>
       </div>
 
+      <h3>La validación externa</h3>
+      <p>Una muestra propia siempre carga con la misma duda: ¿el filtro de búsqueda la sesgó sin que lo viéramos? La forma de despejarla es contrastarla contra una referencia independiente que mida <em>lo mismo</em>.</p>
+      <p>Los índices de precio de Idealista y Fotocasa publican precio de oferta por municipio y mes. Para San Vicente, la serie de agosto 2025 a agosto 2026 va de <strong>10,1 a 10,7 €/m²/mes</strong>. La mediana de nuestros 136 anuncios es <strong>10,49 €/m²/mes</strong>: un desvío de <strong>−2,0%</strong>.</p>
+      <p>La muestra es sólida. No fue un golpe de suerte: es la comprobación que convierte «extraje unos anuncios» en «mi muestra representa el mercado».</p>
+
       <div class="callout">
-        <span class="lbl">Un contraste que hay que saber explicar</span>
-        <p>La muestra de anuncios da <strong>11,1 €/m²/mes</strong> de media. El dato oficial de SERPAVI para el municipio es <strong>6,4 €/m²/mes</strong>. No se contradicen: SERPAVI mide contratos realmente depositados y nuestra muestra mide precios publicados, que siempre son más altos. Además nuestra extracción de Idealista llevaba un filtro que dejaba fuera lo más barato.</p>
-        <p>Si alguien te señala esa diferencia, la respuesta no es defender la cifra: es explicar que miden cosas distintas y que la oficial es la que vale como referencia legal.</p>
+        <span class="lbl">Tres cifras, tres poblaciones — hay que saber explicarlo</span>
+        <p>Sobre la mesa hay tres números para el mismo municipio: nuestra muestra da <strong>10,5 €/m²/mes</strong>, el índice de Idealista <strong>10,7</strong>, y SERPAVI <strong>6,4</strong>. Los dos primeros coinciden; el tercero está un 64% por debajo.</p>
+        <p>No es que uno esté mal. <strong>Miden poblaciones distintas.</strong> Los índices y nuestra muestra miden <em>lo que se pide hoy</em> por las viviendas libres. SERPAVI se construye con fuentes fiscales —fianzas depositadas— y mide <em>lo que se paga</em> en el stock vivo de contratos: incluye contratos antiguos con renta congelada, alquileres familiares por debajo de mercado y vivienda protegida.</p>
+        <p>De ahí sale el criterio de uso: SERPAVI vale como referencia <em>legal</em> (es la que limita la renta en zonas declaradas tensionadas), pero no como estimador de lo que podrías cobrar al alquilar un piso vacío. Para eso vale el índice de oferta, que es lo que usa el modelo.</p>
       </div>
+
+      <h3>Un dato que el modelo no incorpora</h3>
+      <p>La serie mensual muestra que el alquiler en San Vicente <strong>sube un 5,9% interanual</strong>. El modelo financiero asume renta constante durante los 30 años, así que el ROI residencial de los años siguientes sería algo mayor que el calculado. Es una limitación a declarar, no un error — pero conviene mencionarla antes de que la mencione otro.</p>
     </section>
 
     <!-- 3 -->
@@ -697,8 +707,8 @@
       </div>
 
       <div class="qa">
-        <p class="q">Tu media de €/m² es casi el doble que el dato oficial.</p>
-        <p class="a">Sí, y es esperable: SERPAVI mide contratos de fianza depositados y nuestra muestra mide precios publicados, que siempre están por encima. Además la extracción llevaba un filtro que excluía lo más barato. Como referencia legal vale la oficial; la nuestra sirve para comparar estrategias entre sí, que es para lo que se usa.</p>
+        <p class="q">Tu media de €/m² es un 64% mayor que el dato oficial de SERPAVI.</p>
+        <p class="a">Porque miden poblaciones distintas: SERPAVI recoge contratos formalizados del stock vivo, con rentas antiguas y vivienda protegida dentro, y nuestra muestra recoge lo que se pide hoy por lo que está libre. La comprobación relevante es contra una referencia que mida lo mismo, y ahí <strong>nuestra mediana queda a un −2,0% del índice de oferta de Idealista</strong>. La muestra está validada. SERPAVI vale como referencia legal, no como estimador de renta alcanzable — y el modelo nunca lo ha usado.</p>
       </div>
 
       <div class="qa">
@@ -728,6 +738,7 @@
         <li><strong>Sin estadística inferencial.</strong> No hay intervalos de confianza ni contrastes; con estas muestras sería exigible al menos discutir la incertidumbre de forma cuantitativa.</li>
         <li><strong>La heurística de duplicados no está validada.</strong> Habría que revisar a mano una muestra de los pares marcados y dar una tasa de acierto.</li>
         <li><strong>Faltan los costes de puesta a punto</strong> (amueblar y equipar), sensiblemente mayores en turístico, que penalizarían al turístico en los primeros años.</li>
+        <li><strong>El modelo asume renta constante.</strong> El índice de Idealista muestra que el alquiler sube ~6% interanual, así que el ROI residencial a varios años queda algo subestimado.</li>
         <li><strong>Sin tests.</strong> Los scripts de limpieza no tienen pruebas automáticas.</li>
       </ul>
 
