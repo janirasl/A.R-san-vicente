@@ -4,6 +4,15 @@ Esqueleto del proyecto: qué se pregunta, con qué se responde, de qué supuesto
 
 **Objeto de análisis (constante en todas las preguntas):** un mismo arquetipo de vivienda —piso de 3 habitaciones, 70-130 m², en San Vicente del Raspeig— para que la comparación entre modelos de alquiler sea justa. Es el perfil más representativo en las tres fuentes: 46% de la oferta de alquiler, el grupo más numeroso en venta y el mayoritario en piso completo de la UA.
 
+**El marco: cuatro formas de explotar la misma vivienda.** Una vivienda se puede alquilar entera o por habitaciones, y a largo plazo o por noches. Eso son cuatro mercados distintos, no dos, y el proyecto mide los cuatro:
+
+| | **Piso entero** | **Por habitación** |
+|---|---|---|
+| **Largo plazo** | Residencial anual · 960 €/mes · n=37 | Estudiantil UA · 292 €/hab./mes · n=28 |
+| **Corto plazo** | Turístico · 145 €/noche · n=4 | Habitación en Airbnb · 44,8 €/noche · n=15 |
+
+Distinguir la **unidad** (qué es lo que se pone en alquiler) del **plazo** es lo que evita el error más común al mirar Airbnb: comparar el precio de una habitación con el de un piso completo. En `dataset_unificado.csv` la columna `unidad` lo hace explícito, precisamente para que ese promedio sea imposible de hacer sin darse cuenta.
+
 **Datos observados que sostienen todo** (lo único medido en el municipio):
 
 | Concepto | Valor | n | Fuente |
@@ -11,7 +20,8 @@ Esqueleto del proyecto: qué se pregunta, con qué se responde, de qué supuesto
 | Precio de compra | 237.950 € | 22 | Idealista + Fotocasa venta |
 | Alquiler residencial | 960 €/mes | 37 | Idealista + Fotocasa alquiler |
 | Alquiler por habitación | 292 €/mes | 28 | UA Bolsa de Alojamiento |
-| Precio/noche turístico | 145 €/noche | 4 | Airbnb + Booking |
+| Precio/noche turístico (piso entero) | 145 €/noche | 4 | Airbnb + Booking |
+| Precio/noche habitación turística | 44,8 €/noche | 15 | Airbnb (captura 2026-09-10) |
 
 ---
 
@@ -47,6 +57,23 @@ La pregunta tal cual **no tiene respuesta única**, y descubrir por qué es uno 
 - **Confianza: el suelo, alta; el resto, media.** Las 6,7 noches son un límite inferior matemático: es imposible que el turístico bata al residencial con menos, pase lo que pase con los costes. Los otros tres dependen de estimaciones de coste no verificadas localmente.
 - **Lo que esta pregunta NO responde:** si un piso de 3 habitaciones en San Vicente consigue de hecho esas noches. Ver P6.
 
+### P1.3 — Por noches, ¿sale mejor alquilar el piso entero o las 3 habitaciones por separado?
+
+Esta pregunta se añadió al descubrir que Airbnb vende dos productos distintos en San Vicente y que el proyecto solo estaba midiendo uno.
+
+- **Métrica:** ROI neto, con la **misma ocupación** para las dos. No es un descuido: fijar la misma ocupación es lo que hace la comparación limpia, porque entonces la diferencia solo puede venir del precio observado y de la estructura de costes, que es justo lo que se quiere aislar.
+- **Datos:** 145 €/noche el piso entero (n=4), 44,8 €/noche la habitación (n=15).
+- **Respuesta: gana el piso entero, y en los tres escenarios.**
+
+| Escenario | Piso entero | Por habitaciones |
+|---|---|---|
+| Pesimista | 2,80% | **1,77%** |
+| Base | 6,51% | **5,33%** |
+| Optimista | 11,95% | **10,42%** |
+
+- **Por qué:** una doble penalización. Tres habitaciones a 44,8 € dan 134 €/noche, un 7,5% menos que los 145 € del piso entero — y encima cuestan más de explotar, porque **tres habitaciones rotando por separado son el triple de estancias, de limpiezas y de check-ins** para la misma ocupación. En el escenario pesimista, donde los costes aprietan, pasa a ser la peor de las cinco estrategias.
+- **Confianza: media.** La dirección es clara y se mantiene en todo el rango de escenarios, que es lo que importa. Pero se apoya en n=4 y n=15, y los 11 anuncios de habitación son de anfitrión particular: casi todos alquilan una habitación del piso donde viven, que no es lo mismo que comprar un piso y explotar sus tres habitaciones. El modelo extrapola, y hay que decirlo.
+
 ---
 
 ## P2. ¿Cómo cambia el ranking según el escenario?
@@ -58,7 +85,8 @@ La pregunta tal cual **no tiene respuesta única**, y descubrir por qué es uno 
 |---|---|---|---|
 | Residencial anual | **3,18%** | 3,18% | 3,18% |
 | Estudiantil x habitación | 2,44% | 2,44% | 2,44% |
-| Turístico | 2,80% | **6,51%** | **11,95%** |
+| Turístico piso entero | 2,80% | **6,51%** | **11,95%** |
+| Turístico por habitaciones | 1,77% | 5,33% | 10,42% |
 | Mixto (curso + verano) | 2,91% | 3,55% | 4,49% |
 
 - **Lectura:** el orden cambia por completo entre escenarios. En el pesimista gana el residencial y el turístico queda tercero; en el optimista el turístico casi cuadruplica al residencial. **Toda esa distancia la explican dos variables no medidas**: la ocupación y la estructura de costes.
@@ -76,7 +104,8 @@ La pregunta tal cual **no tiene respuesta única**, y descubrir por qué es uno 
 |---|---|---|---|
 | Residencial | 31,5 años | 31,5 | 31,5 |
 | Estudiantil | 41,0 años | 41,0 | 41,0 |
-| Turístico | 35,8 años | 15,4 | **8,4** |
+| Turístico piso entero | 35,8 años | 15,4 | **8,4** |
+| Turístico por habitaciones | 56,6 años | 18,7 | 9,6 |
 | Mixto | 34,4 años | 28,1 | 22,3 |
 
 - **Aviso metodológico importante:** es payback **solo del alquiler**. No incluye revalorización del inmueble, valor residual, inflación, valor temporal del dinero ni coste de oportunidad. Por eso salen cifras tan largas: un piso que se amortiza en 30 años vía alquiler puede ser buena inversión igualmente si se revaloriza — pero eso este trabajo no lo mide.
@@ -101,7 +130,8 @@ Esta pregunta no estaba planteada al principio; surgió al intentar ampliar la m
 - **Método:** como varias propiedades aparecen en las tres fechas consultadas, se mide la variación sobre **la misma vivienda** (no comparando viviendas distintas entre sí, que sería engañoso).
 - **Respuesta:** **las villas sí, los pisos no.** Villa Sensation Seasons +75% en julio frente a febrero, Villa Mulet +30%; en cambio el apartamento de 4 dormitorios se queda plano (151 € en febrero, 150 € en octubre) y el loft incluso baja un 13%.
 - **Implicación:** la demanda turística de pisos en San Vicente no parece de playa/vacaciones, sino ligada a la universidad —familias de visita, profesorado, congresos—, que se reparte de otra forma a lo largo del año. **Ya aplicado al modelo**: la amplitud estacional bajó de ±20 a ±5 puntos, lo que reduce el ROI del mixto de 3,86% a 3,55% sin cambiar su posición en el ranking (ver `scripts/sensibilidad_estacionalidad.py`).
-- **Confianza: media.** La dirección del hallazgo es clara y consistente, pero son 9 propiedades y 3 fechas puntuales, no una serie.
+- **Confirmado con un tercer producto (2026-09-10):** de las habitaciones de Airbnb comparables en las dos fechas, **3 de 6 cuestan exactamente lo mismo al euro** en julio y en octubre, y la variación mediana es del **0,0%**. Las habitaciones se comportan como los pisos, no como las villas.
+- **Confianza: media-alta.** Ya son tres productos independientes apuntando en la misma dirección —pisos planos, habitaciones planas, villas +75%—, lo que es bastante más que una coincidencia. Sigue siendo un puñado de propiedades en fechas puntuales, no una serie temporal.
 
 ---
 
@@ -124,8 +154,8 @@ Listarlas explícitamente es parte del rigor, no una debilidad.
 
 | Página | Pregunta | Ficheros |
 |---|---|---|
-| 1. El mercado | P4, P5 | `dataset_unificado.csv`, `turistico_estacionalidad.csv` |
-| 2. Comparativa de modelos | P1.1, P2 | `comparativa_estrategias_escenarios.csv` |
+| 1. El mercado | P4, P5 | `dataset_unificado.csv` (columna `unidad`), `turistico_estacionalidad.csv`, `turistico_habitaciones_estacionalidad.csv` |
+| 2. Comparativa de modelos | P1.1, P1.3, P2 | `comparativa_estrategias_escenarios.csv` (5 estrategias) |
 | 3. ¿Cuántas noches hacen falta? | P1.2 | `punto_equilibrio_noches.csv` |
 | 4. Compra y amortización | P3 | `payback_por_estrategia.csv`, `flujo_mensual_estrategias.csv` |
 | 5. Metodología | todas | `datos_observados.csv`, `supuestos_modelo.csv` |

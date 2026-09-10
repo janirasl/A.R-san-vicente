@@ -268,7 +268,8 @@ def datos_observados_df(datos):
              unidad="EUR/noche", n=datos["n_habitacion_noche"],
              fuente="limpio/turistico_habitaciones_limpio.csv", tipo="DATO OBSERVADO"),
         dict(concepto="Precio/noche turistico (vivienda completa)", valor=datos["precio_noche_turistico"],
-             unidad="EUR/noche", n=datos["n_turistico"], fuente="limpio/turistico_precios_limpio.csv", tipo="DATO OBSERVADO"),
+             unidad="EUR/noche", n=datos["n_turistico"],
+             fuente="limpio/" + datos["origen_turistico"].split(" ")[0], tipo="DATO OBSERVADO"),
     ])
 
 

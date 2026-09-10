@@ -16,7 +16,7 @@ Todo lo que sigue distingue explícitamente dos cosas:
 | Concepto | Valor | n | Fuente |
 |---|---|---|---|
 | Precio de compra | 237.950 € | 22 | `venta_limpio.csv` |
-| Alquiler residencial | 960 €/mes | 37 | `alquiler_residencial_limpio.csv` |
+| Alquiler residencial (piso entero) | 960 €/mes | 37 | `alquiler_residencial_limpio.csv` |
 | Alquiler por habitación (UA) | 292 €/hab./mes | 28 | `ua_limpio.csv` |
 | Precio/noche turístico | 145 €/noche | **4** | `turistico_comparables_arquetipo.csv` |
 
@@ -94,7 +94,8 @@ Los tres escenarios mueven a la vez ocupación y costes, porque son justo las va
 |---|---|---|---|
 | 1. Residencial anual | **3,18%** | 3,18% | 3,18% |
 | 2. Estudiantil x habitación | 2,44% | 2,44% | 2,44% |
-| 3. Turístico | 2,80% | **6,51%** | **11,95%** |
+| 3. Turístico (piso entero) | 2,80% | **6,51%** | **11,95%** |
+| 5. Turístico por habitaciones | 1,77% | 5,33% | 10,42% |
 | 4. Mixto (curso + verano) | 2,91% | 3,55% | 4,49% |
 
 *(ROI neto anual sobre inversión total; tabla completa en `eda/comparativa_estrategias_escenarios.csv`)*
@@ -178,7 +179,7 @@ La serie mensual (`powerbi/flujo_mensual_estrategias.csv`, 30 años × 4 estrate
 - **Turístico**: curva estacional con pico en agosto, media anual igual a la del escenario.
 - **Residencial**: 95% todo el año (rotación de inquilinos).
 
-Payback sobre la inversión total, escenario base: turístico 15,4 años, mixto 28,1 años, residencial 31,5 años y estudiantil 41,0 años.
+Payback sobre la inversión total, escenario base: turístico de piso entero 15,4 años, turístico por habitaciones 18,7, mixto 28,1, residencial 31,5 y estudiantil 41,0.
 
 Ojo: es **payback simple**. No incorpora valor temporal del dinero, inflación, revalorización del inmueble, valor residual ni coste de oportunidad. Sirve para comparar estrategias entre sí sobre la misma vivienda, no para juzgar si comprar es buena inversión frente a otras alternativas.
 
@@ -205,6 +206,7 @@ El turístico no tiene reducción de IRPF (tributa el 100% del rendimiento neto)
 - La serie de Fotocasa de `alquiler_mercado_mensual.csv` **no debe citarse como índice**: sus 12 valores son todos enteros y solo hay tres distintos, lo que no corresponde a un índice publicado. La validación se apoya solo en Idealista.
 - La deduplicación cruzada Idealista↔Fotocasa es heurística (precio + habitaciones + m², sin dirección exacta): los portales no publican la calle en las páginas de resultados.
 - Ninguna ocupación del modelo (residencial 95%, estudiantil 95/30%, turística 45-77%) procede de una serie histórica local. Son supuestos.
+- **La estrategia de habitaciones por noches extrapola.** Los 11 anuncios de habitación de San Vicente son todos de anfitrión particular: casi todos alquilan una habitación del piso donde viven. Modelar «compro un piso y exploto sus 3 habitaciones por noches» no es lo mismo que lo que representan esos anuncios, y el modelo asume además que las tres se ocupan al mismo ritmo que un piso entero.
 - Los costes operativos turísticos son estimaciones de mercado, no presupuestos pedidos a proveedores de la zona. Afinarlos requeriría pedir precios reales a una gestora y a un servicio de limpieza locales.
 - El IBI se estima aplicando el tipo oficial (0,767%) sobre un valor catastral supuesto al 55% del de mercado. El valor catastral real de una vivienda concreta puede diferir bastante.
 - No se incluye el coste de puesta a punto inicial (amueblar y equipar), que es sensiblemente mayor en turístico que en residencial y penalizaría más al turístico en los primeros años.
