@@ -432,7 +432,7 @@
         <li><strong>Cobran en unidades distintas.</strong> El residencial cobra €/mes, el turístico €/noche, el de habitaciones €/habitación/mes. No se pueden poner en la misma columna.</li>
         <li><strong>Tienen costes distintos.</strong> En residencial los suministros los paga el inquilino; en turístico los paga el propietario, y encima hay limpieza entre estancias.</li>
         <li><strong>Tributan distinto.</strong> El residencial tiene una reducción del 50% en el IRPF; el turístico, ninguna.</li>
-        <li><strong>Dependen de cosas que no se pueden medir igual de bien.</strong> El precio del alquiler se observa en 39 anuncios; la ocupación turística real del municipio no se observa en ninguna parte.</li>
+        <li><strong>Dependen de cosas que no se pueden medir igual de bien.</strong> El precio del alquiler se observa en 37 anuncios comparables; la ocupación turística real del municipio no se observa en ninguna parte.</li>
       </ul>
 
       <p>El proyecto consiste en hacerlos comparables sin hacer trampas, y en decir con claridad dónde deja de haber datos y empieza a haber suposiciones.</p>
@@ -506,9 +506,10 @@
       <div class="idea">
         <span class="tag">Idea 3 · Registros duplicados</span>
         <h3>Deduplicar sin clave única</h3>
-        <p>El mismo piso puede estar en Idealista y en Fotocasa a la vez, y seguir publicado dos semanas después. Contarlo tres veces desplazaría las medias. Pero no hay identificador: los portales no publican la calle en los listados.</p>
-        <p>La solución es una <strong>clave compuesta aproximada</strong>: mismo precio, mismas habitaciones y m² parecidos (±2). De 261 anuncios, 117 resultaron duplicados y quedaron 144 únicos.</p>
-        <p>Y aquí la parte importante: <em>es una heurística, no una certeza</em>. En un mercado donde los precios se redondean a 900 y 1.000 €, dos pisos distintos pueden coincidir por casualidad. El proyecto lo dice explícitamente en vez de presentarlo como exacto.</p>
+        <p>El mismo piso puede estar en Idealista y en Fotocasa a la vez, y seguir publicado dos semanas después. Contarlo tres veces desplazaría las medias. Pero en las primeras capturas no se guardó ningún identificador: los portales no publican la calle en los listados.</p>
+        <p>La primera solución fue una <strong>clave compuesta aproximada</strong>: mismo precio, mismas habitaciones y m² parecidos (±2). Funcionaba, pero nadie la había comprobado.</p>
+        <p>Y aquí está lo interesante. A partir de la captura del 10 de septiembre se guarda el <strong>ID de anuncio</strong> de Idealista, y eso permitió medir el error de la heurística contra la verdad: <strong>un 10,3% de falsos positivos</strong> —9 de 87 anuncios que marcaba como repetidos eran pisos distintos que coincidían por azar, en un mercado donde los precios se redondean a 900 y 1.000 €—. La deduplicación se cambió a exacta por ID: de 351 anuncios quedan <strong>185 únicos</strong>.</p>
+        <p>Quedan falsos negativos, y también están medidos: el mismo piso de Calle Bailén figura con 104 m² en Idealista y 95 m² en Fotocasa. Ninguna tolerancia razonable de m² los empareja. Tener cuantificado el error de tu propio método, en las dos direcciones, es más valioso que tener un método sin errores conocidos.</p>
       </div>
 
       <div class="idea">
@@ -582,7 +583,7 @@
     <!-- 5 -->
     <section id="pipeline">
       <h2><span class="num">Sección 05</span>El pipeline, script a script</h2>
-      <p class="lede">Diez scripts, 2.225 líneas, en cuatro etapas encadenadas. La numeración es real: es el orden de ejecución.</p>
+      <p class="lede">Quince scripts, 3.141 líneas, en cuatro etapas encadenadas. <code>run_all.py</code> los lanza en orden: un solo comando reproduce el proyecto entero desde los datos crudos.</p>
 
       <div class="pipe">
         <div class="stage">
@@ -611,7 +612,7 @@
         </div>
         <div class="stage">
           <span class="file">modelo_financiero.py</span>
-          <p class="what"><strong>Etapa 4 · Modelo.</strong> El núcleo, 469 líneas. Bloque de datos observados y bloque de supuestos, separados. Calcula 4 estrategias × 3 escenarios, con ROI sobre los dos denominadores.</p>
+          <p class="what"><strong>Etapa 4 · Modelo.</strong> El núcleo, 509 líneas. Bloque de datos observados y bloque de supuestos, separados. Calcula 4 estrategias × 3 escenarios, con ROI sobre los dos denominadores.</p>
         </div>
         <div class="stage">
           <span class="file">punto_equilibrio_dias.py</span>
@@ -699,7 +700,7 @@
 
       <div class="qa">
         <p class="q">¿Cómo sabes que dos anuncios son el mismo piso?</p>
-        <p class="a">No lo sé con certeza, y el proyecto no lo afirma. Los portales no publican la calle en los listados, así que se empareja por precio, habitaciones y m² aproximados. Es una heurística declarada como tal, los duplicados quedan marcados y no borrados, y existe un fichero de auditoría para revisarlos uno a uno.</p>
+        <p class="a">Desde la captura de septiembre, por el <strong>ID del anuncio</strong>: emparejamiento exacto. Antes era una heurística por precio, habitaciones y m² aproximados, y cuando pude compararla contra los IDs reales resultó tener un <strong>10,3% de falsos positivos</strong>. Por eso se cambió. Siguen quedando falsos negativos entre portales, porque Idealista y Fotocasa no miden igual la superficie, y eso está declarado. En todo caso los duplicados se marcan, no se borran, y hay un fichero de auditoría para revisarlos uno a uno.</p>
       </div>
 
       <div class="qa">
@@ -713,7 +714,7 @@
       </div>
 
       <div class="qa">
-        <p class="q">Tu media de €/m² es un 64% mayor que el dato oficial de SERPAVI.</p>
+        <p class="q">Tu media de €/m² es un 60% mayor que el dato oficial de SERPAVI.</p>
         <p class="a">Porque miden poblaciones distintas: SERPAVI recoge contratos formalizados del stock vivo, con rentas antiguas y vivienda protegida dentro, y nuestra muestra recoge lo que se pide hoy por lo que está libre. La comprobación relevante es contra una referencia que mida lo mismo, y ahí <strong>nuestra mediana queda a un −4,2% del índice de oferta de Idealista</strong>. La muestra está validada. SERPAVI vale como referencia legal, no como estimador de renta alcanzable — y el modelo nunca lo ha usado.</p>
       </div>
 
@@ -742,10 +743,10 @@
       <h3>Por debajo, todavía</h3>
       <ul>
         <li><strong>Sin estadística inferencial.</strong> No hay intervalos de confianza ni contrastes; con estas muestras sería exigible al menos discutir la incertidumbre de forma cuantitativa.</li>
-        <li><strong>La heurística de duplicados no está validada.</strong> Habría que revisar a mano una muestra de los pares marcados y dar una tasa de acierto.</li>
+        <li><strong>El emparejamiento entre portales sigue sin resolver.</strong> Dentro de Idealista la deduplicación ya es exacta por ID, pero el mismo piso anunciado en dos portales distintos no tiene identificador común y la superficie declarada no coincide.</li>
         <li><strong>Faltan los costes de puesta a punto</strong> (amueblar y equipar), sensiblemente mayores en turístico, que penalizarían al turístico en los primeros años.</li>
         <li><strong>El modelo asume renta constante.</strong> El índice de Idealista muestra que el alquiler sube ~6% interanual, así que el ROI residencial a varios años queda algo subestimado.</li>
-        <li><strong>Sesgo de duración sin corregir.</strong> La muestra es una foto de anuncios activos, que sobre-representa los pisos que no se alquilan por caros. Tira del precio hacia arriba.</li>
+        <li><strong>Sesgo de duración medido pero no corregido.</strong> Con la ventana de 15 días entre capturas no se detecta una señal clara; hacen falta más capturas espaciadas. La dirección del sesgo se conoce, la magnitud no.</li>
         <li><strong>Sin tests.</strong> Los scripts de limpieza no tienen pruebas automáticas.</li>
       </ul>
 
