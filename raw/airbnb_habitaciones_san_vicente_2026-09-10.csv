@@ -1,0 +1,26 @@
+fecha_captura;fuente;id_anuncio;nombre;municipio;en_san_vicente;unidad;bano;fecha_estancia;noches;precio_total_eur;precio_noche_eur;valoracion;num_valoraciones;fiabilidad;busqueda
+2026-09-10;Airbnb;1440460764298305019;habitacion privada y tranquila;San Vicente del Raspeig;si;habitacion;compartido;2026-10-05;5;168;33.6;4.75;28;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;1440460764298305019;habitacion privada y tranquila;San Vicente del Raspeig;si;habitacion;compartido;2026-07-06;5;168;33.6;4.75;28;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;1296394429183247601;Lo conozco bien;San Vicente del Raspeig;si;habitacion;compartido;2026-10-05;5;257;51.4;;;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;1296394429183247601;Lo conozco bien;San Vicente del Raspeig;si;habitacion;compartido;2026-07-06;5;216;43.2;;;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;907120287781053373;Habitacion con bano privado;San Vicente del Raspeig;si;habitacion;compartido;2026-10-05;5;264;52.8;5.0;18;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;907120287781053373;Habitacion con bano privado;San Vicente del Raspeig;si;habitacion;compartido;2026-07-06;5;264;52.8;5.0;18;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;1210330119596161421;Habitacion con bano privado SVR;San Vicente del Raspeig;si;habitacion;privado;2026-10-05;5;410;82.0;;;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;1210330119596161421;Habitacion con bano privado SVR;San Vicente del Raspeig;si;habitacion;privado;2026-07-06;5;410;82.0;;;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;850390306653138714;Habitaciones en San Vicente;San Vicente del Raspeig;si;habitacion;;2026-10-05;5;221;44.2;4.75;16;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;850390306653138714;Habitaciones en San Vicente;San Vicente del Raspeig;si;habitacion;;2026-07-06;5;211;42.2;4.75;16;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;1076069867031417484;Habitacion Sant Vicent;San Vicente del Raspeig;si;habitacion;compartido;2026-10-05;5;224;44.8;5.0;13;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;1076069867031417484;Habitacion Sant Vicent;San Vicente del Raspeig;si;habitacion;compartido;2026-07-06;5;250;50.0;5.0;13;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;51724348;Habitacion SVR (51724348);San Vicente del Raspeig;si;habitacion;compartido;2026-10-05;7;203;29.0;4.53;17;estancia_alternativa;mapa acotado SVR private_room
+2026-09-10;Airbnb;51724348;Habitacion SVR (51724348);San Vicente del Raspeig;si;habitacion;compartido;2026-07-06;5;203;40.6;4.53;17;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;1389159528500775801;La casa de Luda;San Vicente del Raspeig;si;habitacion;compartido;2026-10-05;4;144;36.0;4.45;11;estancia_alternativa;mapa acotado SVR private_room
+2026-09-10;Airbnb;1389159528500775801;La casa de Luda;San Vicente del Raspeig;si;habitacion;compartido;2026-07-06;5;180;36.0;4.45;11;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;51518179;Habitacion SVR (51518179);San Vicente del Raspeig;si;habitacion;;2026-10-05;7;430;61.4;4.6;10;estancia_alternativa;mapa acotado SVR private_room
+2026-09-10;Airbnb;51518179;Habitacion SVR (51518179);San Vicente del Raspeig;si;habitacion;;2026-07-06;5;427;85.4;4.6;10;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;37580103;Habitacion privada con cama individual;San Vicente del Raspeig;si;habitacion;compartido;2026-10-05;5;914;182.8;4.83;93;dudoso_minimo_estancia;mapa acotado SVR private_room
+2026-09-10;Airbnb;37580103;Habitacion privada con cama individual;San Vicente del Raspeig;si;habitacion;compartido;2026-07-06;5;914;182.8;4.83;93;dudoso_minimo_estancia;mapa acotado SVR private_room
+2026-09-10;Airbnb;37389993;Habitacion SVR (37389993);San Vicente del Raspeig;si;habitacion;compartido;2026-10-05;5;879;175.8;4.78;18;dudoso_minimo_estancia;mapa acotado SVR private_room
+2026-09-10;Airbnb;37389993;Habitacion SVR (37389993);San Vicente del Raspeig;si;habitacion;compartido;2026-07-06;5;879;175.8;4.78;18;dudoso_minimo_estancia;mapa acotado SVR private_room
+2026-09-10;Airbnb;1316568812040587348;Habitacion en casa compartida;Alicante;no;habitacion;privado;2026-10-05;5;149;29.8;4.61;36;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;1206369189507696416;Habitacion Alicante (1206369189507696416);Alicante;no;habitacion;;2026-10-05;5;317;63.4;3.67;3;ok;mapa acotado SVR private_room
+2026-09-10;Airbnb;1212839045263538733;Habitacion Alicante (1212839045263538733);Alicante;no;habitacion;;2026-10-05;5;352;70.4;4.33;3;ok;mapa acotado SVR private_room

@@ -76,6 +76,16 @@ MESES_VERANO_CAL = [7, 8]
 # hace en las villas. Se baja a 0,05 como valor coherente con esa evidencia.
 # Sigue siendo un SUPUESTO, solo que ahora con algo detras.
 # Ver scripts/sensibilidad_estacionalidad.py para el efecto de moverlo.
+N_HABITACIONES_ARQUETIPO = 3
+# Limpiar UNA habitacion mas zonas comunes cuesta menos que limpiar el piso
+# entero. No hay presupuesto local: se fija como fraccion del coste de limpieza
+# del piso, para que el supuesto quede atado a otro y no sea un numero suelto.
+RATIO_LIMPIEZA_HABITACION = 0.5
+# El modelo usa para las habitaciones LA MISMA ocupacion que para el piso entero
+# turistico. Inventar una distinta seria meter un segundo parametro no medido y
+# volver incomparables las dos estrategias; asi la diferencia entre ellas sale
+# solo del precio observado y de la estructura de costes.
+
 AMPLITUD_ESTACIONAL_TURISTICO = 0.05
 
 # Gastos comunes a cualquier estrategia
@@ -200,6 +210,16 @@ def cargar_arquetipo(verbose=True):
         tur_completa = turistico[turistico["categoria"] == "vivienda_completa"]["precio_noche"]
         origen_turistico = "turistico_precios_limpio.csv (captura antigua)"
 
+    # Habitaciones turisticas: mismo plazo que el turistico, otra unidad.
+    # Solo San Vicente y solo observaciones marcadas fiables (se excluyen las de
+    # minimo de estancia dudoso y las de rango de fechas alternativo).
+    hab_noche = pd.Series(dtype=float)
+    hab_path = LIMPIO_DIR / "turistico_habitaciones_limpio.csv"
+    if hab_path.exists():
+        h = pd.read_csv(hab_path, sep=";")
+        h = h[(h["en_san_vicente"] == "si") & (h["fiable"] == True)]
+        hab_noche = h["precio_noche"]
+
     datos = {
         "precio_compra": arquetipo_venta["precio"].median(),
         "n_compra": len(arquetipo_venta),
@@ -210,6 +230,8 @@ def cargar_arquetipo(verbose=True):
         "precio_noche_turistico": tur_completa.median(),
         "n_turistico": int(tur_completa.count()),
         "origen_turistico": origen_turistico,
+        "precio_habitacion_noche": hab_noche.median() if len(hab_noche) else None,
+        "n_habitacion_noche": int(hab_noche.count()),
     }
 
     if verbose:
@@ -221,6 +243,8 @@ def cargar_arquetipo(verbose=True):
         print(f"Alquiler por habitacion (UA) .... {datos['precio_habitacion_mes']:>10,.0f} EUR/hab./mes   (mediana, n={datos['n_habitacion']})")
         print(f"Precio/noche turistico .......... {datos['precio_noche_turistico']:>10,.0f} EUR/noche      (mediana, n={datos['n_turistico']})  <-- n pequeño, menos robusto")
         print(f"    fuente del precio turistico: {datos['origen_turistico']}")
+        if datos["precio_habitacion_noche"] is not None:
+            print(f"Habitacion por noches (Airbnb) .. {datos['precio_habitacion_noche']:>10,.0f} EUR/noche      (mediana, n={datos['n_habitacion_noche']})  <-- n pequeño, menos robusto")
         print()
         print("=" * 78)
         print("BLOQUE 2 — SUPUESTOS (hipotesis del modelo, NO datos de San Vicente)")
@@ -240,6 +264,9 @@ def datos_observados_df(datos):
              unidad="EUR/mes", n=datos["n_residencial"], fuente="limpio/alquiler_residencial_limpio.csv", tipo="DATO OBSERVADO"),
         dict(concepto="Alquiler por habitacion (UA)", valor=datos["precio_habitacion_mes"],
              unidad="EUR/hab./mes", n=datos["n_habitacion"], fuente="limpio/ua_limpio.csv", tipo="DATO OBSERVADO"),
+        dict(concepto="Precio/noche habitacion turistica", valor=datos["precio_habitacion_noche"],
+             unidad="EUR/noche", n=datos["n_habitacion_noche"],
+             fuente="limpio/turistico_habitaciones_limpio.csv", tipo="DATO OBSERVADO"),
         dict(concepto="Precio/noche turistico (vivienda completa)", valor=datos["precio_noche_turistico"],
              unidad="EUR/noche", n=datos["n_turistico"], fuente="limpio/turistico_precios_limpio.csv", tipo="DATO OBSERVADO"),
     ])
@@ -295,6 +322,42 @@ def gastos_operativos_turistico(datos, esc, ocupacion, meses=12):
     total = limpieza + suministros + mantenimiento + gestion + comision
     detalle = dict(limpieza=limpieza, suministros=suministros, mantenimiento=mantenimiento,
                    gestion=gestion, comision=comision)
+    return total, detalle
+
+
+def bruto_habitaciones_noche_anual(datos, ocupacion, meses=12):
+    """Las 3 habitaciones del arquetipo alquiladas por noches, cada una por su cuenta."""
+    if datos.get("precio_habitacion_noche") is None:
+        return 0.0
+    return (datos["precio_habitacion_noche"] * N_HABITACIONES_ARQUETIPO
+            * 30.4 * ocupacion * meses)
+
+
+def gastos_operativos_habitaciones(datos, esc, ocupacion, meses=12):
+    """Costes de explotar las habitaciones por noches.
+
+    Dos diferencias REALES frente al piso entero, y una que la gente suele
+    meter mal:
+      - rotan 3 habitaciones por separado -> el TRIPLE de estancias para la
+        misma ocupacion, y cada estancia lleva su limpieza y su check-in.
+      - limpiar una habitacion cuesta menos que limpiar el piso entero
+        (RATIO_LIMPIEZA_HABITACION).
+      - los SUMINISTROS no se multiplican por 3: es la misma vivienda, con una
+        sola factura de luz y agua.
+    """
+    bruto = bruto_habitaciones_noche_anual(datos, ocupacion, meses)
+    noches_por_habitacion = 30.4 * ocupacion * meses
+    n_estancias = (noches_por_habitacion / esc["noches_por_estancia"]) * N_HABITACIONES_ARQUETIPO
+
+    limpieza = n_estancias * esc["limpieza_por_estancia"] * RATIO_LIMPIEZA_HABITACION
+    suministros = esc["suministros_mes"] * meses
+    mantenimiento = bruto * esc["mantenimiento_pct"]
+    gestion = bruto * esc["gestion_pct"]
+    comision = bruto * esc["comision_pct"]
+
+    total = limpieza + suministros + mantenimiento + gestion + comision
+    detalle = dict(limpieza=limpieza, suministros=suministros, mantenimiento=mantenimiento,
+                   gestion=gestion, comision=comision, n_estancias=n_estancias)
     return total, detalle
 
 
@@ -354,6 +417,19 @@ def calcular_estrategias(datos, nombre_escenario):
     filas.append(dict(escenario=nombre_escenario, estrategia="4. Mixto (curso+verano turistico)",
                       ingreso_bruto=bruto, gastos=gastos, ingreso_neto=neto,
                       base_imponible_irpf=base_irpf))
+
+    # --- 5. Turistico POR HABITACIONES (dias sueltos, no el piso entero) ---
+    # Cuarta celda de la matriz unidad x plazo: corto plazo + habitacion.
+    # Solo se calcula si hay precio observado; si no, la fila no se inventa.
+    if datos.get("precio_habitacion_noche") is not None:
+        bruto = bruto_habitaciones_noche_anual(datos, esc["ocupacion"], 12)
+        op, _ = gastos_operativos_habitaciones(datos, esc, esc["ocupacion"], 12)
+        gastos = gastos_fijos + op
+        neto = bruto - gastos
+        filas.append(dict(escenario=nombre_escenario,
+                          estrategia="5. Turistico x habitacion (Airbnb)",
+                          ingreso_bruto=bruto, gastos=gastos, ingreso_neto=neto,
+                          base_imponible_irpf=neto * (1 - REDUCCION_IRPF_TURISTICO)))
 
     df = pd.DataFrame(filas)
     df["ingreso_neto_mes"] = df["ingreso_neto"] / 12

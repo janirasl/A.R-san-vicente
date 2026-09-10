@@ -28,6 +28,7 @@ FASES = [
         "limpieza_ua.py",
         "limpieza_turistico.py",
         "limpieza_turistico_ampliado.py",
+        "limpieza_turistico_habitaciones.py",
     ]),
     ("2. Unificacion", [
         "unificar_datasets.py",

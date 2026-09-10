@@ -39,6 +39,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from modelo_financiero import (
+    bruto_habitaciones_noche_anual,
+    gastos_operativos_habitaciones,
     ocupacion_turistica_mes,
     cargar_arquetipo, gastos_fijos_anuales, gastos_operativos_turistico,
     SEGURO_IMPAGO_PCT, ITP_MAS_GASTOS_COMPRA_PCT, ESCENARIOS,
@@ -109,6 +111,18 @@ def construir_flujo_mensual(datos):
                            mes_calendario=mes_cal, fecha=fecha, ocupacion_asumida=oc,
                            ingreso_bruto=bruto, gastos=gastos_fijos_mes + op_mes, ingreso_neto=neto))
 
+        # 5. Turistico POR HABITACIONES (dias sueltos). Misma curva estacional y
+        # misma ocupacion que la 3: lo unico que cambia es el precio observado y
+        # la estructura de costes (triple rotacion, limpieza mas barata).
+        if datos.get("precio_habitacion_noche") is not None:
+            bruto_h = bruto_habitaciones_noche_anual(datos, oc, meses=1)
+            op_h, _ = gastos_operativos_habitaciones(datos, ESCENARIOS[ESCENARIO], oc, meses=1)
+            neto_h = bruto_h - gastos_fijos_mes - op_h
+            filas.append(dict(estrategia="5. Turistico x habitacion", mes_absoluto=m_abs,
+                              anio=anio, mes_calendario=mes_cal, fecha=fecha,
+                              ocupacion_asumida=oc, ingreso_bruto=bruto_h,
+                              gastos=gastos_fijos_mes + op_h, ingreso_neto=neto_h))
+
         # 4. Mixto: curso -> estudiantil x hab. | verano -> turistico
         if mes_cal in MESES_ACADEMICOS:
             oc = ocupacion_estudiantil_mes(mes_cal)
@@ -177,7 +191,8 @@ def calcular_payback(df):
 def graficar(df):
     os.makedirs(GRAF_DIR, exist_ok=True)
     colors = {"1. Residencial anual": "#3b6ea5", "2. Estudiantil x habitacion": "#e0a020",
-              "3. Turistico (Airbnb/Booking)": "#3ba55d", "4. Mixto (curso+verano)": "#8a4fb5"}
+              "3. Turistico (Airbnb/Booking)": "#3ba55d", "4. Mixto (curso+verano)": "#8a4fb5",
+              "5. Turistico x habitacion": "#d4913a"}
 
     fig, axes = plt.subplots(1, 2, figsize=(13, 5))
     ciclo = df[df["anio"] == 1]
@@ -191,7 +206,7 @@ def graficar(df):
 
     for est, g in df.groupby("estrategia"):
         axes[1].plot(g["mes_absoluto"] / 12, g["ingreso_neto_acumulado"], label=est.split(". ")[1], color=colors[est])
-    axes[1].set_title(f"Ingreso neto ACUMULADO a {N_ANIOS} años\n(incl. vacancia/estacionalidad en las 4 estrategias)")
+    axes[1].set_title(f"Ingreso neto ACUMULADO a {N_ANIOS} años\n(incl. vacancia/estacionalidad en todas las estrategias)")
     axes[1].set_xlabel("Años desde la compra")
     axes[1].set_ylabel("EUR acumulados")
     axes[1].legend(fontsize=8)

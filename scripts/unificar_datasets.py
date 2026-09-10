@@ -43,7 +43,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 LIMPIO_DIR = SCRIPT_DIR.parent / "limpio"
 
 COLUMNAS = [
-    "id", "mercado", "tipo_oferta", "fuente", "fecha_captura", "temporada",
+    "id", "mercado", "unidad", "tipo_oferta", "fuente", "fecha_captura", "temporada",
     "habitaciones", "m2", "banos", "zona",
     "tiene_precio", "unidad_precio", "precio_eur_mes", "precio_eur_noche", "precio_eur_venta",
     "precio_por_m2", "es_comparable_arquetipo", "marca_calidad", "descripcion",
@@ -62,6 +62,7 @@ def base(n, mercado):
 def cargar_alquiler():
     src = pd.read_csv(LIMPIO_DIR / "alquiler_residencial_limpio.csv", sep=";")
     df = base(len(src), "alquiler_residencial")
+    df["unidad"] = "piso_entero"
     df["tipo_oferta"] = src["tipo_alquiler"].values
     df["fuente"] = src["fuente"].values
     df["fecha_captura"] = src["fecha_captura"].values
@@ -86,6 +87,7 @@ def cargar_alquiler():
 def cargar_venta():
     src = pd.read_csv(LIMPIO_DIR / "venta_limpio.csv", sep=";")
     df = base(len(src), "venta")
+    df["unidad"] = "piso_entero"   # se compra la vivienda completa
     df["tipo_oferta"] = src["tipo_vivienda"].values
     df["fuente"] = src["fuente"].values
     df["habitaciones"] = src["habitaciones"].values
@@ -107,6 +109,10 @@ def cargar_ua():
     src = pd.read_csv(LIMPIO_DIR / "ua_limpio.csv", sep=";")
     src = src[~src["es_duplicado"]].reset_index(drop=True)
     df = base(len(src), "estudiantil")
+    df["unidad"] = [
+        "habitacion" if v == "habitacion" else "piso_entero"
+        for v in src["tipo_oferta_simplificado"]
+    ]
     df["tipo_oferta"] = src["tipo_oferta_simplificado"].values
     df["fuente"] = "UA Bolsa de Alojamiento"
     df["fecha_captura"] = src["fecha_oferta"].values
@@ -127,6 +133,7 @@ def cargar_ua():
 def cargar_turistico():
     src = pd.read_csv(LIMPIO_DIR / "turistico_ampliado_limpio.csv", sep=";")
     df = base(len(src), "turistico")
+    df["unidad"] = "piso_entero"   # la captura se hizo con filtro "alojamiento entero"
     df["tipo_oferta"] = src["tipo_alojamiento"].values
     df["fuente"] = src["fuente"].values
     df["fecha_captura"] = src["fecha_captura"].values
@@ -150,10 +157,43 @@ def cargar_turistico():
     return df
 
 
+def cargar_turistico_habitaciones():
+    """Habitaciones sueltas de Airbnb: mismo plazo que el turistico, otra unidad.
+
+    Es la cuarta celda de la matriz unidad x plazo. Sin ella el dataset solo
+    tenia tres de las cuatro combinaciones, y no habia forma de comparar
+    "piso entero por noches" contra "habitacion por noches".
+    """
+    src = pd.read_csv(LIMPIO_DIR / "turistico_habitaciones_limpio.csv", sep=";")
+    df = base(len(src), "turistico")
+    df["unidad"] = "habitacion"
+    df["tipo_oferta"] = "habitacion_por_noches"
+    df["fuente"] = src["fuente"].values
+    df["fecha_captura"] = src["fecha_captura"].values
+    df["temporada"] = src["fecha_estancia"].values
+    df["habitaciones"] = 1
+    df["zona"] = src["municipio"].values
+    df["tiene_precio"] = True
+    df["unidad_precio"] = "EUR/noche"
+    df["precio_eur_noche"] = src["precio_noche"].values
+    df["descripcion"] = src["nombre"].values
+    df["marca_calidad"] = [
+        None if fi == "ok" else fi for fi in src["fiabilidad"]
+    ]
+    # OJO: es_comparable_arquetipo compara SIEMPRE contra el arquetipo del
+    # proyecto, que es un piso de 3 habitaciones. Una habitacion suelta no lo es,
+    # por definicion. Los comparables de la estrategia por habitaciones se
+    # seleccionan con mercado=="turistico" & unidad=="habitacion" y sin
+    # marca_calidad; marcarlos aqui inflaria el recuento del arquetipo.
+    df["es_comparable_arquetipo"] = False
+    return df
+
+
 def cargar_vut():
     src = pd.read_csv(LIMPIO_DIR / "vut_limpio.csv", sep=";")
     src = src[~src["es_duplicado"]].reset_index(drop=True)
     df = base(len(src), "vut_registro")
+    df["unidad"] = None            # el registro no publica precios
     df["tipo_oferta"] = "vivienda_uso_turistico_registrada"
     df["fuente"] = "Generalitat Valenciana (registro VUT)"
     df["fecha_captura"] = src["fecha_alta"].values
@@ -168,7 +208,8 @@ def cargar_vut():
 
 
 def main():
-    partes = [cargar_alquiler(), cargar_venta(), cargar_ua(), cargar_turistico(), cargar_vut()]
+    partes = [cargar_alquiler(), cargar_venta(), cargar_ua(), cargar_turistico(),
+              cargar_turistico_habitaciones(), cargar_vut()]
     df = pd.concat(partes, ignore_index=True)
 
     # precio/m2 donde falta y se puede calcular (alquiler: EUR/m2/mes)
@@ -190,6 +231,9 @@ def main():
     print()
     print("--- Marcas de calidad (para excluir en Power BI si hace falta) ---")
     print(df["marca_calidad"].value_counts(dropna=True).to_string())
+    print()
+    print("--- Matriz unidad x mercado (lo que impide promediar peras con manzanas) ---")
+    print(pd.crosstab(df["mercado"], df["unidad"].fillna("sin_precio")).to_string())
     print()
     print("--- Comprobacion: cada unidad de precio en su columna ---")
     print(df.groupby("unidad_precio")[["precio_eur_mes", "precio_eur_noche", "precio_eur_venta"]]
