@@ -1,13 +1,25 @@
-estructura_costes;objetivo;noches_mes;noches_ano;ocupacion_equivalente
-SUELO (solo comision documentada);Residencial anual;6.7;80;0.219
-SUELO (solo comision documentada);Estudiantil x habitacion;5.4;65;0.178
-SUELO (solo comision documentada);Cubrir gastos (ROI 0);1.2;14;0.04
-costes pesimista;Residencial anual;14.9;179;0.491
-costes pesimista;Estudiantil x habitacion;12.5;150;0.412
-costes pesimista;Cubrir gastos (ROI 0);4.5;54;0.149
-costes base;Residencial anual;10.4;125;0.342
-costes base;Estudiantil x habitacion;8.7;104;0.285
-costes base;Cubrir gastos (ROI 0);2.9;35;0.096
-costes optimista;Residencial anual;7.7;93;0.254
-costes optimista;Estudiantil x habitacion;6.4;77;0.211
-costes optimista;Cubrir gastos (ROI 0);2.1;25;0.068
+modalidad;estructura_costes;objetivo;noches_mes;noches_ano;ocupacion_equivalente
+piso entero;SUELO (solo comision documentada);Residencial anual;6.7;80;0.219
+piso entero;SUELO (solo comision documentada);Estudiantil x habitacion;5.4;65;0.178
+piso entero;SUELO (solo comision documentada);Cubrir gastos (ROI 0);1.2;14;0.04
+piso entero;costes pesimista;Residencial anual;14.9;179;0.491
+piso entero;costes pesimista;Estudiantil x habitacion;12.5;150;0.412
+piso entero;costes pesimista;Cubrir gastos (ROI 0);4.5;54;0.149
+piso entero;costes base;Residencial anual;10.4;125;0.342
+piso entero;costes base;Estudiantil x habitacion;8.7;104;0.285
+piso entero;costes base;Cubrir gastos (ROI 0);2.9;35;0.096
+piso entero;costes optimista;Residencial anual;7.7;93;0.254
+piso entero;costes optimista;Estudiantil x habitacion;6.4;77;0.211
+piso entero;costes optimista;Cubrir gastos (ROI 0);2.1;25;0.068
+3 habitaciones;SUELO (solo comision documentada);Residencial anual;7.2;87;0.237
+3 habitaciones;SUELO (solo comision documentada);Estudiantil x habitacion;5.8;70;0.192
+3 habitaciones;SUELO (solo comision documentada);Cubrir gastos (ROI 0);1.3;16;0.043
+3 habitaciones;costes pesimista;Residencial anual;19.8;238;0.651
+3 habitaciones;costes pesimista;Estudiantil x habitacion;16.6;199;0.546
+3 habitaciones;costes pesimista;Cubrir gastos (ROI 0);6.0;72;0.197
+3 habitaciones;costes base;Residencial anual;12.3;147;0.403
+3 habitaciones;costes base;Estudiantil x habitacion;10.2;123;0.336
+3 habitaciones;costes base;Cubrir gastos (ROI 0);3.4;41;0.113
+3 habitaciones;costes optimista;Residencial anual;8.8;105;0.288
+3 habitaciones;costes optimista;Estudiantil x habitacion;7.3;87;0.239
+3 habitaciones;costes optimista;Cubrir gastos (ROI 0);2.3;28;0.077
