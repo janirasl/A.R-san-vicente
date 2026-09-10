@@ -16,7 +16,7 @@ cada vez que se hace una nueva extraccion, p.ej. la quincenal programada):
     (idealista_san_vicente_raw.csv, idealista_san_vicente_raw_2026-08-24.csv,
     idealista_san_vicente_raw_2026-09-07.csv, ...).
   - Fotocasa: igual con "fotocasa_san_vicente_raw", EXCEPTO
-    fotocasa_san_vicente_raw_con_grupo.csv (es la misma muestra que la version
+    _archivo/fotocasa_san_vicente_raw_con_grupo.csv (es la misma muestra que la version
     2026-08-24 con 2 columnas calculadas de mas -> se excluye para no duplicar).
 
 Cada fichero puede venir en uno de dos esquemas (se detecta automaticamente
@@ -54,7 +54,7 @@ from pathlib import Path
 import pandas as pd
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-RAW_DIR = SCRIPT_DIR.parent
+RAW_DIR = SCRIPT_DIR.parent / "raw"
 OUT_DIR = SCRIPT_DIR.parent / "limpio"
 
 

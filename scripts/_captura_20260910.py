@@ -15,7 +15,7 @@ import io
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-RAW_DIR = SCRIPT_DIR.parent
+RAW_DIR = SCRIPT_DIR.parent / "raw"
 
 # id;precio;habitaciones;m2;zona;planta;ascensor;tag_temporada;antiguedad
 CRUDO = {

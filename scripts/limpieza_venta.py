@@ -15,7 +15,7 @@ from pathlib import Path
 import pandas as pd
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-RAW_DIR = SCRIPT_DIR.parent
+RAW_DIR = SCRIPT_DIR.parent / "raw"
 OUT_DIR = SCRIPT_DIR.parent / "limpio"
 
 

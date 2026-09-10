@@ -14,7 +14,7 @@ Para el precio de **oferta** (lo que se pide hoy por un alquiler), la referencia
 - Idealista: de **10,1 a 10,7 €/m²/mes** en el periodo (**+5,9% interanual**)
 - Fotocasa: de 10,0 a 11,0 €/m²/mes
 
-**Estos índices validan nuestra muestra propia.** La mediana de los 136 anuncios que extrajimos es de **10,49 €/m²/mes**, un **−2,0%** respecto al índice de Idealista del mismo periodo. Es decir: nuestro método de extracción no introdujo un sesgo apreciable. Es la comprobación externa que le faltaba al proyecto (ver `scripts/validacion_indice_mercado.py` y `graficos/11_validacion_indice_mercado.png`).
+**Estos índices validan nuestra muestra propia.** La mediana de los 177 anuncios que extrajimos es de **10,25 €/m²/mes**, un **−4,2%** respecto al índice de Idealista del mismo periodo. Es decir: nuestro método de extracción no introdujo un sesgo apreciable. Es la comprobación externa que le faltaba al proyecto (ver `scripts/validacion_indice_mercado.py` y `graficos/11_validacion_indice_mercado.png`).
 
 Del índice sale además un dato que el modelo financiero no incorpora: **el alquiler sube ~6% interanual**. El modelo asume renta constante, así que el ROI residencial de los años siguientes sería algo mayor que el calculado. Es una limitación a declarar, no un error.
 
@@ -29,7 +29,7 @@ No son dos versiones del mismo número con distinta calidad: **son dos poblacion
 - **SERPAVI sirve** como referencia legal (es la que aplica en zonas declaradas tensionadas, donde limita la renta) y para dimensionar la brecha entre lo que se pide y lo que se paga en el parque existente.
 - **SERPAVI NO sirve** como estimador de lo que podrías cobrar tú al alquilar un piso vacío hoy. Para eso, la referencia correcta es el índice de oferta, que es lo que usa el modelo.
 
-El sector inmobiliario critica SERPAVI por sesgo a la baja, y el sesgo estructural existe; pero conviene recordar que en esa discusión ambas partes tienen incentivos, y que el modelo financiero de este proyecto **nunca ha usado SERPAVI**: usa los 990 €/mes observados en los anuncios comparables.
+El sector inmobiliario critica SERPAVI por sesgo a la baja, y el sesgo estructural existe; pero conviene recordar que en esa discusión ambas partes tienen incentivos, y que el modelo financiero de este proyecto **nunca ha usado SERPAVI**: usa los 960 €/mes observados en los anuncios comparables.
 
 ### INE — apartamentos turísticos y vivienda
 La encuesta de ocupación e índice de precios de apartamentos turísticos del INE se publica a nivel nacional, autonómico, provincial, de zona turística y de **punto turístico**, pero solo cubre los municipios que el INE define expresamente como "puntos turísticos". San Vicente del Raspeig no es uno de ellos (no es un destino de costa/turístico clásico), así que no vas a encontrar cifras de ocupación/precio específicas del municipio en esta operación — es una limitación real a mencionar en la memoria del proyecto, no un fallo de búsqueda. Sí puedes usar la provincia de Alicante como referencia de contexto, o el IPV (índice de precios de vivienda) del INE para venta, si más adelante retomas esa línea.

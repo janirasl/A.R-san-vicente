@@ -9,7 +9,7 @@ Esqueleto del proyecto: qué se pregunta, con qué se responde, de qué supuesto
 | Concepto | Valor | n | Fuente |
 |---|---|---|---|
 | Precio de compra | 237.950 € | 22 | Idealista + Fotocasa venta |
-| Alquiler residencial | 990 €/mes | 39 | Idealista + Fotocasa alquiler |
+| Alquiler residencial | 960 €/mes | 37 | Idealista + Fotocasa alquiler |
 | Alquiler por habitación | 292 €/mes | 28 | UA Bolsa de Alojamiento |
 | Precio/noche turístico | 145 €/noche | 4 | Airbnb + Booking |
 
@@ -22,10 +22,10 @@ La pregunta tal cual **no tiene respuesta única**, y descubrir por qué es uno 
 ### P1.1 — Entre residencial y estudiantil por habitaciones, ¿cuál rinde más?
 
 - **Métrica:** ingreso neto anual (ingresos brutos − gastos) y ROI sobre inversión total.
-- **Datos:** alquiler residencial (n=39) y precio por habitación (n=28). Ambos observados.
+- **Datos:** alquiler residencial (n=37) y precio por habitación (n=28). Ambos observados.
 - **Supuestos de los que depende:** ocupación residencial 95%, ocupación estudiantil 95% en curso y 30% en verano, seguro de impago 6,5%, comunidad e IBI. Ninguno favorece a una estrategia sobre la otra de forma asimétrica.
-- **Respuesta:** **gana el residencial**. 3,30% de ROI neto (8.709 €/año) frente a 2,44% del estudiantil (6.443 €/año).
-- **Por qué:** alquilar 3 habitaciones a 292 € da 876 €/mes brutos frente a los 990 € del piso completo, y encima el modelo estudiantil pierde los meses de verano, cuando la demanda universitaria desaparece.
+- **Respuesta:** **gana el residencial**. 3,18% de ROI neto (8.389 €/año) frente a 2,44% del estudiantil (6.443 €/año).
+- **Por qué:** alquilar 3 habitaciones a 292 € da 876 €/mes brutos frente a los 960 € del piso completo, y encima el modelo estudiantil pierde los meses de verano, cuando la demanda universitaria desaparece.
 - **Confianza: alta.** Se apoya en las dos muestras más grandes del proyecto y no depende de la ocupación turística, que es el supuesto flojo. **Esta respuesta se sostiene tal cual en la memoria.**
 
 > Ojo con un matiz: la versión anterior del modelo daba 3,36% al estudiantil porque asumía que se cobraban 12 meses al año. Corregir ese error es lo que lo bajó a 2,44% y cambió el orden.
@@ -39,12 +39,12 @@ La pregunta tal cual **no tiene respuesta única**, y descubrir por qué es uno 
 
 | Estructura de costes | Noches/mes necesarias | Al año | Ocupación equivalente |
 |---|---|---|---|
-| **Suelo (solo comisión documentada)** | **6,9** | 83 | 22,6% |
-| Costes optimistas | 7,9 | 95 | 26,1% |
-| Costes base | 10,7 | 128 | 35,1% |
-| Costes pesimistas | 15,3 | 184 | 50,4% |
+| **Suelo (solo comisión documentada)** | **6,7** | 80 | 21,9% |
+| Costes optimistas | 7,7 | 93 | 25,4% |
+| Costes base | 10,4 | 125 | 34,2% |
+| Costes pesimistas | 14,9 | 179 | 49,1% |
 
-- **Confianza: el suelo, alta; el resto, media.** Las 6,9 noches son un límite inferior matemático: es imposible que el turístico bata al residencial con menos, pase lo que pase con los costes. Los otros tres dependen de estimaciones de coste no verificadas localmente.
+- **Confianza: el suelo, alta; el resto, media.** Las 6,7 noches son un límite inferior matemático: es imposible que el turístico bata al residencial con menos, pase lo que pase con los costes. Los otros tres dependen de estimaciones de coste no verificadas localmente.
 - **Lo que esta pregunta NO responde:** si un piso de 3 habitaciones en San Vicente consigue de hecho esas noches. Ver P6.
 
 ---
@@ -56,14 +56,14 @@ La pregunta tal cual **no tiene respuesta única**, y descubrir por qué es uno 
 
 | Estrategia | Pesimista (oc. 45%) | Base (oc. 60%) | Optimista (oc. 77%) |
 |---|---|---|---|
-| Residencial anual | **3,30%** | 3,30% | 3,30% |
+| Residencial anual | **3,18%** | 3,18% | 3,18% |
 | Estudiantil x habitación | 2,44% | 2,44% | 2,44% |
 | Turístico | 2,80% | **6,51%** | **11,95%** |
 | Mixto (curso + verano) | 2,91% | 3,55% | 4,49% |
 
 - **Lectura:** el orden cambia por completo entre escenarios. En el pesimista gana el residencial y el turístico queda tercero; en el optimista el turístico casi cuadruplica al residencial. **Toda esa distancia la explican dos variables no medidas**: la ocupación y la estructura de costes.
 - **Confianza: media.** La estructura del análisis es sólida, pero los valores de ocupación 45% y 60% los fijamos nosotros como rango plausible; solo el 77% tiene origen documentado (proxy de Alicante ciudad). Los costes operativos son estimaciones propias salvo la comisión de plataforma.
-- **Conclusión defendible:** *"El turístico maximiza la rentabilidad bajo escenarios de ocupación superiores al 26-51% según la gestión de costes, mientras que el residencial ofrece menor rentabilidad potencial pero mucha menor exposición a la estacionalidad, a los costes operativos y a la carga de gestión."*
+- **Conclusión defendible:** *"El turístico maximiza la rentabilidad bajo escenarios de ocupación superiores al 25-49% según la gestión de costes, mientras que el residencial ofrece menor rentabilidad potencial pero mucha menor exposición a la estacionalidad, a los costes operativos y a la carga de gestión."*
 
 ---
 
@@ -74,7 +74,7 @@ La pregunta tal cual **no tiene respuesta única**, y descubrir por qué es uno 
 
 | Estrategia | Pesimista | Base | Optimista |
 |---|---|---|---|
-| Residencial | 30,3 años | 30,3 | 30,3 |
+| Residencial | 31,5 años | 31,5 | 31,5 |
 | Estudiantil | 41,0 años | 41,0 | 41,0 |
 | Turístico | 35,8 años | 15,4 | **8,4** |
 | Mixto | 34,4 años | 28,1 | 22,3 |

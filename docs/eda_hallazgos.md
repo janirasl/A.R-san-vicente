@@ -16,7 +16,7 @@ Todo lo que sigue distingue explícitamente dos cosas:
 | Concepto | Valor | n | Fuente |
 |---|---|---|---|
 | Precio de compra | 237.950 € | 22 | `venta_limpio.csv` |
-| Alquiler residencial | 990 €/mes | 39 | `alquiler_residencial_limpio.csv` |
+| Alquiler residencial | 960 €/mes | 37 | `alquiler_residencial_limpio.csv` |
 | Alquiler por habitación (UA) | 292 €/hab./mes | 28 | `ua_limpio.csv` |
 | Precio/noche turístico | 145 €/noche | **4** | `turistico_comparables_arquetipo.csv` |
 
@@ -92,7 +92,7 @@ Los tres escenarios mueven a la vez ocupación y costes, porque son justo las va
 
 | Estrategia | Pesimista (oc. 45%) | Base (oc. 60%) | Optimista (oc. 77%) |
 |---|---|---|---|
-| 1. Residencial anual | **3,30%** | 3,30% | 3,30% |
+| 1. Residencial anual | **3,18%** | 3,18% | 3,18% |
 | 2. Estudiantil x habitación | 2,44% | 2,44% | 2,44% |
 | 3. Turístico | 2,80% | **6,51%** | **11,95%** |
 | 4. Mixto (curso + verano) | 2,91% | 3,55% | 4,49% |
@@ -121,16 +121,16 @@ Los escenarios de arriba tienen un problema de fondo: parten de "asumo una ocupa
 
 | Estructura de costes | Noches/mes para igualar al residencial | Al año | Ocupación equivalente |
 |---|---|---|---|
-| **SUELO — solo comisión documentada** | **6,9** | 83 | 22,6% |
-| Costes optimistas | 7,9 | 95 | 26,1% |
-| Costes base | 10,7 | 128 | 35,1% |
-| Costes pesimistas | 15,3 | 184 | 50,4% |
+| **SUELO — solo comisión documentada** | **6,7** | 80 | 21,9% |
+| Costes optimistas | 7,7 | 93 | 25,4% |
+| Costes base | 10,4 | 125 | 34,2% |
+| Costes pesimistas | 14,9 | 179 | 49,1% |
 
 Y para las otras referencias, con costes base: **8,7 noches/mes** para igualar al estudiantil, y solo **2,9 noches/mes** para cubrir gastos (ROI 0).
 
 **El caso SUELO es la cifra más defendible de todo el proyecto.** Usa únicamente el coste que sí está documentado (la comisión de plataforma, 12%, de las tarifas publicadas de Booking y Airbnb) e ignora limpieza, suministros, gestión y mantenimiento. Es un límite inferior real: pase lo que pase con los costes, **es imposible que el turístico bata al residencial con menos de ~7 noches al mes**. Y ese número no depende de ninguna estimación mía.
 
-El rango realista, por tanto, está entre **7 y 15 noches al mes** (83-184 al año) según cómo se gestionen los costes. Lo que estos datos no responden —y hay que decirlo así en la memoria— es si un piso de 3 habitaciones en San Vicente consigue efectivamente esas noches. Para saberlo habría que mirar la disponibilidad real de los 4-5 pisos que ya operan allí.
+El rango realista, por tanto, está entre **7 y 15 noches al mes** (80-179 al año) según cómo se gestionen los costes. Lo que estos datos no responden —y hay que decirlo así en la memoria— es si un piso de 3 habitaciones en San Vicente consigue efectivamente esas noches. Para saberlo habría que mirar la disponibilidad real de los 4-5 pisos que ya operan allí.
 
 ## El segmento de temporada no compite con Airbnb
 
@@ -168,7 +168,7 @@ Matiz honesto que hay que mantener: lo medido es estacionalidad de **precio**, n
 
 El turístico puro **no se mueve**: cobra los doce meses, y la curva solo redistribuye ocupación entre ellos sin cambiar la media anual — lo que gana en agosto lo pierde en febrero. El mixto sí se mueve, porque solo cobra turístico en julio y agosto: si esos meses dejan de ser el pico, pierde su razón de ser.
 
-Aun así el mixto sigue por encima del residencial (3,55% frente a 3,30%), así que **la conclusión aguanta**. Es un buen ejemplo de análisis de robustez: se comprueba si un resultado depende de un supuesto flojo, y en este caso resulta que no.
+Aun así el mixto sigue por encima del residencial (3,55% frente a 3,18%), así que **la conclusión aguanta**. Es un buen ejemplo de análisis de robustez: se comprueba si un resultado depende de un supuesto flojo, y en este caso resulta que no.
 
 ## Estacionalidad y horizonte temporal
 
@@ -178,7 +178,7 @@ La serie mensual (`powerbi/flujo_mensual_estrategias.csv`, 30 años × 4 estrate
 - **Turístico**: curva estacional con pico en agosto, media anual igual a la del escenario.
 - **Residencial**: 95% todo el año (rotación de inquilinos).
 
-Payback sobre la inversión total, escenario base: turístico 15,4 años, mixto 28,1 años, residencial 30,3 años y estudiantil 41,0 años.
+Payback sobre la inversión total, escenario base: turístico 15,4 años, mixto 28,1 años, residencial 31,5 años y estudiantil 41,0 años.
 
 Ojo: es **payback simple**. No incorpora valor temporal del dinero, inflación, revalorización del inmueble, valor residual ni coste de oportunidad. Sirve para comparar estrategias entre sí sobre la misma vivienda, no para juzgar si comprar es buena inversión frente a otras alternativas.
 
@@ -188,7 +188,7 @@ El turístico no tiene reducción de IRPF (tributa el 100% del rendimiento neto)
 
 ## Conclusión (condicional)
 
-> El alquiler turístico maximiza la rentabilidad **bajo escenarios de ocupación superiores al 26-51%** —según cómo se gestionen los costes operativos—, mientras que el alquiler residencial ofrece menor rentabilidad potencial (3,30%) pero mucha menor exposición a la estacionalidad, a los costes operativos y a la carga de gestión. El alquiler estudiantil por habitaciones, una vez se deja de asumir que se cobra los 12 meses, es la menos rentable de las cuatro (2,44%).
+> El alquiler turístico maximiza la rentabilidad **bajo escenarios de ocupación superiores al 25-49%** —según cómo se gestionen los costes operativos—, mientras que el alquiler residencial ofrece menor rentabilidad potencial (3,18%) pero mucha menor exposición a la estacionalidad, a los costes operativos y a la carga de gestión. El alquiler estudiantil por habitaciones, una vez se deja de asumir que se cobra los 12 meses, es la menos rentable de las cuatro (2,44%).
 >
 > La ocupación turística real de San Vicente del Raspeig **no está medida en este trabajo**: es el supuesto del que depende toda la conclusión.
 
@@ -201,7 +201,7 @@ El turístico no tiene reducción de IRPF (tributa el 100% del rendimiento neto)
   *Falsos negativos (no detecta el mismo piso en dos portales).* El anuncio de Calle Bailén aparece el mismo día en Idealista (990 €, 3 hab., 4ª planta, hace 7 horas) y en Fotocasa (990 €, 3 hab., 4ª Planta, hace 7 horas). Es sin duda la misma vivienda. Pero Idealista publica **104 m²** y Fotocasa **95 m²**: 9 m² de diferencia, muy por encima de la tolerancia de ±2. La heurística **no** los empareja, así que ese piso cuenta dos veces. Los portales no miden la superficie igual, y eso rompe cualquier emparejamiento basado en m². Sin corregir: haría falta una tolerancia mucho mayor, que a su vez dispararía los falsos positivos.
 
 - **La clasificación temporada/anual NO es homogénea entre capturas**, y esto afecta a un número de portada. La proporción de anuncios marcados como "alquiler de temporada" en Idealista es del 33% en la captura del 24-ago, 68% en la del 26-ago y 72% en la del 10-sep. Las dos últimas coinciden; la del 24-ago es la discordante, porque detectó la temporada sobre un campo más estrecho. Consecuencia: el arquetipo "anual" se nutre sobre todo de esa captura (38 anuncios frente a 17 y 11), y probablemente arrastra dentro anuncios de temporada mal clasificados. Al medirlo, la dirección resulta ser **la contraria a la que yo suponía**: en esta muestra el alquiler de temporada de 3 hab. tiene una mediana de **900 €/mes** frente a los **960 €/mes** del anual. O sea que la contaminación tiraría del precio hacia abajo, no hacia arriba. Se arregla reextrayendo con un criterio único.
-- **Sesgo de duración**: la muestra de alquiler es una foto de anuncios activos, y un anuncio caro permanece visible mucho más tiempo que uno bien de precio. Eso sobre-representa los caros y hace que los 990 €/mes sean probablemente una **sobreestimación** de la renta alcanzable. La dirección del sesgo se conoce; la magnitud no, porque las dos capturas están a solo dos días. Se corregiría acumulando capturas periódicas.
+- **Sesgo de duración**: la muestra de alquiler es una foto de anuncios activos, y un anuncio caro permanece visible mucho más tiempo que uno bien de precio. Eso sobre-representa los caros y hace que los 960 €/mes sean probablemente una **sobreestimación** de la renta alcanzable. La dirección del sesgo se conoce; la magnitud no, porque las dos capturas están a solo dos días. Se corregiría acumulando capturas periódicas.
 - La serie de Fotocasa de `alquiler_mercado_mensual.csv` **no debe citarse como índice**: sus 12 valores son todos enteros y solo hay tres distintos, lo que no corresponde a un índice publicado. La validación se apoya solo en Idealista.
 - La deduplicación cruzada Idealista↔Fotocasa es heurística (precio + habitaciones + m², sin dirección exacta): los portales no publican la calle en las páginas de resultados.
 - Ninguna ocupación del modelo (residencial 95%, estudiantil 95/30%, turística 45-77%) procede de una serie histórica local. Son supuestos.

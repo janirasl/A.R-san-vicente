@@ -31,7 +31,7 @@ from pathlib import Path
 import pandas as pd
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-RAW_DIR = SCRIPT_DIR.parent
+RAW_DIR = SCRIPT_DIR.parent / "raw"
 OUT_DIR = SCRIPT_DIR.parent / "limpio"
 
 # Tipos que NO son comparables a un piso estandar de 3 hab: producto distinto
