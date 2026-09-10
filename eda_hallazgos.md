@@ -57,7 +57,7 @@ Como varias propiedades aparecen en las tres fechas, se puede medir la variació
 | Apartamento 4 dorm. | 151 €/n | 150 €/n (oct) | −1% |
 | Loft junto a la Universidad | 105 €/n | 91 €/n (oct) | −13% |
 
-**Los pisos no tienen prima de verano; las villas sí.** Esto sugiere que la demanda turística de pisos en San Vicente no es de playa/vacaciones, sino ligada a la universidad (familias de visita, profesorado, congresos), que se reparte de otra forma a lo largo del año. Es un argumento para revisar la curva estacional asumida en `serie_temporal_estrategias.py`, que da al piso un pico de verano que los datos no respaldan.
+**Los pisos no tienen prima de verano; las villas sí.** Esto sugiere que la demanda turística de pisos en San Vicente no es de playa/vacaciones, sino ligada a la universidad (familias de visita, profesorado, congresos), que se reparte de otra forma a lo largo del año. **Este hallazgo ya se aplicó al modelo**: la amplitud estacional asumida bajó de ±20 a ±5 puntos de ocupación. Ver la sección siguiente.
 
 ### Inversión real
 
@@ -95,7 +95,7 @@ Los tres escenarios mueven a la vez ocupación y costes, porque son justo las va
 | 1. Residencial anual | **3,30%** | 3,30% | 3,30% |
 | 2. Estudiantil x habitación | 2,44% | 2,44% | 2,44% |
 | 3. Turístico | 2,80% | **6,51%** | **11,95%** |
-| 4. Mixto (curso + verano) | 2,84% | 3,45% | 4,36% |
+| 4. Mixto (curso + verano) | 2,91% | 3,55% | 4,49% |
 
 *(ROI neto anual sobre inversión total; tabla completa en `eda/comparativa_estrategias_escenarios.csv`)*
 
@@ -132,6 +132,26 @@ Y para las otras referencias, con costes base: **8,7 noches/mes** para igualar a
 
 El rango realista, por tanto, está entre **7 y 15 noches al mes** (83-184 al año) según cómo se gestionen los costes. Lo que estos datos no responden —y hay que decirlo así en la memoria— es si un piso de 3 habitaciones en San Vicente consigue efectivamente esas noches. Para saberlo habría que mirar la disponibilidad real de los 4-5 pisos que ya operan allí.
 
+## La estacionalidad, corregida
+
+El modelo temporal asumía que la ocupación turística del piso tenía un pico de verano de ±20 puntos sobre la media. **Ese número me lo inventé**, y los datos de la captura de septiembre lo contradicen: midiendo las mismas propiedades en tres fechas, las villas suben mucho en verano (+30% a +75% en precio) pero **los pisos se quedan planos** (−1%) o incluso bajan (−13%). El arquetipo del proyecto es un piso.
+
+La amplitud se ha bajado a **±5 puntos**, coherente con esa evidencia. Sigue siendo un supuesto, pero ahora tiene algo detrás.
+
+Matiz honesto que hay que mantener: lo medido es estacionalidad de **precio**, no de **ocupación**. No son lo mismo. Pero si la demanda estival fuera fuerte, lo normal es que el precio respondiera, como hace en las villas.
+
+**Efecto sobre el resultado** (`scripts/sensibilidad_estacionalidad.py`):
+
+| Amplitud asumida | ROI turístico | ROI mixto |
+|---|---|---|
+| ±20 pts (original, sin apoyo) | 6,51% | 3,86% |
+| ±5 pts (coherente con lo medido) | 6,51% | **3,55%** |
+| 0 pts (sin estacionalidad) | 6,51% | 3,45% |
+
+El turístico puro **no se mueve**: cobra los doce meses, y la curva solo redistribuye ocupación entre ellos sin cambiar la media anual — lo que gana en agosto lo pierde en febrero. El mixto sí se mueve, porque solo cobra turístico en julio y agosto: si esos meses dejan de ser el pico, pierde su razón de ser.
+
+Aun así el mixto sigue por encima del residencial (3,55% frente a 3,30%), así que **la conclusión aguanta**. Es un buen ejemplo de análisis de robustez: se comprueba si un resultado depende de un supuesto flojo, y en este caso resulta que no.
+
 ## Estacionalidad y horizonte temporal
 
 La serie mensual (`powerbi/flujo_mensual_estrategias.csv`, 30 años × 4 estrategias) usa exactamente los mismos supuestos que el modelo anual — los importa del mismo archivo, así que los dos modelos no pueden contradecirse.
@@ -140,7 +160,7 @@ La serie mensual (`powerbi/flujo_mensual_estrategias.csv`, 30 años × 4 estrate
 - **Turístico**: curva estacional con pico en agosto, media anual igual a la del escenario.
 - **Residencial**: 95% todo el año (rotación de inquilinos).
 
-Payback sobre la inversión total, escenario base: turístico 15,4 años, mixto 28,9 años, residencial 30,3 años y estudiantil 41,0 años.
+Payback sobre la inversión total, escenario base: turístico 15,4 años, mixto 28,1 años, residencial 30,3 años y estudiantil 41,0 años.
 
 Ojo: es **payback simple**. No incorpora valor temporal del dinero, inflación, revalorización del inmueble, valor residual ni coste de oportunidad. Sirve para comparar estrategias entre sí sobre la misma vivienda, no para juzgar si comprar es buena inversión frente a otras alternativas.
 

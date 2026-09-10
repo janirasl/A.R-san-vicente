@@ -17,10 +17,11 @@ un supuesto de ocupacion/vacancia, no solo el turistico:
     meses -> ASUNCION basada en el calendario academico, no en datos UA reales
     de estacionalidad (la UA solo dio una foto fija de la oferta, no series
     temporales).
-  - Turistico: curva estacional (pico en verano) calibrada para que la MEDIA
-    anual siga siendo el 77% ya usado y documentado (proxy Alicante) -> la
-    FORMA estacional en si es una asuncion adicional, no hay datos mensuales
-    reales de Airbnb/Booking para San Vicente, solo precios puntuales.
+  - Turistico: curva estacional suave (amplitud +/-5 puntos, pico en agosto),
+    calibrada para que la MEDIA anual siga siendo la del escenario. La amplitud
+    se rebajo de 0,20 a 0,05 al comprobar que los PISOS de San Vicente no tienen
+    prima de verano en precio (solo la tienen las villas) -> ver
+    scripts/sensibilidad_estacionalidad.py.
   - Mixto: usa la ocupacion de estudiantil en curso y de turistico en verano.
 
 Salidas (carpeta powerbi/, listas para importar en Power BI):
@@ -30,7 +31,6 @@ Salidas (carpeta powerbi/, listas para importar en Power BI):
 """
 
 import os
-from math import cos, pi
 from pathlib import Path
 
 import matplotlib
@@ -39,6 +39,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from modelo_financiero import (
+    ocupacion_turistica_mes,
     cargar_arquetipo, gastos_fijos_anuales, gastos_operativos_turistico,
     SEGURO_IMPAGO_PCT, ITP_MAS_GASTOS_COMPRA_PCT, ESCENARIOS,
     MESES_ACADEMICOS, OCUPACION_RESIDENCIAL,
@@ -59,18 +60,9 @@ N_ANIOS = 30  # suficiente para que el payback de las 4 estrategias sea visible 
 N_MESES = N_ANIOS * 12
 FECHA_INICIO = pd.Timestamp("2026-09-01")  # primer mes tras la compra (supuesto)
 
-# Ocupacion residencial/estudiantil y calendario academico se importan de
-# modelo_financiero.py (unica fuente de verdad de los supuestos).
-AMPLITUD_ESTACIONAL_TURISTICO = 0.20  # SUPUESTO: +/-20 puntos sobre la media anual, pico en agosto
-
-
-def ocupacion_turistica_mes(mes_calendario):
-    """Curva estacional (coseno) centrada en agosto (mes 8), con media anual
-    exacta = OCUPACION_TURISTICA (la integral de un coseno en un periodo
-    completo es 0, asi que el promedio de los 12 meses no cambia)."""
-    fase = 2 * pi * (mes_calendario - 8) / 12
-    oc = OCUPACION_TURISTICA + AMPLITUD_ESTACIONAL_TURISTICO * cos(fase)
-    return min(max(oc, 0.05), 0.98)
+# Ocupaciones, calendario academico y curva estacional se importan de
+# modelo_financiero.py: es la unica fuente de verdad de los supuestos, para que
+# los dos modelos no puedan discrepar.
 
 
 def ocupacion_estudiantil_mes(mes_calendario):
@@ -109,7 +101,7 @@ def construir_flujo_mensual(datos):
         # 3. Turistico (Airbnb/Booking) -- con costes operativos completos
         # (limpieza por estancia, suministros, mantenimiento, gestion, comision),
         # calculados con la misma funcion que usa el modelo anual.
-        oc = ocupacion_turistica_mes(mes_cal)
+        oc = ocupacion_turistica_mes(mes_cal, OCUPACION_TURISTICA)
         bruto = datos["precio_noche_turistico"] * 30.4 * oc
         op_mes, _ = gastos_operativos_turistico(datos, ESCENARIOS[ESCENARIO], oc, meses=1)
         neto = bruto - gastos_fijos_mes - op_mes
@@ -123,7 +115,7 @@ def construir_flujo_mensual(datos):
             bruto = datos["precio_habitacion_mes"] * 3 * oc
             gasto_var = bruto * SEGURO_IMPAGO_PCT
         else:
-            oc = ocupacion_turistica_mes(mes_cal)
+            oc = ocupacion_turistica_mes(mes_cal, OCUPACION_TURISTICA)
             bruto = datos["precio_noche_turistico"] * 30.4 * oc
             gasto_var, _ = gastos_operativos_turistico(datos, ESCENARIOS[ESCENARIO], oc, meses=1)
         neto = bruto - gastos_fijos_mes - gasto_var

@@ -39,6 +39,7 @@ La segunda es la que refleja el dinero realmente desembolsado.
 """
 
 import os
+from math import cos, pi
 from pathlib import Path
 
 import matplotlib
@@ -59,6 +60,23 @@ GRAF_DIR = SCRIPT_DIR.parent / "graficos"
 MESES_ACADEMICOS = {9, 10, 11, 12, 1, 2, 3, 4, 5, 6}   # sep-jun
 N_MESES_CURSO = len(MESES_ACADEMICOS)                   # 10
 N_MESES_VERANO = 12 - N_MESES_CURSO                     # 2 (jul-ago)
+MESES_VERANO_CAL = [7, 8]
+
+# Amplitud de la curva estacional de ocupacion turistica, en puntos de ocupacion
+# sobre la media anual, con pico en agosto.
+#
+# Este valor estuvo en 0,20 sin ningun apoyo: me lo invente. La captura
+# turistica de 2026-09-01 midio la estacionalidad de PRECIO sobre las mismas
+# propiedades en tres fechas y apunta a lo contrario para los pisos: las villas
+# suben mucho en verano (+30% a +75%) pero los pisos se quedan planos (-1%) o
+# bajan (-13%). El arquetipo del proyecto es un piso.
+#
+# Matiz honesto: lo medido es estacionalidad de PRECIO, no de OCUPACION. Pero si
+# la demanda estival fuera fuerte lo normal seria que el precio respondiera, como
+# hace en las villas. Se baja a 0,05 como valor coherente con esa evidencia.
+# Sigue siendo un SUPUESTO, solo que ahora con algo detras.
+# Ver scripts/sensibilidad_estacionalidad.py para el efecto de moverlo.
+AMPLITUD_ESTACIONAL_TURISTICO = 0.05
 
 # Gastos comunes a cualquier estrategia
 COMUNIDAD_MES = 70.0
@@ -236,6 +254,20 @@ def gastos_fijos_anuales(precio_compra):
     return ibi, comunidad
 
 
+def ocupacion_turistica_mes(mes_calendario, ocupacion_media):
+    """Curva estacional (coseno) centrada en agosto. La media anual NO cambia
+    con la amplitud —la integral del coseno en un periodo completo es cero—, asi
+    que esto solo reparte la ocupacion entre meses.
+
+    Vive aqui, y no en serie_temporal_estrategias.py, para que los dos modelos
+    usen la misma definicion. Antes no era asi: el modelo anual daba a los meses
+    de verano del mixto la ocupacion media, mientras que el temporal les daba el
+    pico de la curva. Los dos discrepaban sobre el mixto sin que se viera.
+    """
+    oc = ocupacion_media + AMPLITUD_ESTACIONAL_TURISTICO * cos(2 * pi * (mes_calendario - 8) / 12)
+    return min(max(oc, 0.05), 0.98)
+
+
 def bruto_turistico_anual(datos, ocupacion, meses=12):
     return datos["precio_noche_turistico"] * 30.4 * ocupacion * meses
 
@@ -303,10 +335,18 @@ def calcular_estrategias(datos, nombre_escenario):
                       base_imponible_irpf=neto * (1 - REDUCCION_IRPF_TURISTICO)))
 
     # --- 4. Mixto: curso por habitaciones + verano turistico ---
+    # Los meses de verano se valoran con la ocupacion ESTACIONAL de julio y
+    # agosto, no con la media anual. Es la diferencia que hacia que este modelo
+    # y el temporal no coincidieran en el mixto.
     bruto_curso = datos["precio_habitacion_mes"] * 3 * N_MESES_CURSO * OCUPACION_ESTUDIANTIL_CURSO
-    bruto_verano = bruto_turistico_anual(datos, esc["ocupacion"], N_MESES_VERANO)
+    bruto_verano = 0.0
+    op_verano = 0.0
+    for mes in MESES_VERANO_CAL:
+        oc_mes = ocupacion_turistica_mes(mes, esc["ocupacion"])
+        bruto_verano += bruto_turistico_anual(datos, oc_mes, 1)
+        op_mes, _ = gastos_operativos_turistico(datos, esc, oc_mes, 1)
+        op_verano += op_mes
     bruto = bruto_curso + bruto_verano
-    op_verano, _ = gastos_operativos_turistico(datos, esc, esc["ocupacion"], N_MESES_VERANO)
     gastos = gastos_fijos + bruto_curso * SEGURO_IMPAGO_PCT + op_verano
     neto = bruto - gastos
     base_irpf = (neto * (bruto_curso / bruto)) * (1 - REDUCCION_IRPF_RESIDENCIAL) + \

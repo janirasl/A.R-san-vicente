@@ -1,0 +1,5 @@
+amplitud;ocupacion_verano;turistico_neto;turistico_roi;mixto_neto;mixto_roi;escenario_amplitud
+0.2;0.787;17197;0.06510789663586679;10186;0.03856355526094994;0,20 — supuesto original (sin apoyo)
+0.1;0.693;17197;0.06510789663586682;9655;0.03655393298713443;0,10 — intermedio
+0.05;0.647;17197;0.06510789663586679;9389;0.03554912185022667;0,05 — coherente con el precio plano de los pisos
+0.0;0.6;17197;0.06510789663586682;9124;0.034544310713318906;0,00 — sin estacionalidad

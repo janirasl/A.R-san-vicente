@@ -59,7 +59,7 @@ La pregunta tal cual **no tiene respuesta única**, y descubrir por qué es uno 
 | Residencial anual | **3,30%** | 3,30% | 3,30% |
 | Estudiantil x habitación | 2,44% | 2,44% | 2,44% |
 | Turístico | 2,80% | **6,51%** | **11,95%** |
-| Mixto (curso + verano) | 2,84% | 3,45% | 4,36% |
+| Mixto (curso + verano) | 2,91% | 3,55% | 4,49% |
 
 - **Lectura:** el orden cambia por completo entre escenarios. En el pesimista gana el residencial y el turístico queda tercero; en el optimista el turístico casi cuadruplica al residencial. **Toda esa distancia la explican dos variables no medidas**: la ocupación y la estructura de costes.
 - **Confianza: media.** La estructura del análisis es sólida, pero los valores de ocupación 45% y 60% los fijamos nosotros como rango plausible; solo el 77% tiene origen documentado (proxy de Alicante ciudad). Los costes operativos son estimaciones propias salvo la comisión de plataforma.
@@ -77,7 +77,7 @@ La pregunta tal cual **no tiene respuesta única**, y descubrir por qué es uno 
 | Residencial | 30,3 años | 30,3 | 30,3 |
 | Estudiantil | 41,0 años | 41,0 | 41,0 |
 | Turístico | 35,8 años | 15,4 | **8,4** |
-| Mixto | 35,3 años | 28,9 | 22,9 |
+| Mixto | 34,4 años | 28,1 | 22,3 |
 
 - **Aviso metodológico importante:** es payback **solo del alquiler**. No incluye revalorización del inmueble, valor residual, inflación, valor temporal del dinero ni coste de oportunidad. Por eso salen cifras tan largas: un piso que se amortiza en 30 años vía alquiler puede ser buena inversión igualmente si se revaloriza — pero eso este trabajo no lo mide.
 - **Por qué no lo mide:** de venta solo tenemos una foto (agosto 2026), no una serie histórica de precios. Sería necesario el IPV del INE o una serie de Idealista/Fotocasa para la provincia.
@@ -100,7 +100,7 @@ Esta pregunta no estaba planteada al principio; surgió al intentar ampliar la m
 
 - **Método:** como varias propiedades aparecen en las tres fechas consultadas, se mide la variación sobre **la misma vivienda** (no comparando viviendas distintas entre sí, que sería engañoso).
 - **Respuesta:** **las villas sí, los pisos no.** Villa Sensation Seasons +75% en julio frente a febrero, Villa Mulet +30%; en cambio el apartamento de 4 dormitorios se queda plano (151 € en febrero, 150 € en octubre) y el loft incluso baja un 13%.
-- **Implicación:** la demanda turística de pisos en San Vicente no parece de playa/vacaciones, sino ligada a la universidad —familias de visita, profesorado, congresos—, que se reparte de otra forma a lo largo del año. Esto contradice la curva estacional con pico de verano que asume `serie_temporal_estrategias.py` y que conviene revisar.
+- **Implicación:** la demanda turística de pisos en San Vicente no parece de playa/vacaciones, sino ligada a la universidad —familias de visita, profesorado, congresos—, que se reparte de otra forma a lo largo del año. **Ya aplicado al modelo**: la amplitud estacional bajó de ±20 a ±5 puntos, lo que reduce el ROI del mixto de 3,86% a 3,55% sin cambiar su posición en el ranking (ver `scripts/sensibilidad_estacionalidad.py`).
 - **Confianza: media.** La dirección del hallazgo es clara y consistente, pero son 9 propiedades y 3 fechas puntuales, no una serie.
 
 ---
