@@ -132,6 +132,24 @@ Y para las otras referencias, con costes base: **8,7 noches/mes** para igualar a
 
 El rango realista, por tanto, está entre **7 y 15 noches al mes** (83-184 al año) según cómo se gestionen los costes. Lo que estos datos no responden —y hay que decirlo así en la memoria— es si un piso de 3 habitaciones en San Vicente consigue efectivamente esas noches. Para saberlo habría que mirar la disponibilidad real de los 4-5 pisos que ya operan allí.
 
+## El segmento de temporada no compite con Airbnb
+
+El 72% de los anuncios de Idealista en San Vicente son "alquiler de temporada", así que valía la pena comprobar si ese segmento juega en el mercado residencial o en el turístico. Se consultó Airbnb para un **mes completo** (1 oct → 1 nov), alojamiento entero, acotado al municipio.
+
+| Producto | 3 habitaciones, mes completo |
+|---|---|
+| Airbnb (El Jazmín, 3 dorm.) | **4.652 €/mes** |
+| Alquiler de temporada (Idealista) | 900 €/mes |
+| Alquiler anual (Idealista/Fotocasa) | 960 €/mes |
+
+**Airbnb cuesta 5,2 veces más que un alquiler de temporada.** No son productos competidores: el "alquiler de temporada" de los portales está en precio residencial, no en precio turístico, aunque el contrato sea corto. Esto importa para el modelo, porque descarta la idea de que los 41 anuncios de temporada del arquetipo sean oferta turística encubierta.
+
+### Y de paso, una validación independiente del precio turístico
+
+El modelo usa 145 €/noche (n=4), que a mes completo daría **4.408 €** al 100% de ocupación. Airbnb pide **4.652 €** por ese mismo mes en un piso de 3 dormitorios comparable: un desvío del **+6%**.
+
+Es una validación que vale, porque llega desde una superficie de precios distinta —tarifa mensual con descuento aplicado, no precio por noche— y confirma que extrapolar de noche a mes no introduce un sesgo apreciable. El dato está en `airbnb_mensual_san_vicente_2026-09-10.csv`.
+
 ## La estacionalidad, corregida
 
 El modelo temporal asumía que la ocupación turística del piso tenía un pico de verano de ±20 puntos sobre la media. **Ese número me lo inventé**, y los datos de la captura de septiembre lo contradicen: midiendo las mismas propiedades en tres fechas, las villas suben mucho en verano (+30% a +75% en precio) pero **los pisos se quedan planos** (−1%) o incluso bajan (−13%). El arquetipo del proyecto es un piso.
@@ -176,7 +194,13 @@ El turístico no tiene reducción de IRPF (tributa el 100% del rendimiento neto)
 
 ## Limitaciones
 
-- **La clasificación temporada/anual NO es homogénea entre capturas**, y esto afecta a un número de portada. La proporción de anuncios marcados como "alquiler de temporada" en Idealista es del 33% en la captura del 24-ago, 68% en la del 26-ago y 72% en la del 10-sep. Las dos últimas coinciden; la del 24-ago es la discordante, porque detectó la temporada sobre un campo más estrecho. Consecuencia: el arquetipo "anual" se nutre sobre todo de esa captura (38 anuncios frente a 17 y 11), y probablemente arrastra dentro anuncios de temporada mal clasificados. Como el alquiler de temporada se paga más caro, esto **tira el alquiler residencial medido hacia arriba**, en la misma dirección que el sesgo de duración. Se arregla reextrayendo con un criterio único.
+- **La deduplicación heurística falla en las dos direcciones, y ahora está medido.**
+
+  *Falsos positivos (fusiona pisos distintos): 10,3%.* Los 90 anuncios de la captura del 10-09 llevan ID de Idealista, así que sabemos con certeza que son 90 pisos diferentes. De ellos, 9 comparten la clave (precio + habitaciones + m²±2) con otro y la heurística los marcaría como duplicados. El caso extremo son **cinco pisos distintos, todos a 900 €/3 hab./90 m²**. Ya está corregido: desde esta captura la deduplicación usa el ID cuando existe, y dos IDs distintos nunca se marcan como duplicados. Recupera esos 9 anuncios (de 176 a 185 únicos).
+
+  *Falsos negativos (no detecta el mismo piso en dos portales).* El anuncio de Calle Bailén aparece el mismo día en Idealista (990 €, 3 hab., 4ª planta, hace 7 horas) y en Fotocasa (990 €, 3 hab., 4ª Planta, hace 7 horas). Es sin duda la misma vivienda. Pero Idealista publica **104 m²** y Fotocasa **95 m²**: 9 m² de diferencia, muy por encima de la tolerancia de ±2. La heurística **no** los empareja, así que ese piso cuenta dos veces. Los portales no miden la superficie igual, y eso rompe cualquier emparejamiento basado en m². Sin corregir: haría falta una tolerancia mucho mayor, que a su vez dispararía los falsos positivos.
+
+- **La clasificación temporada/anual NO es homogénea entre capturas**, y esto afecta a un número de portada. La proporción de anuncios marcados como "alquiler de temporada" en Idealista es del 33% en la captura del 24-ago, 68% en la del 26-ago y 72% en la del 10-sep. Las dos últimas coinciden; la del 24-ago es la discordante, porque detectó la temporada sobre un campo más estrecho. Consecuencia: el arquetipo "anual" se nutre sobre todo de esa captura (38 anuncios frente a 17 y 11), y probablemente arrastra dentro anuncios de temporada mal clasificados. Al medirlo, la dirección resulta ser **la contraria a la que yo suponía**: en esta muestra el alquiler de temporada de 3 hab. tiene una mediana de **900 €/mes** frente a los **960 €/mes** del anual. O sea que la contaminación tiraría del precio hacia abajo, no hacia arriba. Se arregla reextrayendo con un criterio único.
 - **Sesgo de duración**: la muestra de alquiler es una foto de anuncios activos, y un anuncio caro permanece visible mucho más tiempo que uno bien de precio. Eso sobre-representa los caros y hace que los 990 €/mes sean probablemente una **sobreestimación** de la renta alcanzable. La dirección del sesgo se conoce; la magnitud no, porque las dos capturas están a solo dos días. Se corregiría acumulando capturas periódicas.
 - La serie de Fotocasa de `alquiler_mercado_mensual.csv` **no debe citarse como índice**: sus 12 valores son todos enteros y solo hay tres distintos, lo que no corresponde a un índice publicado. La validación se apoya solo en Idealista.
 - La deduplicación cruzada Idealista↔Fotocasa es heurística (precio + habitaciones + m², sin dirección exacta): los portales no publican la calle en las páginas de resultados.
