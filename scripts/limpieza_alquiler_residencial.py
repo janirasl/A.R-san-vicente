@@ -138,6 +138,7 @@ def cargar_idealista(path):
         out = pd.DataFrame(index=df.index)
         out["fuente"] = "idealista"
         out["fecha_captura"] = df["fecha_captura"] if "fecha_captura" in df.columns else (fecha_nombre or "desconocida")
+        out["id_anuncio"] = df["id_anuncio"] if "id_anuncio" in df.columns else None
         out["precio_mes"] = df["precio_mes_eur"].apply(parse_precio)
         out["habitaciones"] = pd.to_numeric(df["habitaciones"], errors="coerce")
         out["m2"] = pd.to_numeric(df["superficie_m2"], errors="coerce")
@@ -160,6 +161,7 @@ def cargar_idealista(path):
         out = pd.DataFrame(index=df.index)
         out["fuente"] = "idealista"
         out["fecha_captura"] = fecha_nombre or "2026-08-26"  # fichero original, sin fecha en el nombre
+        out["id_anuncio"] = None
         out["precio_mes"] = df["precio"].apply(parse_precio)
         out["habitaciones"] = df["detalles"].apply(parse_habitaciones_texto)
         out["m2"] = df["detalles"].apply(parse_m2_texto)
@@ -186,6 +188,7 @@ def cargar_fotocasa(path):
         out = pd.DataFrame(index=df.index)
         out["fuente"] = "fotocasa"
         out["fecha_captura"] = df["fecha_captura"] if "fecha_captura" in df.columns else (fecha_nombre or "desconocida")
+        out["id_anuncio"] = None
         out["precio_mes"] = df["precio_publicado_eur_mes"].apply(parse_precio)
         out["habitaciones"] = pd.to_numeric(df["habitaciones"], errors="coerce")
         out["m2"] = pd.to_numeric(df["superficie_m2"], errors="coerce")
@@ -208,6 +211,7 @@ def cargar_fotocasa(path):
         out = pd.DataFrame(index=df.index)
         out["fuente"] = "fotocasa"
         out["fecha_captura"] = fecha_nombre or "2026-08-26"
+        out["id_anuncio"] = None
         out["precio_mes"] = df["precio"].apply(parse_precio)
         out["habitaciones"] = pd.to_numeric(df["habitaciones"], errors="coerce")
         out["m2"] = pd.to_numeric(df["m2"], errors="coerce")
@@ -228,7 +232,21 @@ def cargar_fotocasa(path):
 
 def marcar_duplicados(df):
     """
-    Duplicado = mismo precio_mes, misma habitaciones y m2 muy similar (+-2 m2),
+    DESDE LA CAPTURA DEL 2026-09-10 hay ID DE ANUNCIO, y eso cambia las reglas:
+    dos filas con ids DISTINTOS son viviendas distintas por definicion, aunque
+    coincidan en precio, habitaciones y m2. Medido sobre esa captura, la
+    heuristica sola marcaba como duplicados a 9 de 87 anuncios que en realidad
+    eran pisos diferentes: un 10% de falsos positivos. El caso mas claro son
+    cinco pisos distintos, todos a 900 EUR / 3 hab. / 90 m2.
+
+    Regla actual, por grupo de (precio, habitaciones, m2 +-2):
+      - filas con id: se conservan todas las de id distinto; solo se marca la
+        repeticion exacta del mismo id.
+      - filas sin id, si en el grupo hay filas con id: se marcan (se asume que
+        son esas mismas viviendas vistas en una captura anterior sin id).
+      - filas sin id, si nadie en el grupo tiene id: heuristica de siempre.
+
+    Heuristica de base = mismo precio_mes, misma habitaciones y m2 muy similar (+-2 m2),
     sin importar de que portal o fecha venga -> con N extracciones acumuladas
     (2 portales x cuantas fechas haya), el mismo anuncio puede repetirse tanto
     entre portales como entre varias fechas de captura (sigue publicado semanas
@@ -240,13 +258,34 @@ def marcar_duplicados(df):
     df = df.sort_values("fecha_captura", na_position="last").reset_index(drop=True)
     df["es_duplicado_cruzado"] = False
     df["m2_bin"] = (df["m2"] / 2).round() * 2
+    if "id_anuncio" not in df.columns:
+        df["id_anuncio"] = None
 
     con_datos = df.dropna(subset=["precio_mes", "habitaciones", "m2_bin"])
     grupos = con_datos.groupby(["precio_mes", "habitaciones", "m2_bin"])
     for _, idx in grupos.groups.items():
-        if len(idx) > 1:
-            resto = df.loc[idx].index[1:]
-            df.loc[resto, "es_duplicado_cruzado"] = True
+        if len(idx) <= 1:
+            continue
+        sub = df.loc[idx]
+        con_id = sub[sub["id_anuncio"].notna()]
+        sin_id = sub[sub["id_anuncio"].isna()]
+
+        # Filas CON id: ids distintos = pisos distintos, se conservan todas.
+        # Solo se marca la repeticion exacta del mismo id.
+        if len(con_id):
+            vistos = set()
+            for i, valor in con_id["id_anuncio"].items():
+                if valor in vistos:
+                    df.loc[i, "es_duplicado_cruzado"] = True
+                else:
+                    vistos.add(valor)
+            # Filas SIN id en un grupo donde ya hay filas con id: se asume que son
+            # esas mismas viviendas vistas en una captura anterior (que no guardaba
+            # id), asi que se marcan todas.
+            df.loc[sin_id.index, "es_duplicado_cruzado"] = True
+        else:
+            # Nadie tiene id: heuristica de siempre, se conserva la primera.
+            df.loc[sin_id.index[1:], "es_duplicado_cruzado"] = True
 
     return df.drop(columns=["m2_bin"])
 
