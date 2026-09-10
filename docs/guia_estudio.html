@@ -426,7 +426,21 @@
       <h2><span class="num">Sección 01</span>La pregunta y por qué no es trivial</h2>
       <p class="lede">Si compras un piso en San Vicente del Raspeig para alquilarlo, ¿qué modelo de alquiler te renta más: inquilino tradicional, habitaciones a estudiantes, Airbnb, o una mezcla?</p>
 
-      <p>Parece una pregunta sencilla y es una trampa. Los cuatro modelos <em>no son comparables tal cual</em>, y ahí está casi todo el trabajo:</p>
+      <p>Y antes de comparar nada hay que darse cuenta de una cosa: una vivienda se puede alquilar <strong>entera o por habitaciones</strong>, y <strong>a largo plazo o por noches</strong>. Eso son cuatro mercados distintos, no dos.</p>
+
+      <div class="scroll">
+        <table>
+          <thead><tr><th></th><th>Piso entero</th><th>Por habitación</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Largo plazo</strong></td><td>Residencial · 960 €/mes · n=37</td><td>Estudiantil UA · 292 €/hab./mes · n=28</td></tr>
+            <tr><td><strong>Corto plazo</strong></td><td>Turístico · 145 €/noche · n=4</td><td>Habitación en Airbnb · 44,8 €/noche · n=15</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>Separar la <em>unidad</em> (qué se alquila) del <em>plazo</em> (por cuánto tiempo) es lo que evita el error más común al mirar Airbnb: comparar el precio de una habitación con el de un piso completo.</p>
+
+      <p>Parece una pregunta sencilla y es una trampa. Los modelos <em>no son comparables tal cual</em>, y ahí está casi todo el trabajo:</p>
 
       <ul>
         <li><strong>Cobran en unidades distintas.</strong> El residencial cobra €/mes, el turístico €/noche, el de habitaciones €/habitación/mes. No se pueden poner en la misma columna.</li>
@@ -449,7 +463,8 @@
         <div class="fig"><span class="k">237.950 €</span><span class="l">Precio de compra del arquetipo</span><span class="n">mediana · n=22</span></div>
         <div class="fig"><span class="k">960 €</span><span class="l">Alquiler residencial mensual</span><span class="n">mediana · n=37</span></div>
         <div class="fig"><span class="k">292 €</span><span class="l">Habitación a estudiante, al mes</span><span class="n">mediana · n=28</span></div>
-        <div class="fig"><span class="k">145 €</span><span class="l">Noche en alquiler turístico</span><span class="n">mediana · n=4</span></div>
+        <div class="fig"><span class="k">145 €</span><span class="l">Noche, piso entero turístico</span><span class="n">mediana · n=4</span></div>
+        <div class="fig"><span class="k">44,8 €</span><span class="l">Noche, habitación en Airbnb</span><span class="n">mediana · n=15</span></div>
       </div>
 
       <h3>Las cuatro fuentes y qué aporta cada una</h3>
@@ -583,7 +598,7 @@
     <!-- 5 -->
     <section id="pipeline">
       <h2><span class="num">Sección 05</span>El pipeline, script a script</h2>
-      <p class="lede">Quince scripts, 3.141 líneas, en cuatro etapas encadenadas. <code>run_all.py</code> los lanza en orden: un solo comando reproduce el proyecto entero desde los datos crudos.</p>
+      <p class="lede">Dieciséis scripts en cuatro etapas encadenadas. <code>run_all.py</code> los lanza en orden: un solo comando reproduce el proyecto entero desde los datos crudos.</p>
 
       <div class="pipe">
         <div class="stage">
@@ -603,8 +618,12 @@
           <p class="what">Procesa la captura acotada por mapa. Separa villas de pisos mirando el nombre además del tipo declarado, porque Airbnb etiqueta «Vivienda» a villas con piscina.</p>
         </div>
         <div class="stage">
+          <span class="file">limpieza_turistico_habitaciones.py</span>
+          <p class="what">Las habitaciones sueltas de Airbnb: la cuarta celda de la matriz. Marca dos anuncios con mínimo de estancia dudoso y tres observaciones con rango de fechas alternativo, que quedan fuera de las medianas.</p>
+        </div>
+        <div class="stage">
           <span class="file">unificar_datasets.py</span>
-          <p class="what"><strong>Etapa 2 · Unificación.</strong> Concatena los cinco limpios en <code>dataset_unificado.csv</code>. El precio va en tres columnas excluyentes para que sea imposible promediar un alquiler con una compra.</p>
+          <p class="what"><strong>Etapa 2 · Unificación.</strong> Concatena los limpios en <code>dataset_unificado.csv</code>. El precio va en tres columnas excluyentes para que sea imposible promediar un alquiler con una compra, y la columna <code>unidad</code> impide mezclar el precio de una habitación con el de un piso entero.</p>
         </div>
         <div class="stage">
           <span class="file">eda_exploratorio.py</span>
@@ -612,7 +631,7 @@
         </div>
         <div class="stage">
           <span class="file">modelo_financiero.py</span>
-          <p class="what"><strong>Etapa 4 · Modelo.</strong> El núcleo, 509 líneas. Bloque de datos observados y bloque de supuestos, separados. Calcula 4 estrategias × 3 escenarios, con ROI sobre los dos denominadores.</p>
+          <p class="what"><strong>Etapa 4 · Modelo.</strong> El núcleo, 509 líneas. Bloque de datos observados y bloque de supuestos, separados. Calcula 5 estrategias × 3 escenarios, con ROI sobre los dos denominadores.</p>
         </div>
         <div class="stage">
           <span class="file">punto_equilibrio_dias.py</span>
@@ -647,7 +666,8 @@
           <tbody>
             <tr><td>Residencial anual</td><td class="num win">3,18%</td><td class="num">3,18%</td><td class="num">3,18%</td></tr>
             <tr><td>Estudiantil por habitación</td><td class="num">2,44%</td><td class="num">2,44%</td><td class="num">2,44%</td></tr>
-            <tr><td>Turístico</td><td class="num">2,80%</td><td class="num win">6,51%</td><td class="num win">11,95%</td></tr>
+            <tr><td>Turístico, piso entero</td><td class="num">2,80%</td><td class="num win">6,51%</td><td class="num win">11,95%</td></tr>
+            <tr><td>Turístico, 3 habitaciones</td><td class="num">1,77%</td><td class="num">5,33%</td><td class="num">10,42%</td></tr>
             <tr><td>Mixto (curso + verano)</td><td class="num">2,91%</td><td class="num">3,55%</td><td class="num">4,49%</td></tr>
           </tbody>
         </table>
@@ -657,17 +677,19 @@
       <div class="scroll">
         <table>
           <thead>
-            <tr><th>Estructura de costes</th><th class="num">Noches/mes</th><th class="num">Al año</th><th class="num">Ocupación</th></tr>
+            <tr><th>Estructura de costes</th><th class="num">Piso entero</th><th class="num">3 habitaciones</th><th class="num">Diferencia</th></tr>
           </thead>
           <tbody>
-            <tr><td><strong>Suelo — solo coste documentado</strong></td><td class="num win">6,7</td><td class="num">80</td><td class="num">21,9%</td></tr>
-            <tr><td>Costes optimistas</td><td class="num">7,7</td><td class="num">93</td><td class="num">25,4%</td></tr>
-            <tr><td>Costes base</td><td class="num">10,4</td><td class="num">125</td><td class="num">34,2%</td></tr>
-            <tr><td>Costes pesimistas</td><td class="num">14,9</td><td class="num">179</td><td class="num">49,1%</td></tr>
+            <tr><td><strong>Suelo — solo coste documentado</strong></td><td class="num win">6,7</td><td class="num">7,2</td><td class="num">+7%</td></tr>
+            <tr><td>Costes optimistas</td><td class="num">7,7</td><td class="num">8,8</td><td class="num">+14%</td></tr>
+            <tr><td>Costes base</td><td class="num">10,4</td><td class="num">12,3</td><td class="num">+18%</td></tr>
+            <tr><td>Costes pesimistas</td><td class="num">14,9</td><td class="num">19,8</td><td class="num">+33%</td></tr>
           </tbody>
         </table>
       </div>
-      <p>Leído en cristiano: con gestión externalizada necesitas medio año ocupado para batir a un inquilino tranquilo; autogestionando, te basta con algo más de un cuarto. <strong>La decisión no depende solo de cuánta ocupación consigas, sino de cómo gestiones los costes.</strong></p>
+      <p>Noches ocupadas al mes <em>por unidad alquilada</em>, para igualar al alquiler residencial. Leído en cristiano: con gestión externalizada necesitas medio año ocupado para batir a un inquilino tranquilo; autogestionando, te basta con algo más de un cuarto. <strong>La decisión no depende solo de cuánta ocupación consigas, sino de cómo gestiones los costes.</strong></p>
+
+      <p>Y fíjate en cómo se abre la columna de la diferencia. En el suelo, donde no hay limpieza ni gestión, las dos modalidades casi empatan — porque tres habitaciones a 44,8 € (134 €/noche) y el piso entero a 145 € se parecen bastante. <strong>Toda la desventaja de las habitaciones aparece cuando entran los costes</strong>, porque tres habitaciones rotando por separado son el triple de estancias, de limpiezas y de check-ins. No es que las habitaciones se vendan peor: es que cuestan más de operar. Y hay una carga que el número no recoge: esas 7,2 noches hay que conseguirlas <em>tres veces en paralelo</em>, no una.</p>
 
       <h3>El hallazgo lateral</h3>
       <p>Al intentar ampliar la muestra turística apareció algo que no se buscaba: acotando la búsqueda a las coordenadas del municipio, Airbnb tiene entre 10 y 14 alojamientos enteros, y Booking solo 2. De 16 propiedades únicas, <strong>9 son villas o chalets</strong> con piscina para grupos grandes. Solo 4 o 5 son pisos comparables al arquetipo.</p>
@@ -685,7 +707,17 @@
 
       <div class="qa">
         <p class="q">Con solo 4 anuncios turísticos, ¿esto vale para algo?</p>
-        <p class="a">Vale para lo que dice que vale. Cuatro comparables no permiten hablar de «precio de mercado» en sentido estadístico, y por eso el n aparece siempre junto a la cifra. Pero <strong>ese n pequeño es en sí un resultado</strong>: el municipio solo tiene 4 o 5 pisos turísticos comparables porque su parque turístico son villas. Lo comprobamos con dos plataformas y el registro oficial.</p>
+        <p class="a">Vale para lo que dice que vale. Cuatro comparables no permiten hablar de «precio de mercado» en sentido estadístico, y por eso el n aparece siempre junto a la cifra — y por eso la rama turística del análisis no estima un ingreso, sino un umbral: cuántas noches harían falta. Pero <strong>ese n pequeño es en sí un resultado</strong>: el municipio solo tiene 4 o 5 pisos turísticos comparables porque su parque turístico son villas. Lo comprobamos con dos plataformas y el registro oficial.</p>
+      </div>
+
+      <div class="qa">
+        <p class="q">He abierto Airbnb y veo noches a 29 €, 47 €, 54 €. ¿De dónde te sacas 145 €?</p>
+        <p class="a">De pisos enteros de 3 dormitorios, que es el arquetipo. Esas cifras son de <strong>habitaciones</strong>, que es otro producto: la mediana de las 15 observaciones fiables de habitación en San Vicente es de <strong>44,8 €/noche</strong>, y ahí caen tus 29, 47 y 54. En piso entero dentro del municipio no hay nada por debajo de 56,8 €. La comprobación que lo cierra: «El Jazmín», 3 dormitorios, reservado un mes entero, sale a 150 €/noche — coincide con nuestros 145 €. Por eso el dataset lleva una columna <code>unidad</code>: para que ese promedio no se pueda hacer sin darse cuenta.</p>
+      </div>
+
+      <div class="qa">
+        <p class="q">¿Y no ganarías más troceando el piso y alquilando las tres habitaciones por noches?</p>
+        <p class="a">No, y está calculado: <strong>5,33% frente a 6,51%</strong> de ROI en el escenario base, y el piso entero gana en los tres escenarios. Tres habitaciones a 44,8 € dan 134 €/noche, un 7,5% menos que los 145 € del piso entero, y encima cuestan más de explotar. En el escenario pesimista pasa a ser la peor de las cinco estrategias. Un matiz que conviene decir: al modelarlo le puse a las habitaciones <em>la misma ocupación</em> que al piso entero, a propósito — inventarle una distinta habría hecho que la comparación midiera mi suposición en vez del mercado.</p>
       </div>
 
       <div class="qa">
@@ -737,6 +769,7 @@
         <li><strong>Escenarios y análisis de sensibilidad</strong> en lugar de un número único.</li>
         <li><strong>Inversión del modelo</strong> para no depender de un parámetro no medido. Esto es lo más difícil de todo el trabajo y no es habitual ni a nivel profesional junior.</li>
         <li><strong>Separación explícita de datos y supuestos</strong>, con ficheros distintos.</li>
+        <li><strong>Segmentación del mercado por unidad y plazo</strong>, en vez de tratar «Airbnb» como una cosa sola. Es lo que permite ver que la plataforma vende dos productos con precios que se diferencian en un factor de tres, y evita el promedio sin sentido que sale de mezclarlos.</li>
         <li><strong>Corrección documentada de errores propios</strong>: el proyecto lleva escrito que una versión anterior daba 12,2% al turístico por no contar los costes operativos, y por qué eso estaba mal.</li>
       </ul>
 
@@ -752,7 +785,7 @@
 
       <div class="callout">
         <span class="lbl">La frase que resume el proyecto</span>
-        <p>El alquiler turístico maximiza la rentabilidad <strong>bajo escenarios de ocupación superiores al 25-49%</strong> según cómo se gestionen los costes, mientras que el residencial ofrece menor rentabilidad potencial pero mucha menor exposición a la estacionalidad, a los costes operativos y a la carga de gestión. La ocupación turística real de San Vicente del Raspeig no está medida en este trabajo: es el supuesto del que depende la conclusión.</p>
+        <p>El alquiler turístico <strong>de piso entero</strong> maximiza la rentabilidad <strong>bajo escenarios de ocupación superiores al 25-49%</strong> según cómo se gestionen los costes, mientras que el residencial ofrece menor rentabilidad potencial pero mucha menor exposición a la estacionalidad, a los costes operativos y a la carga de gestión. Trocear la vivienda en habitaciones por noches no mejora el resultado en ninguno de los tres escenarios. La ocupación turística real de San Vicente del Raspeig no está medida en este trabajo: es el supuesto del que depende la conclusión.</p>
         <p>Fíjate en la forma. No dice qué es mejor: dice <em>bajo qué condiciones</em> cada cosa es mejor, y termina señalando su propio punto débil. Esa es la diferencia entre calcular un ROI y hacer análisis.</p>
       </div>
     </section>
