@@ -112,6 +112,7 @@ Listarlas explícitamente es parte del rigor, no una debilidad.
 | Pregunta | Por qué no se puede responder | Cómo se resolvería |
 |---|---|---|
 | **¿Cuál es la ocupación real de un piso turístico en San Vicente?** | El INE solo publica ocupación de municipios declarados "punto turístico" y San Vicente no lo es. Usamos un proxy de Alicante ciudad. **Es el supuesto del que más depende la conclusión.** | Rastrear el calendario de disponibilidad de los 4-5 pisos que ya operan allí durante varios meses, o contratar AirDNA |
+| **¿Cuánto sesga el precio que la muestra sean anuncios activos?** | Sesgo de duración: los pisos caros se quedan colgados y los baratos vuelan, así que una foto instantánea sobre-representa los caros. Dirección conocida (al alza), magnitud no | Acumular capturas periódicas y medir cuánto sobrevive cada anuncio: los que desaparecen se alquilaron |
 | ¿Cuánto se revaloriza la vivienda? | Solo tenemos una foto de precios de venta, sin serie histórica | IPV del INE o serie histórica de un portal |
 | ¿Cuánto cuestan limpieza, gestión y suministros en la zona? | Son estimaciones propias; solo la comisión de plataforma está documentada | Pedir presupuesto a una gestora y a un servicio de limpieza locales |
 | ¿Está San Vicente declarada zona de mercado tensionado? | No se ha comprobado; afecta a la reducción del IRPF (50% vs hasta 90%) y por tanto a la comparativa | Consultar el registro oficial de zonas tensionadas de la Generalitat |

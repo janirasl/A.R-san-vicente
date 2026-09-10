@@ -176,6 +176,8 @@ El turístico no tiene reducción de IRPF (tributa el 100% del rendimiento neto)
 
 ## Limitaciones
 
+- **Sesgo de duración**: la muestra de alquiler es una foto de anuncios activos, y un anuncio caro permanece visible mucho más tiempo que uno bien de precio. Eso sobre-representa los caros y hace que los 990 €/mes sean probablemente una **sobreestimación** de la renta alcanzable. La dirección del sesgo se conoce; la magnitud no, porque las dos capturas están a solo dos días. Se corregiría acumulando capturas periódicas.
+- La serie de Fotocasa de `alquiler_mercado_mensual.csv` **no debe citarse como índice**: sus 12 valores son todos enteros y solo hay tres distintos, lo que no corresponde a un índice publicado. La validación se apoya solo en Idealista.
 - La deduplicación cruzada Idealista↔Fotocasa es heurística (precio + habitaciones + m², sin dirección exacta): los portales no publican la calle en las páginas de resultados.
 - Ninguna ocupación del modelo (residencial 95%, estudiantil 95/30%, turística 45-77%) procede de una serie histórica local. Son supuestos.
 - Los costes operativos turísticos son estimaciones de mercado, no presupuestos pedidos a proveedores de la zona. Afinarlos requeriría pedir precios reales a una gestora y a un servicio de limpieza locales.

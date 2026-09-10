@@ -470,7 +470,7 @@
 
       <h3>La validación externa</h3>
       <p>Una muestra propia siempre carga con la misma duda: ¿el filtro de búsqueda la sesgó sin que lo viéramos? La forma de despejarla es contrastarla contra una referencia independiente que mida <em>lo mismo</em>.</p>
-      <p>Los índices de precio de Idealista y Fotocasa publican precio de oferta por municipio y mes. Para San Vicente, la serie de agosto 2025 a agosto 2026 va de <strong>10,1 a 10,7 €/m²/mes</strong>. La mediana de nuestros 136 anuncios es <strong>10,49 €/m²/mes</strong>: un desvío de <strong>−2,0%</strong>.</p>
+      <p>El índice de precio de Idealista publica precio de oferta por municipio y mes. Para San Vicente, la serie de agosto 2025 a agosto 2026 va de <strong>10,1 a 10,7 €/m²/mes</strong>. La mediana de nuestros 136 anuncios es <strong>10,49 €/m²/mes</strong>: un desvío de <strong>−2,0%</strong>.</p>
       <p>La muestra es sólida. No fue un golpe de suerte: es la comprobación que convierte «extraje unos anuncios» en «mi muestra representa el mercado».</p>
 
       <div class="callout">
@@ -647,7 +647,7 @@
             <tr><td>Residencial anual</td><td class="num win">3,30%</td><td class="num">3,30%</td><td class="num">3,30%</td></tr>
             <tr><td>Estudiantil por habitación</td><td class="num">2,44%</td><td class="num">2,44%</td><td class="num">2,44%</td></tr>
             <tr><td>Turístico</td><td class="num">2,80%</td><td class="num win">6,51%</td><td class="num win">11,95%</td></tr>
-            <tr><td>Mixto (curso + verano)</td><td class="num">2,84%</td><td class="num">3,45%</td><td class="num">4,36%</td></tr>
+            <tr><td>Mixto (curso + verano)</td><td class="num">2,91%</td><td class="num">3,55%</td><td class="num">4,49%</td></tr>
           </tbody>
         </table>
       </div>
@@ -674,6 +674,7 @@
 
       <h3>Y un patrón de estacionalidad</h3>
       <p>Consultando las mismas propiedades en tres fechas: las villas suben mucho en verano (+75% la más grande, +30% otra), pero <strong>los pisos se quedan planos</strong>, e incluso bajan. Sugiere que la demanda turística de pisos en San Vicente no es de playa sino universitaria: familias de visita, profesorado, congresos.</p>
+      <p>Este hallazgo <strong>se aplicó al modelo</strong>: la amplitud estacional asumida bajó de ±20 a ±5 puntos de ocupación. El ROI del mixto cae de 3,86% a 3,55%, pero mantiene su posición por encima del residencial — o sea que la conclusión resiste el cambio de supuesto. Es una comprobación de robustez, y conviene saber contarla como tal.</p>
     </section>
 
     <!-- 7 -->
@@ -699,6 +700,11 @@
       <div class="qa">
         <p class="q">¿Cómo sabes que dos anuncios son el mismo piso?</p>
         <p class="a">No lo sé con certeza, y el proyecto no lo afirma. Los portales no publican la calle en los listados, así que se empareja por precio, habitaciones y m² aproximados. Es una heurística declarada como tal, los duplicados quedan marcados y no borrados, y existe un fichero de auditoría para revisarlos uno a uno.</p>
+      </div>
+
+      <div class="qa">
+        <p class="q">Tu muestra son anuncios activos. ¿No te sobra el piso caro que lleva seis meses colgado?</p>
+        <p class="a">Sí, y es la crítica más fina que le han hecho al trabajo. Se llama <strong>sesgo de duración</strong>: un piso bien de precio se alquila rápido y está visible poco tiempo, mientras que uno caro se queda meses en el portal. Cualquier foto instantánea sobre-representa los que no se alquilan. <strong>Mi cifra de 990 €/mes es por tanto una sobreestimación</strong> de la renta realmente alcanzable, y el ROI residencial está algo inflado. La dirección del sesgo la conozco; la magnitud no, porque mis dos capturas están separadas solo dos días. Se corrige acumulando capturas periódicas: los anuncios que desaparecen se han alquilado, los que persisten están caros.</p>
       </div>
 
       <div class="qa">
@@ -739,6 +745,7 @@
         <li><strong>La heurística de duplicados no está validada.</strong> Habría que revisar a mano una muestra de los pares marcados y dar una tasa de acierto.</li>
         <li><strong>Faltan los costes de puesta a punto</strong> (amueblar y equipar), sensiblemente mayores en turístico, que penalizarían al turístico en los primeros años.</li>
         <li><strong>El modelo asume renta constante.</strong> El índice de Idealista muestra que el alquiler sube ~6% interanual, así que el ROI residencial a varios años queda algo subestimado.</li>
+        <li><strong>Sesgo de duración sin corregir.</strong> La muestra es una foto de anuncios activos, que sobre-representa los pisos que no se alquilan por caros. Tira del precio hacia arriba.</li>
         <li><strong>Sin tests.</strong> Los scripts de limpieza no tienen pruebas automáticas.</li>
       </ul>
 

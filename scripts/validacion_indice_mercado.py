@@ -25,6 +25,34 @@ versiones mejores o peores del mismo numero):
   3. Nuestra muestra (dataset_unificado.csv) -> anuncios activos capturados en
      agosto de 2026.
 
+DOS LIMITACIONES DE ESTA VALIDACION, y conviene tenerlas presentes:
+
+  a) SESGO DE DURACION EN LA MUESTRA PROPIA. Nuestra muestra es una foto de los
+     anuncios ACTIVOS en un momento dado. Pero un anuncio bien de precio se
+     alquila rapido y esta visible poco tiempo, mientras que uno caro se queda
+     colgado meses. Cualquier foto instantanea, por tanto, SOBRE-REPRESENTA los
+     anuncios que no se alquilan, que son los caros.
+     -> El sesgo tiene direccion conocida: nuestros 990 EUR/mes son
+        probablemente una SOBREESTIMACION de la renta realmente alcanzable, y
+        por tanto el ROI residencial esta algo inflado.
+     -> Ademas, el indice de Idealista se construye con anuncios de antiguedad
+        limitada (del orden de 150 dias), asi que filtra parte de esos anuncios
+        estancados y nuestra muestra no. La coincidencia del -2% es buena señal,
+        pero no compara poblaciones identicas.
+     -> Con los datos actuales no se puede cuantificar: las dos capturas estan
+        separadas solo 2 dias. Se corrige acumulando capturas periodicas y
+        midiendo cuanto tiempo sobrevive cada anuncio (los que desaparecen se
+        han alquilado; los que persisten estan caros).
+
+  b) LA SERIE DE FOTOCASA DE alquiler_mercado_mensual.csv ES DUDOSA. Sus 12
+     valores son TODOS enteros y solo hay tres distintos (9,0 / 10,0 / 11,0),
+     frente a los seis valores con decimal de Idealista. Eso no tiene pinta de
+     indice publicado, sino de cifras redondeadas o leidas de un grafico. Ademas
+     Fotocasa no publica indices publicos desde 2023.
+     -> La validacion de este script se apoya SOLO en el indice de Idealista.
+        La serie de Fotocasa se dibuja como contexto, pero no debe citarse como
+        fuente hasta confirmar su procedencia.
+
 Salidas:
   - eda/validacion_indice.csv
   - graficos/11_validacion_indice_mercado.png
@@ -126,6 +154,16 @@ def main():
     # --- 3. Estacionalidad del indice: contraste con el hallazgo turistico ---
     ideal_mes = ideal.copy()
     ideal_mes["mes"] = ideal_mes["fecha"].dt.month
+    print("-" * 80)
+    print("LIMITACIONES DE ESTA VALIDACION")
+    print("-" * 80)
+    print("a) Sesgo de duracion: una foto de anuncios activos sobre-representa los que NO se")
+    print("   alquilan (los caros se quedan colgados; los baratos vuelan). Nuestra cifra es")
+    print("   probablemente una sobreestimacion de la renta alcanzable. Direccion conocida,")
+    print("   magnitud no: hara falta acumular capturas periodicas para medirla.")
+    print("b) La serie de Fotocasa de este fichero es dudosa (12 valores, todos enteros, solo")
+    print("   tres distintos). No se usa para validar: la validacion es contra Idealista.")
+    print()
     print("Estacionalidad del alquiler residencial segun el indice:")
     print(f"    minimo {ideal['alquiler_eur_m2'].min():.1f} | maximo {ideal['alquiler_eur_m2'].max():.1f} "
           f"| recorrido {ideal['alquiler_eur_m2'].max() - ideal['alquiler_eur_m2'].min():.1f} EUR/m2")
